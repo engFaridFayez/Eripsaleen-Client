@@ -1,6 +1,11 @@
+@import "tailwindcss";
+
 @font-face {
-  font-family: "Antonious";
-  src: url("/fonts/Antonious-Bold.ttf") format("truetype");
-  font-weight: bold;
-  font-style: normal;
+  font-family: 'CSAvva';
+  src: url('/fonts/CSAVVAS0.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Athanasius';
+  src: url('/fonts/ATHANAS0.ttf') format('truetype');
 }

@@ -48,12 +48,12 @@
       </div>
 
       <div class="hero-content">
-        <p class="hero-eyebrow">A Voice Lifted in Praise</p>
+        <p class="hero-eyebrow">كورال اريبصالين</p>
         <h1 class="hero-title">
-          <span class="title-main">Ari'alin</span>
+          <span class="title-main"> Ari'alin </span>
           <span class="title-arabic">Choir</span>
         </h1>
-        <p class="hero-sub">Where ancient worship meets living song.<br>Join us for an evening of sacred choral praise.</p>
+        <p class="hero-sub">يضم الكورال مجموعة من الأصوات المختلفة التي تتحد معًا في انسجام واحد، لتقديم ترانيم قبطية وروحية تعكس عمق الإيمان وفرح الخدمة داخل الكنيسة.</p>
         <div class="hero-actions">
           <router-link to="/booking" class="btn-primary">Reserve Your Seat</router-link>
           <a href="#events" class="btn-ghost">Upcoming Events</a>
@@ -74,9 +74,9 @@
     </div>
 
     <!-- ABOUT -->
-    <section class="about" id="about">
+    <section class="about" id="about" >
       <div class="container about-grid">
-        <div class="about-visual">
+        <!-- <div class="about-visual">
           <div class="choir-illustration">
             <div class="arch-frame">
               <div class="choir-figures">
@@ -89,15 +89,15 @@
               <div class="choir-glow"></div>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="about-text">
-          <p class="section-eyebrow">Who We Are</p>
-          <h2 class="section-title">Voices Consecrated<br>to Praise</h2>
-          <p>Eripsaleen — from the Arabic تسبيح (tasbih), meaning "praise" or "glorification" — is a sacred choral ensemble dedicated to lifting voices in reverent song.</p>
-          <p style="margin-top:1rem">Founded in the tradition of Coptic and Eastern Christian hymnody, our choir weaves ancient liturgical melodies with contemporary arrangements, creating an experience of profound worship.</p>
+          <p class="section-eyebrow">نُرنم لنُعلن مجد الله</p>
+          <h2 class="section-title">احنا كورال اريبصالين</h2>
+          <p>كورال أريبصالين هو خدمة كنسية تهدف إلى تسبيح وتمجيد اسم الله من خلال الترنيم الروحي الهادف. نحن نؤمن أن الصوت المرفوع في العبادة هو وسيلة قوية للتعبير عن المحبة والإيمان، ونعتبر أن كل ترنيمة هي صلاة حية تصل إلى السماء.</p>
+          <p style="margin-top:1rem">يضم الكورال مجموعة من الأصوات المختلفة التي تتحد معًا في انسجام واحد، لتقديم ترانيم قبطية وروحية تعكس عمق الإيمان وفرح الخدمة داخل الكنيسة.</p>
           <div class="about-stats">
             <div class="stat">
-              <span class="stat-num">40+</span>
+              <span class="stat-num">+40</span>
               <span class="stat-label">Choir Members</span>
             </div>
             <div class="stat">
@@ -105,7 +105,7 @@
               <span class="stat-label">Years of Ministry</span>
             </div>
             <div class="stat">
-              <span class="stat-num">200+</span>
+              <span class="stat-num">+200</span>
               <span class="stat-label">Performances</span>
             </div>
           </div>
@@ -169,6 +169,7 @@
 </template>
 
 <script setup>
+import about from "@/assets/images/about-section.jpg"
 const events = [
   {
     id: 1,
@@ -212,6 +213,7 @@ const events = [
 .hero-bg {
   position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(ellipse 80% 70% at 50% 40%, #1e1040 0%, var(--deep) 70%);
+  /* background-color: black; */
 }
 .candle-glow {
   position: absolute; width: 600px; height: 600px; border-radius: 50%;
@@ -228,22 +230,56 @@ const events = [
 
 .hero-content { position: relative; z-index: 2; max-width: 800px; }
 .hero-eyebrow {
-  font-family: var(--ff-heading); font-size: 0.8rem; font-weight: 600;
+  font-family: var(--ff-heading); font-size: 3rem; font-weight: 600;
   letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold);
   margin-bottom: 1.5rem;
 }
 .hero-title {
   display: flex; flex-direction: column; align-items: center;
-  gap: 0.3rem; margin-bottom: 1.5rem;
+  gap: 0.3rem; margin-bottom: 1rem;
 }
 .title-main {
-  font-family: "Antonious", sans-serif;
+  font-family: 'CSAvva', serif;
   font-size: clamp(3rem, 8vw, 6rem);
   font-weight: 900;
-  color: var(--ivory);
-  text-shadow: 0 0 60px rgba(201,168,76,0.3);
   letter-spacing: 0.05em;
   line-height: 1;
+
+  /* اختار الألوان هنا */
+  --c1: #000000;
+  --c2: #921fe4;
+  --c3: #f7df26;
+  --c4: #4d96ff;
+
+  background: linear-gradient(
+    270deg,
+    var(--c1),
+    var(--c2),
+    var(--c3),
+    var(--c4),
+    var(--c1)
+  );
+
+  background-size: 800% 800%;
+  animation: gradientMove 10s ease-in-out infinite;
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* optional glow */
+  text-shadow: 0 0 40px rgba(201,168,76,0.15);
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 .title-divider { font-size: 1.5rem; color: var(--gold); opacity: 0.7; }
 .title-arabic {
@@ -253,7 +289,7 @@ const events = [
 .hero-sub {
   font-family: var(--ff-body); font-style: italic;
   font-size: clamp(1rem, 2.5vw, 1.25rem); color: var(--stone);
-  max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.8;
+  max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.2;
 }
 .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
@@ -307,8 +343,23 @@ const events = [
 
 /* ====== ABOUT ====== */
 .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
-.about { padding: 5rem 0; }
-.about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: center; }
+.about { padding: 5rem 0 ;position: relative;
+  background: url("/src/assets/images/about-section.jpg") center/cover no-repeat;
+  padding: 6rem 0;
+  overflow: hidden;}
+.about::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55); /* غيّر الشفافية براحتك */
+  z-index: 1;
+}
+/* المحتوى فوق الطبقة */
+.about .container {
+  position: relative;
+  z-index: 2;
+}
+.about-grid { display: grid; grid-template-columns: 1fr; gap: 5rem; align-items: center; }
 .about-visual { display: flex; justify-content: center; }
 .arch-frame {
   position: relative; width: 260px; height: 340px;
@@ -353,24 +404,27 @@ const events = [
 }
 
 .section-eyebrow {
-  font-family: var(--ff-heading); font-size: 0.75rem; font-weight: 600;
-  letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold);
+  font-family: var(--ff-heading); font-size: 2rem; font-weight: 600;
+  text-transform: uppercase; color: var(--gold);
   margin-bottom: 0.8rem;
+  
 }
 .section-title {
   font-family: var(--ff-heading); font-size: clamp(1.8rem, 3.5vw, 2.6rem);
   font-weight: 700; color: var(--ivory); line-height: 1.2;
   margin-bottom: 1.5rem;
+  direction: rtl;
 }
-.about-text p { color: var(--stone); font-size: 1.05rem; }
-.about-stats { display: flex; gap: 2.5rem; margin-top: 2.5rem; }
-.stat { display: flex; flex-direction: column; }
+.about-text p { color: var(--stone); font-size: 2rem; direction: rtl; }
+.about-stats { display: flex; gap: 2.5rem; margin-top: 2.5rem;direction: rtl;justify-content: center; }
+.stat { display: flex; flex-direction: column;direction: rtl;justify-content: center; }
 .stat-num {
   font-family: var(--ff-display); font-size: 2.2rem; color: var(--gold-lt);
   line-height: 1;
+  text-align: center;
 }
 .stat-label {
-  font-family: var(--ff-heading); font-size: 0.7rem; letter-spacing: 0.15em;
+  font-family: var(--ff-heading); font-size: 0.7rem; letter-spacing: 0.15em; font-weight: 900;
   text-transform: uppercase; color: var(--smoke); margin-top: 0.3rem;
 }
 

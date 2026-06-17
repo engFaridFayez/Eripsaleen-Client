@@ -1,10 +1,19 @@
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+import logo from "@/assets/logo.png"
+const scrolled = ref(false)
+const onScroll = () => { scrolled.value = window.scrollY > 60 }
+onMounted(() => window.addEventListener('scroll', onScroll))
+onUnmounted(() => window.removeEventListener('scroll', onScroll))
+</script>
+
 <template>
   <nav class="navbar" :class="{ scrolled }">
     <div class="nav-inner">
       <router-link to="/" class="nav-logo">
-        <span class="cross">✛</span>
-        <span class="logo-text">Eripsaleen</span>
-        <span class="logo-arabic">تسبيح</span>
+        <span class="cross">
+          <img class="w-15 h-15" :src="logo" alt="">
+        </span>
       </router-link>
       <div class="nav-links">
         <router-link to="/" class="nav-link">Home</router-link>
@@ -16,13 +25,7 @@
   </nav>
 </template>
 
-<script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-const scrolled = ref(false)
-const onScroll = () => { scrolled.value = window.scrollY > 60 }
-onMounted(() => window.addEventListener('scroll', onScroll))
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
-</script>
+
 
 <style scoped>
 .navbar {
@@ -53,7 +56,12 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   50% { text-shadow: 0 0 20px var(--gold-glow), 0 0 40px var(--gold); }
 }
 .logo-text {
-  font-family: var(--ff-heading);
+  font-family: 'CSAvva', serif;
+  font-size: 1.25rem; font-weight: 700; color: var(--gold-lt);
+  letter-spacing: 0.1em;
+}
+.logo-text2 {
+  font-family: var(--ff-arabic);
   font-size: 1.25rem; font-weight: 700; color: var(--gold-lt);
   letter-spacing: 0.1em;
 }
