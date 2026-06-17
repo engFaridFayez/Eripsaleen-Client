@@ -122,8 +122,7 @@
     <!-- EVENTS -->
     <section class="events" id="events">
       <div class="container">
-        <p class="section-eyebrow" style="text-align:center">Sacred Gatherings</p>
-        <h2 class="section-title" style="text-align:center;margin-bottom:3rem">Upcoming Concerts</h2>
+        <h2 class="section-title" style="text-align:center;margin-bottom:3rem">Upcoming Events</h2>
         <div class="events-grid">
           <div class="event-card featured" v-for="event in events" :key="event.id">
             <div class="event-date-badge">
