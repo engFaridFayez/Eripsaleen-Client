@@ -7,6 +7,11 @@ export const eventService = {
     return response.data
   },
 
+  async getEvent(eventId: number): Promise<Event> {
+    const response = await api.get(`events/${eventId}/`)
+    return response.data
+  },
+
   async getSeatMap(
     eventId: number
   ): Promise<SeatMapResponse> {

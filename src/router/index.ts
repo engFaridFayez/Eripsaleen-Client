@@ -17,6 +17,11 @@ const routes: RouteRecordRaw[] = [
     component: BookingPage,
   },
   {
+    path: '/booking/:eventId',
+    name: 'booking-event',
+    component: BookingPage,
+  },
+  {
     path: '/login',
     name: 'login',
     component: LoginView,

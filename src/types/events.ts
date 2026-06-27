@@ -24,7 +24,7 @@ export interface Section {
 export interface Event {
   id: number
   title: string
-  theater: number
+  theater: string
   event_date: string
 }
 

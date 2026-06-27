@@ -1,4 +1,26 @@
+<script setup lang="ts">
+import {  onMounted } from "vue";
+import { useEventStore } from "@/stores/events";
+import { storeToRefs } from "pinia";
 
+const eventStore = useEventStore();
+
+onMounted(() => {
+  eventStore.fetchEvents();
+});
+
+const { events } = storeToRefs(eventStore);
+
+function formatMonth(date: string) {
+  return new Date(date).toLocaleString("en-US", {
+    month: "short",
+  }).toUpperCase();
+}
+
+function formatDay(date: string) {
+  return new Date(date).getDate();
+}
+</script>
 <template>
   <main class="w-full">
     <!-- HERO -->
@@ -21,39 +43,117 @@
         >
           <defs>
             <radialGradient id="rw" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.25"/>
-              <stop offset="60%" stop-color="#2e1f5e" stop-opacity="0.1"/>
-              <stop offset="100%" stop-color="#0d0a14" stop-opacity="0"/>
+              <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.25" />
+              <stop offset="60%" stop-color="#2e1f5e" stop-opacity="0.1" />
+              <stop offset="100%" stop-color="#0d0a14" stop-opacity="0" />
             </radialGradient>
           </defs>
           <!-- Outer ring -->
-          <circle cx="200" cy="200" r="190" fill="none" stroke="#c9a84c" stroke-width="0.8" stroke-opacity="0.3"/>
-          <circle cx="200" cy="200" r="160" fill="none" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.2"/>
-          <circle cx="200" cy="200" r="80" fill="none" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.3"/>
-          <circle cx="200" cy="200" r="30" fill="#c9a84c" fill-opacity="0.15"/>
+          <circle
+            cx="200"
+            cy="200"
+            r="190"
+            fill="none"
+            stroke="#c9a84c"
+            stroke-width="0.8"
+            stroke-opacity="0.3"
+          />
+          <circle
+            cx="200"
+            cy="200"
+            r="160"
+            fill="none"
+            stroke="#c9a84c"
+            stroke-width="0.5"
+            stroke-opacity="0.2"
+          />
+          <circle
+            cx="200"
+            cy="200"
+            r="80"
+            fill="none"
+            stroke="#c9a84c"
+            stroke-width="0.5"
+            stroke-opacity="0.3"
+          />
+          <circle cx="200" cy="200" r="30" fill="#c9a84c" fill-opacity="0.15" />
           <!-- Spokes 12 -->
           <g stroke="#c9a84c" stroke-width="0.6" stroke-opacity="0.25">
-            <line x1="200" y1="10" x2="200" y2="390"/>
-            <line x1="10" y1="200" x2="390" y2="200"/>
-            <line x1="62" y1="62" x2="338" y2="338"/>
-            <line x1="338" y1="62" x2="62" y2="338"/>
-            <line x1="130" y1="18" x2="270" y2="382"/>
-            <line x1="382" y1="130" x2="18" y2="270"/>
-            <line x1="270" y1="18" x2="130" y2="382"/>
-            <line x1="18" y1="130" x2="382" y2="270"/>
+            <line x1="200" y1="10" x2="200" y2="390" />
+            <line x1="10" y1="200" x2="390" y2="200" />
+            <line x1="62" y1="62" x2="338" y2="338" />
+            <line x1="338" y1="62" x2="62" y2="338" />
+            <line x1="130" y1="18" x2="270" y2="382" />
+            <line x1="382" y1="130" x2="18" y2="270" />
+            <line x1="270" y1="18" x2="130" y2="382" />
+            <line x1="18" y1="130" x2="382" y2="270" />
           </g>
           <!-- Petals -->
-          <g fill="#c9a84c" fill-opacity="0.12" stroke="#c9a84c" stroke-width="0.5" stroke-opacity="0.3">
-            <ellipse cx="200" cy="120" rx="18" ry="40" transform="rotate(0 200 200)"/>
-            <ellipse cx="200" cy="120" rx="18" ry="40" transform="rotate(45 200 200)"/>
-            <ellipse cx="200" cy="120" rx="18" ry="40" transform="rotate(90 200 200)"/>
-            <ellipse cx="200" cy="120" rx="18" ry="40" transform="rotate(135 200 200)"/>
-            <ellipse cx="200" cy="120" rx="18" ry="40" transform="rotate(180 200 200)"/>
-            <ellipse cx="200" cy="120" rx="18" ry="40" transform="rotate(225 200 200)"/>
-            <ellipse cx="200" cy="120" rx="18" ry="40" transform="rotate(270 200 200)"/>
-            <ellipse cx="200" cy="120" rx="18" ry="40" transform="rotate(315 200 200)"/>
+          <g
+            fill="#c9a84c"
+            fill-opacity="0.12"
+            stroke="#c9a84c"
+            stroke-width="0.5"
+            stroke-opacity="0.3"
+          >
+            <ellipse
+              cx="200"
+              cy="120"
+              rx="18"
+              ry="40"
+              transform="rotate(0 200 200)"
+            />
+            <ellipse
+              cx="200"
+              cy="120"
+              rx="18"
+              ry="40"
+              transform="rotate(45 200 200)"
+            />
+            <ellipse
+              cx="200"
+              cy="120"
+              rx="18"
+              ry="40"
+              transform="rotate(90 200 200)"
+            />
+            <ellipse
+              cx="200"
+              cy="120"
+              rx="18"
+              ry="40"
+              transform="rotate(135 200 200)"
+            />
+            <ellipse
+              cx="200"
+              cy="120"
+              rx="18"
+              ry="40"
+              transform="rotate(180 200 200)"
+            />
+            <ellipse
+              cx="200"
+              cy="120"
+              rx="18"
+              ry="40"
+              transform="rotate(225 200 200)"
+            />
+            <ellipse
+              cx="200"
+              cy="120"
+              rx="18"
+              ry="40"
+              transform="rotate(270 200 200)"
+            />
+            <ellipse
+              cx="200"
+              cy="120"
+              rx="18"
+              ry="40"
+              transform="rotate(315 200 200)"
+            />
           </g>
-          <circle cx="200" cy="200" r="400" fill="url(#rw)"/>
+          <circle cx="200" cy="200" r="400" fill="url(#rw)" />
         </svg>
       </div>
 
@@ -137,7 +237,10 @@
             >
               احنا كورال اريبصالين
             </h2>
-            <p class="text-[clamp(1.15rem,3vw,2rem)] text-[var(--stone)]" dir="rtl">
+            <p
+              class="text-[clamp(1.15rem,3vw,2rem)] text-[var(--stone)]"
+              dir="rtl"
+            >
               كورال أريبصالين هو خدمة كنسية تهدف إلى تسبيح وتمجيد اسم الله من
               خلال الترنيم الروحي الهادف. نحن نؤمن أن الصوت المرفوع في العبادة
               هو وسيلة قوية للتعبير عن المحبة والإيمان، ونعتبر أن كل ترنيمة هي
@@ -148,8 +251,8 @@
               dir="rtl"
             >
               يضم الكورال مجموعة من الأصوات المختلفة التي تتحد معًا في انسجام
-              واحد، لتقديم ترانيم قبطية وروحية تعكس عمق الإيمان وفرح الخدمة
-              داخل الكنيسة.
+              واحد، لتقديم ترانيم قبطية وروحية تعكس عمق الإيمان وفرح الخدمة داخل
+              الكنيسة.
             </p>
             <div
               class="mt-10 flex flex-wrap justify-center gap-10 text-center"
@@ -227,41 +330,46 @@
               <span
                 class="font-[var(--ff-heading)] text-[0.65rem] font-bold uppercase tracking-[0.15em] text-[var(--ink)]"
               >
-                {{ event.month }}
+                {{ formatMonth(event.event_date) }}
               </span>
               <span
                 class="font-[var(--ff-display)] text-[1.8rem] font-black leading-none text-[var(--ink)]"
               >
-                {{ event.day }}
+                {{ formatDay(event.event_date) }}
               </span>
             </div>
             <div class="flex-1">
               <div
                 class="mb-2 font-[var(--ff-heading)] text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--gold)]"
               >
-                {{ event.tag }}
+                <!-- {{ event.tag }} -->
               </div>
               <h3
                 class="mb-1 font-[var(--ff-heading)] text-[1.15rem] font-bold text-[var(--ivory)]"
               >
-                {{ event.name }}
+                {{ event.title }}
               </h3>
               <p
                 class="mb-2 font-[var(--ff-heading)] text-[0.75rem] tracking-[0.05em] text-[var(--smoke)]"
               >
-                {{ event.venue }}
+                {{ event.theater }}
               </p>
-              <p class="mb-4 text-[0.9rem] leading-relaxed text-[var(--stone)]">
+              <!-- <p class="mb-4 text-[0.9rem] leading-relaxed text-[var(--stone)]">
                 {{ event.desc }}
-              </p>
+              </p> -->
               <div class="flex items-center justify-between gap-4">
-                <span
+                <!-- <span
                   class="font-[var(--ff-heading)] text-[0.85rem] font-semibold text-[var(--gold-lt)]"
                 >
                   {{ event.price }}
-                </span>
+                </span> -->
                 <router-link
-                  to="/booking"
+                  :to="{
+                    name: 'booking-event',
+                    params: {
+                      eventId: event.id,
+                    },
+                  }"
                   class="rounded-sm bg-[linear-gradient(135deg,var(--gold),var(--gold-lt))] px-4 py-1.5 font-[var(--ff-heading)] text-[0.7rem] font-bold uppercase tracking-[0.12em] text-[var(--ink)] transition-opacity duration-200 hover:opacity-85"
                 >
                   Book Now
@@ -294,9 +402,7 @@
         >
           — Psalm 150:6
         </cite>
-        <div
-          class="mt-6 font-[var(--ff-arabic)] text-3xl text-white/20"
-        >
+        <div class="mt-6 font-[var(--ff-arabic)] text-3xl text-white/20">
           سَبِّحُوا الرَّبَّ
         </div>
       </div>
@@ -311,8 +417,8 @@
           Be Part of the Praise
         </h2>
         <p class="max-w-[480px] text-lg italic text-[var(--stone)]">
-          Reserve your place for an unforgettable evening of sacred choral music.
-          Limited seats available.
+          Reserve your place for an unforgettable evening of sacred choral
+          music. Limited seats available.
         </p>
         <router-link
           to="/booking"
@@ -325,37 +431,7 @@
   </main>
 </template>
 
-<script setup>
-const events = [
-  {
-    id: 1,
-    month: 'JUL', day: '14',
-    tag: 'Grand Concert',
-    name: 'Night of Praise',
-    venue: 'St. Mark\'s Cathedral, Cairo',
-    desc: 'An evening of sacred hymns, Coptic liturgy, and original compositions celebrating divine glory.',
-    price: 'From EGP 150'
-  },
-  {
-    id: 2,
-    month: 'AUG', day: '22',
-    tag: 'Seasonal',
-    name: 'Voices of the Holy',
-    venue: 'Church of the Nativity, Heliopolis',
-    desc: 'A summer worship concert featuring classical arrangements and beloved traditional spirituals.',
-    price: 'From EGP 120'
-  },
-  {
-    id: 3,
-    month: 'SEP', day: '07',
-    tag: 'Special',
-    name: 'Leilat El-Tasbih',
-    venue: 'Grand Hall, Old Cairo',
-    desc: 'ليلة التسبيح — An all-night praise gathering, uniting voices in continuous worship until dawn.',
-    price: 'From EGP 200'
-  }
-]
-</script>
+
 
 <style scoped>
 .rose-window {
@@ -370,7 +446,7 @@ const events = [
 }
 
 .title-main {
-  font-family: 'CSAvva', serif;
+  font-family: "CSAvva", serif;
   font-size: clamp(3rem, 8vw, 6rem);
   font-weight: 900;
   letter-spacing: 0.05em;
@@ -398,7 +474,7 @@ const events = [
   -webkit-text-fill-color: transparent;
 
   /* optional glow */
-  text-shadow: 0 0 40px rgba(201,168,76,0.15);
+  text-shadow: 0 0 40px rgba(201, 168, 76, 0.15);
 }
 
 @keyframes gradientMove {
@@ -418,8 +494,15 @@ const events = [
 }
 
 @keyframes scroll-anim {
-  0%,100% { opacity: 0.3; transform: scaleY(1); }
-  50% { opacity: 1; transform: scaleY(0.6) translateY(10px); }
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(0.6) translateY(10px);
+  }
 }
 
 .about-section::before {
@@ -432,7 +515,11 @@ const events = [
 
 .quote-bg::before {
   content: "✛";
-  position: absolute; font-size: 400px; color: rgba(255,255,255,0.03);
-  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  position: absolute;
+  font-size: 400px;
+  color: rgba(255, 255, 255, 0.03);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

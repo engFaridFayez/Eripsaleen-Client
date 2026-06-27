@@ -5,7 +5,11 @@ import { useRouter } from "vue-router";
 import SectionCard from "@/components/SectionCard.vue";
 import { useEventStore } from "@/stores/events";
 import { useBookingStore } from "@/stores/booking";
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
+
+const eventId = Number(route.params.eventId)
 const router = useRouter();
 
 const eventStore = useEventStore();
@@ -15,7 +19,7 @@ const { events, seatMap, selectedEventId } = storeToRefs(eventStore);
 
 onMounted(async () => {
   await eventStore.fetchEvents();
-
+  await eventStore.fetchSeatMap(eventId)
   if (events.value.length) {
     await eventStore.fetchSeatMap(events.value[0].id);
   }

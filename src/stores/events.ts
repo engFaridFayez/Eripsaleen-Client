@@ -40,6 +40,22 @@ export const useEventStore = defineStore("event", () => {
         }
     }
 
+    async function fetchEvent(
+        eventId: number
+    ) {
+        loading.value = true
+
+        try {
+            events.value = [
+                await eventService.getEvent(eventId)
+            ]
+        }
+
+        finally {
+            loading.value = false
+        }
+    }
+
     async function fetchSeatMap(
         eventId: number
     ) {
@@ -70,6 +86,7 @@ export const useEventStore = defineStore("event", () => {
         loading,
         selectedEventId,
         fetchEvents,
-        fetchSeatMap
+        fetchSeatMap,
+        fetchEvent
     }
 })
