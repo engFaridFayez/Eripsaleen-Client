@@ -1,14 +1,24 @@
 
 <template>
-  <main class="home">
-
+  <main class="w-full">
     <!-- HERO -->
-    <section class="hero">
-      <div class="hero-bg">
-        <div class="candle-glow glow-left"></div>
-        <div class="candle-glow glow-right"></div>
-        <div class="arch-overlay"></div>
-        <svg class="rose-window" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    <section
+      class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-8 pb-16 pt-24 text-center"
+    >
+      <div
+        class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_70%_at_50%_40%,#1e1040_0%,var(--deep)_70%)]"
+      >
+        <div
+          class="absolute left-[-100px] top-[10%] h-[600px] w-[600px] rounded-full bg-[var(--gold)] opacity-[0.15] blur-[120px]"
+        ></div>
+        <div
+          class="absolute bottom-[10%] right-[-100px] h-[600px] w-[600px] rounded-full bg-[var(--crimson)] opacity-[0.15] blur-[120px]"
+        ></div>
+        <svg
+          class="rose-window absolute left-1/2 top-1/2 h-[700px] w-[700px] opacity-60"
+          viewBox="0 0 400 400"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <defs>
             <radialGradient id="rw" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.25"/>
@@ -47,66 +57,140 @@
         </svg>
       </div>
 
-      <div class="hero-content">
-        <p class="hero-eyebrow">كورال اريبصالين</p>
-        <h1 class="hero-title">
+      <div class="relative z-10 max-w-[800px]">
+        <p
+          class="mb-6 font-[var(--ff-heading)] text-[clamp(1.35rem,5vw,3rem)] font-semibold uppercase tracking-[0.28em] text-[var(--gold)]"
+        >
+          كورال اريبصالين
+        </p>
+        <h1 class="mb-4 flex flex-col items-center gap-1">
           <span class="title-main"> Ari'alin </span>
-          <span class="title-arabic">Choir</span>
+          <span
+            class="font-[var(--ff-arabic)] text-[clamp(1.8rem,4vw,3rem)] font-light tracking-[0.2em] text-[var(--gold-lt)]"
+          >
+            Choir
+          </span>
         </h1>
-        <p class="hero-sub">يضم الكورال مجموعة من الأصوات المختلفة التي تتحد معًا في انسجام واحد، لتقديم ترانيم قبطية وروحية تعكس عمق الإيمان وفرح الخدمة داخل الكنيسة.</p>
-        <div class="hero-actions">
-          <router-link to="/booking" class="btn-primary">Reserve Your Seat</router-link>
-          <a href="#events" class="btn-ghost">Upcoming Events</a>
+        <p
+          class="mx-auto mb-10 max-w-[520px] font-[var(--ff-body)] text-[clamp(1rem,2.5vw,1.25rem)] italic leading-tight text-[var(--stone)]"
+        >
+          يضم الكورال مجموعة من الأصوات المختلفة التي تتحد معًا في انسجام واحد،
+          لتقديم ترانيم قبطية وروحية تعكس عمق الإيمان وفرح الخدمة داخل الكنيسة.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <router-link
+            to="/booking"
+            class="inline-block rounded-sm bg-[linear-gradient(135deg,var(--gold),var(--gold-lt))] px-9 py-4 font-[var(--ff-heading)] text-[0.8rem] font-bold uppercase tracking-[0.2em] text-[var(--ink)] transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_30px_rgba(201,168,76,0.5),0_4px_16px_rgba(0,0,0,0.4)]"
+          >
+            Reserve Your Seat
+          </router-link>
+          <a
+            href="#events"
+            class="inline-block rounded-sm border border-[rgba(201,168,76,0.4)] px-9 py-4 font-[var(--ff-heading)] text-[0.8rem] font-semibold uppercase tracking-[0.2em] text-[var(--stone)] transition-colors duration-200 hover:border-[var(--gold-lt)] hover:text-[var(--gold-lt)]"
+          >
+            Upcoming Events
+          </a>
         </div>
       </div>
 
-      <div class="scroll-hint">
-        <span class="scroll-line"></span>
-        <span class="scroll-label">Scroll</span>
+      <div
+        class="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2"
+      >
+        <span
+          class="scroll-line h-10 w-px bg-[linear-gradient(to_bottom,var(--gold),transparent)]"
+        ></span>
+        <span
+          class="font-[var(--ff-heading)] text-[0.65rem] uppercase tracking-[0.2em] text-[var(--smoke)]"
+        >
+          Scroll
+        </span>
       </div>
     </section>
 
     <!-- DIVIDER -->
-    <div class="section-divider">
-      <div class="divider-line"></div>
-      <div class="divider-cross">✛</div>
-      <div class="divider-line"></div>
+    <div class="mx-auto flex max-w-[600px] items-center gap-6 px-8 py-8">
+      <div
+        class="h-px flex-1 bg-[linear-gradient(to_right,transparent,rgba(201,168,76,0.3),transparent)]"
+      ></div>
+      <div class="text-base text-[var(--gold)] opacity-60">✛</div>
+      <div
+        class="h-px flex-1 bg-[linear-gradient(to_right,transparent,rgba(201,168,76,0.3),transparent)]"
+      ></div>
     </div>
 
     <!-- ABOUT -->
-    <section class="about" id="about" >
-      <div class="container about-grid">
-        <!-- <div class="about-visual">
-          <div class="choir-illustration">
-            <div class="arch-frame">
-              <div class="choir-figures">
-                <div v-for="i in 7" :key="i" class="figure" :class="`fig-${i}`">
-                  <div class="fig-body"></div>
-                  <div class="fig-head"></div>
-                  <div class="fig-note" v-if="i % 2 === 0">♪</div>
-                </div>
+    <section
+      class="about-section relative overflow-hidden bg-[url('/src/assets/images/about-section.jpg')] bg-cover bg-center py-24"
+      id="about"
+    >
+      <div class="relative z-10 mx-auto max-w-[1100px] px-8">
+        <div class="grid grid-cols-1 items-center gap-20">
+          <div>
+            <p
+              class="mb-3 font-[var(--ff-heading)] text-[clamp(1.35rem,4vw,2rem)] font-semibold uppercase text-[var(--gold)]"
+            >
+              نُرنم لنُعلن مجد الله
+            </p>
+            <h2
+              class="mb-6 font-[var(--ff-heading)] text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold leading-tight text-[var(--ivory)]"
+              dir="rtl"
+            >
+              احنا كورال اريبصالين
+            </h2>
+            <p class="text-[clamp(1.15rem,3vw,2rem)] text-[var(--stone)]" dir="rtl">
+              كورال أريبصالين هو خدمة كنسية تهدف إلى تسبيح وتمجيد اسم الله من
+              خلال الترنيم الروحي الهادف. نحن نؤمن أن الصوت المرفوع في العبادة
+              هو وسيلة قوية للتعبير عن المحبة والإيمان، ونعتبر أن كل ترنيمة هي
+              صلاة حية تصل إلى السماء.
+            </p>
+            <p
+              class="mt-4 text-[clamp(1.15rem,3vw,2rem)] text-[var(--stone)]"
+              dir="rtl"
+            >
+              يضم الكورال مجموعة من الأصوات المختلفة التي تتحد معًا في انسجام
+              واحد، لتقديم ترانيم قبطية وروحية تعكس عمق الإيمان وفرح الخدمة
+              داخل الكنيسة.
+            </p>
+            <div
+              class="mt-10 flex flex-wrap justify-center gap-10 text-center"
+              dir="rtl"
+            >
+              <div class="flex flex-col">
+                <span
+                  class="font-[var(--ff-display)] text-[2.2rem] leading-none text-[var(--gold-lt)]"
+                >
+                  +40
+                </span>
+                <span
+                  class="mt-1 font-[var(--ff-heading)] text-[0.7rem] font-black uppercase tracking-[0.15em] text-[var(--smoke)]"
+                >
+                  Choir Members
+                </span>
               </div>
-              <div class="choir-glow"></div>
-            </div>
-          </div>
-        </div> -->
-        <div class="about-text">
-          <p class="section-eyebrow">نُرنم لنُعلن مجد الله</p>
-          <h2 class="section-title">احنا كورال اريبصالين</h2>
-          <p>كورال أريبصالين هو خدمة كنسية تهدف إلى تسبيح وتمجيد اسم الله من خلال الترنيم الروحي الهادف. نحن نؤمن أن الصوت المرفوع في العبادة هو وسيلة قوية للتعبير عن المحبة والإيمان، ونعتبر أن كل ترنيمة هي صلاة حية تصل إلى السماء.</p>
-          <p style="margin-top:1rem">يضم الكورال مجموعة من الأصوات المختلفة التي تتحد معًا في انسجام واحد، لتقديم ترانيم قبطية وروحية تعكس عمق الإيمان وفرح الخدمة داخل الكنيسة.</p>
-          <div class="about-stats">
-            <div class="stat">
-              <span class="stat-num">+40</span>
-              <span class="stat-label">Choir Members</span>
-            </div>
-            <div class="stat">
-              <span class="stat-num">12</span>
-              <span class="stat-label">Years of Ministry</span>
-            </div>
-            <div class="stat">
-              <span class="stat-num">+200</span>
-              <span class="stat-label">Performances</span>
+              <div class="flex flex-col">
+                <span
+                  class="font-[var(--ff-display)] text-[2.2rem] leading-none text-[var(--gold-lt)]"
+                >
+                  12
+                </span>
+                <span
+                  class="mt-1 font-[var(--ff-heading)] text-[0.7rem] font-black uppercase tracking-[0.15em] text-[var(--smoke)]"
+                >
+                  Years of Ministry
+                </span>
+              </div>
+              <div class="flex flex-col">
+                <span
+                  class="font-[var(--ff-display)] text-[2.2rem] leading-none text-[var(--gold-lt)]"
+                >
+                  +200
+                </span>
+                <span
+                  class="mt-1 font-[var(--ff-heading)] text-[0.7rem] font-black uppercase tracking-[0.15em] text-[var(--smoke)]"
+                >
+                  Performances
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -114,29 +198,74 @@
     </section>
 
     <!-- DIVIDER -->
-    <div class="section-divider">
-      <div class="divider-line"></div>
-      <div class="divider-line"></div>
+    <div class="mx-auto flex max-w-[600px] items-center gap-6 px-8 py-8">
+      <div
+        class="h-px flex-1 bg-[linear-gradient(to_right,transparent,rgba(201,168,76,0.3),transparent)]"
+      ></div>
+      <div
+        class="h-px flex-1 bg-[linear-gradient(to_right,transparent,rgba(201,168,76,0.3),transparent)]"
+      ></div>
     </div>
 
     <!-- EVENTS -->
-    <section class="events" id="events">
-      <div class="container">
-        <h2 class="section-title" style="text-align:center;margin-bottom:3rem">Upcoming Events</h2>
-        <div class="events-grid">
-          <div class="event-card featured" v-for="event in events" :key="event.id">
-            <div class="event-date-badge">
-              <span class="badge-month">{{ event.month }}</span>
-              <span class="badge-day">{{ event.day }}</span>
+    <section class="py-20" id="events">
+      <div class="mx-auto max-w-[1100px] px-8">
+        <h2
+          class="mb-12 text-center font-[var(--ff-heading)] text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold leading-tight text-[var(--ivory)]"
+        >
+          Upcoming Events
+        </h2>
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">
+          <div
+            class="flex gap-6 rounded border border-[rgba(201,168,76,0.2)] bg-[linear-gradient(160deg,rgba(46,31,94,0.4)_0%,rgba(17,13,30,0.8)_100%)] p-7 transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-[rgba(201,168,76,0.5)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.4),0_0_20px_rgba(201,168,76,0.08)]"
+            v-for="event in events"
+            :key="event.id"
+          >
+            <div
+              class="flex h-[70px] w-[60px] shrink-0 flex-col items-center justify-center rounded-[3px] bg-[linear-gradient(180deg,var(--gold),#a07828)]"
+            >
+              <span
+                class="font-[var(--ff-heading)] text-[0.65rem] font-bold uppercase tracking-[0.15em] text-[var(--ink)]"
+              >
+                {{ event.month }}
+              </span>
+              <span
+                class="font-[var(--ff-display)] text-[1.8rem] font-black leading-none text-[var(--ink)]"
+              >
+                {{ event.day }}
+              </span>
             </div>
-            <div class="event-info">
-              <div class="event-tag">{{ event.tag }}</div>
-              <h3 class="event-name">{{ event.name }}</h3>
-              <p class="event-venue">{{ event.venue }}</p>
-              <p class="event-desc">{{ event.desc }}</p>
-              <div class="event-footer">
-                <span class="event-price">{{ event.price }}</span>
-                <router-link to="/booking" class="event-book-btn">Book Now</router-link>
+            <div class="flex-1">
+              <div
+                class="mb-2 font-[var(--ff-heading)] text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--gold)]"
+              >
+                {{ event.tag }}
+              </div>
+              <h3
+                class="mb-1 font-[var(--ff-heading)] text-[1.15rem] font-bold text-[var(--ivory)]"
+              >
+                {{ event.name }}
+              </h3>
+              <p
+                class="mb-2 font-[var(--ff-heading)] text-[0.75rem] tracking-[0.05em] text-[var(--smoke)]"
+              >
+                {{ event.venue }}
+              </p>
+              <p class="mb-4 text-[0.9rem] leading-relaxed text-[var(--stone)]">
+                {{ event.desc }}
+              </p>
+              <div class="flex items-center justify-between gap-4">
+                <span
+                  class="font-[var(--ff-heading)] text-[0.85rem] font-semibold text-[var(--gold-lt)]"
+                >
+                  {{ event.price }}
+                </span>
+                <router-link
+                  to="/booking"
+                  class="rounded-sm bg-[linear-gradient(135deg,var(--gold),var(--gold-lt))] px-4 py-1.5 font-[var(--ff-heading)] text-[0.7rem] font-bold uppercase tracking-[0.12em] text-[var(--ink)] transition-opacity duration-200 hover:opacity-85"
+                >
+                  Book Now
+                </router-link>
               </div>
             </div>
           </div>
@@ -145,30 +274,58 @@
     </section>
 
     <!-- QUOTE BANNER -->
-    <section class="quote-banner">
-      <div class="quote-bg"></div>
-      <div class="quote-content">
-        <div class="quote-mark">"</div>
-        <blockquote>Let everything that has breath praise the Lord.</blockquote>
-        <cite>— Psalm 150:6</cite>
-        <div class="quote-arabic">سَبِّحُوا الرَّبَّ</div>
+    <section class="relative overflow-hidden px-8 py-24 text-center">
+      <div
+        class="quote-bg absolute inset-0 bg-[linear-gradient(135deg,var(--crimson)_0%,var(--purple)_50%,var(--vault)_100%)] opacity-60"
+      ></div>
+      <div class="relative z-10 mx-auto max-w-[700px]">
+        <div
+          class="mb-6 font-[var(--ff-display)] text-8xl leading-[0.5] text-[var(--gold)] opacity-50"
+        >
+          "
+        </div>
+        <blockquote
+          class="mb-4 font-[var(--ff-body)] text-[clamp(1.4rem,3vw,2rem)] italic leading-normal text-[var(--ivory)]"
+        >
+          Let everything that has breath praise the Lord.
+        </blockquote>
+        <cite
+          class="font-[var(--ff-heading)] text-[0.85rem] tracking-[0.15em] text-[var(--gold-lt)]"
+        >
+          — Psalm 150:6
+        </cite>
+        <div
+          class="mt-6 font-[var(--ff-arabic)] text-3xl text-white/20"
+        >
+          سَبِّحُوا الرَّبَّ
+        </div>
       </div>
     </section>
 
     <!-- CTA -->
-    <section class="cta-section">
-      <div class="container cta-inner">
-        <h2 class="cta-title">Be Part of the Praise</h2>
-        <p class="cta-sub">Reserve your place for an unforgettable evening of sacred choral music. Limited seats available.</p>
-        <router-link to="/booking" class="btn-primary btn-large">Reserve Your Seat Now</router-link>
+    <section class="px-8 py-24 text-center">
+      <div class="mx-auto flex max-w-[1100px] flex-col items-center gap-5">
+        <h2
+          class="font-[var(--ff-heading)] text-[clamp(2rem,4vw,3rem)] font-bold text-[var(--ivory)]"
+        >
+          Be Part of the Praise
+        </h2>
+        <p class="max-w-[480px] text-lg italic text-[var(--stone)]">
+          Reserve your place for an unforgettable evening of sacred choral music.
+          Limited seats available.
+        </p>
+        <router-link
+          to="/booking"
+          class="inline-block rounded-sm bg-[linear-gradient(135deg,var(--gold),var(--gold-lt))] px-12 py-5 font-[var(--ff-heading)] text-[0.9rem] font-bold uppercase tracking-[0.2em] text-[var(--ink)] transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_30px_rgba(201,168,76,0.5),0_4px_16px_rgba(0,0,0,0.4)]"
+        >
+          Reserve Your Seat Now
+        </router-link>
       </div>
     </section>
-
   </main>
 </template>
 
 <script setup>
-import about from "@/assets/images/about-section.jpg"
 const events = [
   {
     id: 1,
@@ -201,42 +358,17 @@ const events = [
 </script>
 
 <style scoped>
-/* ====== HERO ====== */
-.hero {
-  position: relative; min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  overflow: hidden; text-align: center;
-  padding: 6rem 2rem 4rem;
-}
-.hero-bg {
-  position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 80% 70% at 50% 40%, #1e1040 0%, var(--deep) 70%);
-  /* background-color: black; */
-}
-.candle-glow {
-  position: absolute; width: 600px; height: 600px; border-radius: 50%;
-  filter: blur(120px); opacity: 0.15;
-}
-.glow-left  { left: -100px; top: 10%; background: var(--gold); }
-.glow-right { right: -100px; bottom: 10%; background: var(--crimson); }
 .rose-window {
-  position: absolute; top: 50%; left: 50%; width: 700px; height: 700px;
   transform: translate(-50%, -50%);
-  animation: slow-spin 80s linear infinite; opacity: 0.6;
+  animation: slow-spin 80s linear infinite;
 }
-@keyframes slow-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
 
-.hero-content { position: relative; z-index: 2; max-width: 800px; }
-.hero-eyebrow {
-  font-family: var(--ff-heading); font-size: 3rem; font-weight: 600;
-  letter-spacing: 0.35em; text-transform: uppercase; color: var(--gold);
-  margin-bottom: 1.5rem;
+@keyframes slow-spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
-.hero-title {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 0.3rem; margin-bottom: 1rem;
-}
+
 .title-main {
   font-family: 'CSAvva', serif;
   font-size: clamp(3rem, 8vw, 6rem);
@@ -280,247 +412,27 @@ const events = [
     background-position: 0% 50%;
   }
 }
-.title-divider { font-size: 1.5rem; color: var(--gold); opacity: 0.7; }
-.title-arabic {
-  font-family: var(--ff-arabic); font-size: clamp(1.8rem, 4vw, 3rem);
-  font-weight: 300; color: var(--gold-lt); letter-spacing: 0.2em;
-}
-.hero-sub {
-  font-family: var(--ff-body); font-style: italic;
-  font-size: clamp(1rem, 2.5vw, 1.25rem); color: var(--stone);
-  max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.2;
-}
-.hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
-.btn-primary {
-  display: inline-block;
-  background: linear-gradient(135deg, var(--gold), var(--gold-lt));
-  color: var(--ink); font-family: var(--ff-heading);
-  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
-  padding: 1rem 2.2rem; border-radius: 2px;
-  transition: box-shadow 0.3s, transform 0.2s;
-}
-.btn-primary:hover {
-  box-shadow: 0 0 30px rgba(201,168,76,0.5), 0 4px 16px rgba(0,0,0,0.4);
-  transform: translateY(-2px);
-}
-.btn-primary.btn-large { padding: 1.2rem 3rem; font-size: 0.9rem; }
-.btn-ghost {
-  display: inline-block;
-  border: 1px solid rgba(201,168,76,0.4); color: var(--stone);
-  font-family: var(--ff-heading); font-size: 0.8rem; font-weight: 600;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  padding: 1rem 2.2rem; border-radius: 2px;
-  transition: border-color 0.2s, color 0.2s;
-}
-.btn-ghost:hover { border-color: var(--gold-lt); color: var(--gold-lt); }
-
-.scroll-hint {
-  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-}
 .scroll-line {
-  width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent);
   animation: scroll-anim 1.8s ease-in-out infinite;
 }
+
 @keyframes scroll-anim {
   0%,100% { opacity: 0.3; transform: scaleY(1); }
   50% { opacity: 1; transform: scaleY(0.6) translateY(10px); }
 }
-.scroll-label {
-  font-family: var(--ff-heading); font-size: 0.65rem; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--smoke);
-}
 
-/* ====== DIVIDERS ====== */
-.section-divider {
-  display: flex; align-items: center; gap: 1.5rem;
-  max-width: 600px; margin: 0 auto; padding: 2rem 2rem;
-}
-.divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent); }
-.divider-cross { font-size: 1rem; color: var(--gold); opacity: 0.6; }
-
-/* ====== ABOUT ====== */
-.container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
-.about { padding: 5rem 0 ;position: relative;
-  background: url("/src/assets/images/about-section.jpg") center/cover no-repeat;
-  padding: 6rem 0;
-  overflow: hidden;}
-.about::before {
+.about-section::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55); /* غيّر الشفافية براحتك */
+  background: rgba(0, 0, 0, 0.55);
   z-index: 1;
 }
-/* المحتوى فوق الطبقة */
-.about .container {
-  position: relative;
-  z-index: 2;
-}
-.about-grid { display: grid; grid-template-columns: 1fr; gap: 5rem; align-items: center; }
-.about-visual { display: flex; justify-content: center; }
-.arch-frame {
-  position: relative; width: 260px; height: 340px;
-  border: 1px solid rgba(201,168,76,0.25); border-radius: 130px 130px 0 0;
-  background: linear-gradient(180deg, rgba(46,31,94,0.5) 0%, rgba(17,13,30,0.8) 100%);
-  overflow: hidden; display: flex; align-items: flex-end; justify-content: center;
-  padding-bottom: 1rem;
-}
-.choir-figures {
-  display: flex; gap: 6px; align-items: flex-end; padding-bottom: 0.5rem; position: relative; z-index: 2;
-}
-.figure { display: flex; flex-direction: column; align-items: center; gap: 2px; position: relative; }
-.fig-head {
-  width: 14px; height: 14px; border-radius: 50%;
-  background: linear-gradient(180deg, var(--stone), var(--smoke));
-}
-.fig-body {
-  width: 18px; border-radius: 3px 3px 0 0;
-  background: linear-gradient(180deg, var(--purple), var(--vault));
-  border: 1px solid rgba(201,168,76,0.2);
-}
-.fig-1 .fig-body, .fig-7 .fig-body { height: 60px; }
-.fig-2 .fig-body, .fig-6 .fig-body { height: 80px; }
-.fig-3 .fig-body, .fig-5 .fig-body { height: 95px; }
-.fig-4 .fig-body { height: 110px; }
-.fig-note {
-  position: absolute; top: -18px; right: -8px;
-  font-size: 0.9rem; color: var(--gold); opacity: 0.8;
-  animation: float-note 3s ease-in-out infinite;
-}
-.fig-2 .fig-note { animation-delay: 0.5s; }
-.fig-6 .fig-note { animation-delay: 1s; }
-@keyframes float-note {
-  0%,100% { transform: translateY(0) rotate(-5deg); opacity: 0.8; }
-  50% { transform: translateY(-12px) rotate(5deg); opacity: 0.3; }
-}
-.choir-glow {
-  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-  width: 200px; height: 100px; border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(201,168,76,0.15), transparent 70%);
-  filter: blur(20px);
-}
 
-.section-eyebrow {
-  font-family: var(--ff-heading); font-size: 2rem; font-weight: 600;
-  text-transform: uppercase; color: var(--gold);
-  margin-bottom: 0.8rem;
-  
-}
-.section-title {
-  font-family: var(--ff-heading); font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-  font-weight: 700; color: var(--ivory); line-height: 1.2;
-  margin-bottom: 1.5rem;
-  direction: rtl;
-}
-.about-text p { color: var(--stone); font-size: 2rem; direction: rtl; }
-.about-stats { display: flex; gap: 2.5rem; margin-top: 2.5rem;direction: rtl;justify-content: center; }
-.stat { display: flex; flex-direction: column;direction: rtl;justify-content: center; }
-.stat-num {
-  font-family: var(--ff-display); font-size: 2.2rem; color: var(--gold-lt);
-  line-height: 1;
-  text-align: center;
-}
-.stat-label {
-  font-family: var(--ff-heading); font-size: 0.7rem; letter-spacing: 0.15em; font-weight: 900;
-  text-transform: uppercase; color: var(--smoke); margin-top: 0.3rem;
-}
-
-/* ====== EVENTS ====== */
-.events { padding: 5rem 0; }
-.events-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-.event-card {
-  background: linear-gradient(160deg, rgba(46,31,94,0.4) 0%, rgba(17,13,30,0.8) 100%);
-  border: 1px solid rgba(201,168,76,0.2); border-radius: 4px;
-  padding: 1.8rem; display: flex; gap: 1.5rem;
-  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-}
-.event-card:hover {
-  border-color: rgba(201,168,76,0.5); transform: translateY(-3px);
-  box-shadow: 0 8px 40px rgba(0,0,0,0.4), 0 0 20px rgba(201,168,76,0.08);
-}
-.event-date-badge {
-  flex-shrink: 0; width: 60px; height: 70px;
-  background: linear-gradient(180deg, var(--gold), #a07828);
-  border-radius: 3px; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-}
-.badge-month {
-  font-family: var(--ff-heading); font-size: 0.65rem; font-weight: 700;
-  color: var(--ink); letter-spacing: 0.15em; text-transform: uppercase;
-}
-.badge-day {
-  font-family: var(--ff-display); font-size: 1.8rem; font-weight: 900;
-  color: var(--ink); line-height: 1;
-}
-.event-info { flex: 1; }
-.event-tag {
-  font-family: var(--ff-heading); font-size: 0.65rem; font-weight: 600;
-  letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold);
-  margin-bottom: 0.4rem;
-}
-.event-name { font-family: var(--ff-heading); font-size: 1.15rem; font-weight: 700; color: var(--ivory); margin-bottom: 0.3rem; }
-.event-venue { font-family: var(--ff-heading); font-size: 0.75rem; color: var(--smoke); letter-spacing: 0.05em; margin-bottom: 0.6rem; }
-.event-desc { font-size: 0.9rem; color: var(--stone); line-height: 1.6; margin-bottom: 1rem; }
-.event-footer { display: flex; align-items: center; justify-content: space-between; }
-.event-price { font-family: var(--ff-heading); font-size: 0.85rem; color: var(--gold-lt); font-weight: 600; }
-.event-book-btn {
-  font-family: var(--ff-heading); font-size: 0.7rem; font-weight: 700;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  padding: 0.4rem 1rem; color: var(--ink);
-  background: linear-gradient(135deg, var(--gold), var(--gold-lt));
-  border-radius: 2px;
-  transition: opacity 0.2s;
-}
-.event-book-btn:hover { opacity: 0.85; }
-
-/* ====== QUOTE BANNER ====== */
-.quote-banner {
-  position: relative; padding: 6rem 2rem;
-  text-align: center; overflow: hidden;
-}
-.quote-bg {
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, var(--crimson) 0%, var(--purple) 50%, var(--vault) 100%);
-  opacity: 0.6;
-}
 .quote-bg::before {
-  content: '✛';
+  content: "✛";
   position: absolute; font-size: 400px; color: rgba(255,255,255,0.03);
   top: 50%; left: 50%; transform: translate(-50%, -50%);
-}
-.quote-content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
-.quote-mark {
-  font-family: var(--ff-display); font-size: 6rem; color: var(--gold);
-  line-height: 0.5; margin-bottom: 1.5rem; opacity: 0.5;
-}
-blockquote {
-  font-family: var(--ff-body); font-style: italic;
-  font-size: clamp(1.4rem, 3vw, 2rem); color: var(--ivory); line-height: 1.5;
-  margin-bottom: 1rem;
-}
-cite {
-  font-family: var(--ff-heading); font-size: 0.85rem; color: var(--gold-lt);
-  letter-spacing: 0.15em;
-}
-.quote-arabic {
-  font-family: var(--ff-arabic); font-size: 2rem; color: rgba(255,255,255,0.2);
-  margin-top: 1.5rem;
-}
-
-/* ====== CTA ====== */
-.cta-section { padding: 6rem 2rem; text-align: center; }
-.cta-inner { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; }
-.cta-title {
-  font-family: var(--ff-heading); font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700; color: var(--ivory);
-}
-.cta-sub { font-style: italic; color: var(--stone); max-width: 480px; font-size: 1.1rem; }
-
-@media (max-width: 768px) {
-  .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-  .about-visual { display: none; }
-  .about-stats { gap: 1.5rem; }
 }
 </style>
