@@ -4,6 +4,7 @@ import HomePage from '@/views/HomePage.vue'
 import BookingPage from '@/views/BookingPage.vue'
 import LoginView from '@/views/LoginView.vue'
 import PaymentView from '@/views/PaymentView.vue'
+import ShowDetailsPage from '@/views/ShowDetailsPage.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -15,6 +16,11 @@ const routes: RouteRecordRaw[] = [
     path: '/booking',
     name: 'booking',
     component: BookingPage,
+  },
+  {
+    path: "/shows/:id",
+    name: "show-details",
+    component: ShowDetailsPage
   },
   {
     path: '/booking/:eventId',

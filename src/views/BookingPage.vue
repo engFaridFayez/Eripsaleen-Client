@@ -5,11 +5,11 @@ import { useRouter } from "vue-router";
 import SectionCard from "@/components/SectionCard.vue";
 import { useEventStore } from "@/stores/events";
 import { useBookingStore } from "@/stores/booking";
-import { useRoute } from 'vue-router'
+import { useRoute } from "vue-router";
 
-const route = useRoute()
+const route = useRoute();
 
-const eventId = Number(route.params.eventId)
+const eventId = Number(route.params.eventId);
 const router = useRouter();
 
 const eventStore = useEventStore();
@@ -18,11 +18,8 @@ const bookingStore = useBookingStore();
 const { events, seatMap, selectedEventId } = storeToRefs(eventStore);
 
 onMounted(async () => {
-  await eventStore.fetchEvents();
-  await eventStore.fetchSeatMap(eventId)
-  if (events.value.length) {
-    await eventStore.fetchSeatMap(events.value[0].id);
-  }
+  await eventStore.fetchSeatMap(eventId);
+  await eventStore.fetchEvent(eventId);
 });
 
 const currentEvent = computed(() =>
@@ -30,7 +27,21 @@ const currentEvent = computed(() =>
 );
 
 const totalPrice = computed(() => {
-  return bookingStore.selectedSeats.length * 150;
+  if (!seatMap.value) return 0;
+
+  let total = 0;
+
+  seatMap.value.sections.forEach((section) => {
+    section.rows.forEach((row) => {
+      row.seats.forEach((seat) => {
+        if (bookingStore.selectedSeats.includes(seat.id)) {
+          total += Number(seat.price);
+        }
+      });
+    });
+  });
+
+  return total;
 });
 
 async function selectEvent(id) {
@@ -61,6 +72,28 @@ const selectedSeatNumbers = computed(() => {
       row.seats.forEach((seat) => {
         if (bookingStore.selectedSeats.includes(seat.id)) {
           result.push(seat.seat_number);
+        }
+      });
+    });
+  });
+
+  return result;
+});
+
+const selectedSeats = computed(() => {
+  if (!seatMap.value) return [];
+
+  const result = [];
+
+  seatMap.value.sections.forEach((section) => {
+    section.rows.forEach((row) => {
+      row.seats.forEach((seat) => {
+        if (bookingStore.selectedSeats.includes(seat.id)) {
+          result.push({
+            ...seat,
+            row: row.row_number,
+            section: section.name,
+          });
         }
       });
     });
@@ -138,11 +171,7 @@ function confirmBooking() {
       <div
         class="pointer-events-none absolute left-1/2 top-0 h-[300px] w-[600px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(46,31,94,0.6),transparent_70%)] blur-[40px]"
       ></div>
-      <p
-        class="mb-2 font-[var(--ff-heading)] text-xs font-semibold uppercase tracking-[0.3em] text-[var(--gold)]"
-      >
-        Reserve Your Place
-      </p>
+
       <h1
         class="mb-3 font-[var(--ff-display)] text-[clamp(2.2rem,5vw,3.5rem)] font-black text-[var(--ivory)]"
       >
@@ -152,32 +181,32 @@ function confirmBooking() {
         Select your preferred seats from the hall map below. Gold seats are
         available; dimmed seats are taken.
       </p>
-    </div>
+      <div
+        class="mx-auto mb-10 max-w-5xl rounded-xl border border-[rgba(201,168,76,.25)] bg-[rgba(26,20,48,.55)] p-8 flex flex-col justify-center items-center"
+        v-if="currentEvent"
+      >
+        <h2 class="text-3xl font-bold text-[var(--gold)]">
+          {{ currentEvent.show }}
+        </h2>
 
-    <!-- Event Selector -->
-    <div class="border-b border-[rgba(201,168,76,0.15)] pb-8">
-      <div class="mx-auto max-w-[1100px] px-8">
-        <div class="flex flex-wrap justify-center gap-4">
-          <button
-            v-for="event in events"
-            :key="event.id"
-            class="flex cursor-pointer flex-col items-center gap-1 rounded-[3px] border px-6 py-3 transition-all duration-200"
-            :class="
-              selectedEventId === event.id
-                ? 'border-[var(--gold)] bg-[linear-gradient(135deg,var(--gold),#a07828)] text-[var(--ink)]'
-                : 'border-[rgba(201,168,76,0.2)] bg-transparent text-[var(--stone)] hover:border-[rgba(201,168,76,0.5)] hover:text-[var(--ivory)]'
-            "
-            @click="selectEvent(event.id)"
-          >
-            <span
-              class="font-[var(--ff-heading)] text-[0.7rem] font-semibold uppercase tracking-[0.15em]"
-            >
-              {{ event.month }} {{ event.day }}
-            </span>
-            <span class="font-[var(--ff-body)] text-[0.95rem] font-medium">
-              {{ event.title }}
-            </span>
-          </button>
+        <p class="mt-2 text-xl text-[var(--ivory)]">
+          {{ currentEvent.title }}
+        </p>
+
+        <div class="mt-6 flex flex-wrap gap-8">
+          <div>
+            <div class="text-xs uppercase text-[var(--gold)]">Theater</div>
+            <div>
+              {{ currentEvent.theater }}
+            </div>
+          </div>
+          <div>
+            <div class="text-xs uppercase text-[var(--gold)]">Date</div>
+
+            <div>
+              {{ new Date(currentEvent.event_date).toLocaleString() }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -282,28 +311,56 @@ function confirmBooking() {
       :class="bookingStore.seatCount > 0 ? 'translate-y-0' : 'translate-y-full'"
     >
       <div
-        class="mx-auto flex max-w-[1100px] flex-wrap items-center justify-between gap-4 px-8"
+        class="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-6 px-8"
       >
-        <div>
+        <div class="flex-1">
           <div
             class="font-[var(--ff-heading)] text-base font-bold text-[var(--gold-lt)]"
           >
-            {{ bookingStore.seatCount }} seat{{
-              bookingStore.seatCount !== 1 ? "s" : ""
-            }}
-            selected
+            {{ bookingStore.seatCount }}
+            Seat{{ bookingStore.seatCount !== 1 ? "s" : "" }} Selected
           </div>
-          <div
-            class="mt-0.5 max-w-[500px] font-[var(--ff-heading)] text-[0.7rem] tracking-[0.1em] text-[var(--stone)]"
-          >
-            {{ selectedSeatNumbers.join(" · ") }}
+
+          <!-- Selected Seats -->
+          <div class="mt-3 flex flex-wrap gap-2">
+            <div
+              v-for="seat in selectedSeats"
+              :key="seat.id"
+              class="rounded border border-[rgba(201,168,76,.25)] bg-[rgba(26,20,48,.85)] px-3 py-2"
+            >
+              <div
+                class="font-[var(--ff-heading)] text-[12px] font-bold"
+                :style="{ color: seat.color }"
+              >
+                {{ seat.section }}
+              </div>
+
+              <div class="text-[11px] text-[var(--stone)]">
+                Row {{ seat.row }} • Seat {{ seat.seat_number }}
+              </div>
+
+              <div class="text-[11px] text-[var(--stone)]">
+                {{ seat.category }}
+              </div>
+
+              <div
+                class="mt-1 text-sm font-bold"
+                :style="{ color: seat.color }"
+              >
+                EGP {{ seat.price }}
+              </div>
+            </div>
           </div>
+
+          <!-- Total -->
           <div
-            class="mt-1 font-[var(--ff-heading)] text-[0.8rem] text-[var(--ivory)]"
+            class="mt-4 font-[var(--ff-heading)] text-lg font-bold text-[var(--ivory)]"
           >
-            Total: EGP {{ totalPrice }}
+            Total :
+            <span class="text-[var(--gold)]"> EGP {{ totalPrice }} </span>
           </div>
         </div>
+
         <button
           class="cursor-pointer whitespace-nowrap rounded-sm border-0 bg-[linear-gradient(135deg,var(--gold),var(--gold-lt))] px-9 py-3.5 font-[var(--ff-heading)] text-[0.8rem] font-bold uppercase tracking-[0.15em] text-[var(--ink)] transition-[box-shadow,transform] duration-200 hover:-translate-y-px hover:shadow-[0_0_25px_rgba(201,168,76,0.5)]"
           @click="confirmBooking"

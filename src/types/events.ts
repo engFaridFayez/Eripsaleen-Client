@@ -2,6 +2,10 @@ export interface Seat {
   id: number
   seat_number: string
   is_booked: boolean
+
+  category: string
+  color: string
+  price: number
 }
 
 export interface Row {

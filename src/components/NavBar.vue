@@ -1,30 +1,90 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import logo from "@/assets/logo.png"
+
 const scrolled = ref(false)
-const onScroll = () => { scrolled.value = window.scrollY > 60 }
-onMounted(() => window.addEventListener('scroll', onScroll))
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
+const menuOpen = ref(false)
+
+const onScroll = () => {
+  scrolled.value = window.scrollY > 60
+}
+
+const toggleMenu = () => {
+  menuOpen.value = !menuOpen.value
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', onScroll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll)
+})
 </script>
 
 <template>
   <nav class="navbar" :class="{ scrolled }">
     <div class="nav-inner">
+
+      <!-- Logo -->
       <router-link to="/" class="nav-logo">
         <span class="cross">
-          <img class="w-15 h-15" :src="logo" alt="">
+          <img class="logo-img" :src="logo" alt="">
         </span>
       </router-link>
+
+      <!-- Desktop Links -->
       <div class="nav-links">
         <router-link to="/" class="nav-link">Home</router-link>
         <router-link to="/#about" class="nav-link">About</router-link>
         <router-link to="/#events" class="nav-link">Events</router-link>
-        <router-link to="/booking" class="nav-btn">Book Tickets</router-link>
+        <router-link to="/booking" class="nav-btn">
+          Book Tickets
+        </router-link>
       </div>
+
+      <!-- Mobile Hamburger -->
+      <button class="menu-btn" @click="toggleMenu">
+        ☰
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" :class="{ open: menuOpen }">
+      <router-link
+        to="/"
+        class="mobile-link"
+        @click="menuOpen = false"
+      >
+        Home
+      </router-link>
+
+      <router-link
+        to="/#about"
+        class="mobile-link"
+        @click="menuOpen = false"
+      >
+        About
+      </router-link>
+
+      <router-link
+        to="/#events"
+        class="mobile-link"
+        @click="menuOpen = false"
+      >
+        Events
+      </router-link>
+
+      <router-link
+        to="/booking"
+        class="mobile-btn"
+        @click="menuOpen = false"
+      >
+        Book Tickets
+      </router-link>
     </div>
   </nav>
 </template>
-
 
 
 <style scoped>
@@ -88,5 +148,101 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 .nav-btn:hover {
   opacity: 0.9;
   box-shadow: 0 0 20px rgba(201, 168, 76, 0.4);
+}
+.logo-img {
+  width: 60px;
+  height: 60px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--gold-lt);
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* Mobile menu */
+.mobile-menu {
+  display: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem;
+  }
+
+  .nav-inner {
+    justify-content: space-between;
+  }
+
+  /* اخفاء اللينكات */
+  .nav-links {
+    display: none;
+  }
+
+  /* اظهار الأيقونة */
+  .menu-btn {
+    display: block;
+  }
+
+  /* القائمة المنسدلة */
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    background: rgba(13, 10, 20, 0.98);
+    backdrop-filter: blur(16px);
+
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+
+    padding: 1.5rem;
+
+    transform: translateY(-20px);
+    opacity: 0;
+    pointer-events: none;
+
+    transition: all 0.3s ease;
+  }
+
+  .mobile-menu.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-link,
+  .mobile-btn {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .mobile-link {
+    color: var(--stone);
+  }
+
+  .mobile-btn {
+    background: linear-gradient(
+      135deg,
+      var(--gold),
+      var(--gold-lt)
+    );
+    color: var(--ink);
+    padding: 0.8rem;
+    border-radius: 4px;
+  }
 }
 </style>

@@ -1,25 +1,29 @@
 <script setup lang="ts">
-import {  onMounted } from "vue";
-import { useEventStore } from "@/stores/events";
+import { onMounted } from "vue";
+
 import { storeToRefs } from "pinia";
 
-const eventStore = useEventStore();
+import { useShowStore } from "@/stores/show";
+
+const showStore = useShowStore();
+
+const { shows } = storeToRefs(showStore);
 
 onMounted(() => {
-  eventStore.fetchEvents();
+  showStore.fetchShows();
 });
 
-const { events } = storeToRefs(eventStore);
+// function formatMonth(date: string) {
+//   return new Date(date)
+//     .toLocaleString("en-US", {
+//       month: "short",
+//     })
+//     .toUpperCase();
+// }
 
-function formatMonth(date: string) {
-  return new Date(date).toLocaleString("en-US", {
-    month: "short",
-  }).toUpperCase();
-}
-
-function formatDay(date: string) {
-  return new Date(date).getDate();
-}
+// function formatDay(date: string) {
+//   return new Date(date).getDate();
+// }
 </script>
 <template>
   <main class="w-full">
@@ -310,71 +314,65 @@ function formatDay(date: string) {
       ></div>
     </div>
 
-    <!-- EVENTS -->
-    <section class="py-20" id="events">
-      <div class="mx-auto max-w-[1100px] px-8">
+    <!-- SHOWS -->
+    <section class="py-20" id="shows">
+      <div class="mx-auto max-w-[1200px] px-8">
         <h2
           class="mb-12 text-center font-[var(--ff-heading)] text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold leading-tight text-[var(--ivory)]"
         >
-          Upcoming Events
+          Featured Shows
         </h2>
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6">
+
+        <div class="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-8">
           <div
-            class="flex gap-6 rounded border border-[rgba(201,168,76,0.2)] bg-[linear-gradient(160deg,rgba(46,31,94,0.4)_0%,rgba(17,13,30,0.8)_100%)] p-7 transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-[rgba(201,168,76,0.5)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.4),0_0_20px_rgba(201,168,76,0.08)]"
-            v-for="event in events"
-            :key="event.id"
+            v-for="show in shows"
+            :key="show.id"
+            class="overflow-hidden rounded-xl border border-[rgba(201,168,76,0.2)] bg-[linear-gradient(160deg,rgba(46,31,94,0.4)_0%,rgba(17,13,30,0.8)_100%)] transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(201,168,76,0.5)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.4),0_0_20px_rgba(201,168,76,0.08)]"
           >
+            <!-- Cover -->
             <div
-              class="flex h-[70px] w-[60px] shrink-0 flex-col items-center justify-center rounded-[3px] bg-[linear-gradient(180deg,var(--gold),#a07828)]"
+              class="flex h-56 items-center justify-center bg-[rgba(255,255,255,0.04)]"
             >
-              <span
-                class="font-[var(--ff-heading)] text-[0.65rem] font-bold uppercase tracking-[0.15em] text-[var(--ink)]"
-              >
-                {{ formatMonth(event.event_date) }}
-              </span>
-              <span
-                class="font-[var(--ff-display)] text-[1.8rem] font-black leading-none text-[var(--ink)]"
-              >
-                {{ formatDay(event.event_date) }}
-              </span>
-            </div>
-            <div class="flex-1">
+              <img
+                v-if="show.cover"
+                :src="show.cover"
+                :alt="show.title"
+                class="h-full w-full object-cover"
+              />
+
               <div
-                class="mb-2 font-[var(--ff-heading)] text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[var(--gold)]"
+                v-else
+                class="flex h-full w-full items-center justify-center text-[var(--gold)] text-lg font-semibold"
               >
-                <!-- {{ event.tag }} -->
+                No Cover
               </div>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6">
               <h3
-                class="mb-1 font-[var(--ff-heading)] text-[1.15rem] font-bold text-[var(--ivory)]"
+                class="mb-3 font-[var(--ff-heading)] text-2xl font-bold text-[var(--ivory)]"
               >
-                {{ event.title }}
+                {{ show.title }}
               </h3>
+
               <p
-                class="mb-2 font-[var(--ff-heading)] text-[0.75rem] tracking-[0.05em] text-[var(--smoke)]"
+                class="mb-6 line-clamp-3 text-[0.95rem] leading-relaxed text-[var(--stone)]"
               >
-                {{ event.theater }}
+                {{ show.description }}
               </p>
-              <!-- <p class="mb-4 text-[0.9rem] leading-relaxed text-[var(--stone)]">
-                {{ event.desc }}
-              </p> -->
-              <div class="flex items-center justify-between gap-4">
-                <!-- <span
-                  class="font-[var(--ff-heading)] text-[0.85rem] font-semibold text-[var(--gold-lt)]"
-                >
-                  {{ event.price }}
-                </span> -->
-                <router-link
-                  :to="{
-                    name: 'booking-event',
-                    params: {
-                      eventId: event.id,
-                    },
-                  }"
-                  class="rounded-sm bg-[linear-gradient(135deg,var(--gold),var(--gold-lt))] px-4 py-1.5 font-[var(--ff-heading)] text-[0.7rem] font-bold uppercase tracking-[0.12em] text-[var(--ink)] transition-opacity duration-200 hover:opacity-85"
-                >
-                  Book Now
-                </router-link>
-              </div>
+
+              <router-link
+                :to="{
+                  name: 'show-details',
+                  params: {
+                    id: show.id,
+                  },
+                }"
+                class="inline-flex rounded-sm bg-[linear-gradient(135deg,var(--gold),var(--gold-lt))] px-5 py-2 font-[var(--ff-heading)] text-[0.75rem] font-bold uppercase tracking-[0.12em] text-[var(--ink)] transition-opacity duration-200 hover:opacity-85"
+              >
+                View Shows
+              </router-link>
             </div>
           </div>
         </div>
@@ -430,8 +428,6 @@ function formatDay(date: string) {
     </section>
   </main>
 </template>
-
-
 
 <style scoped>
 .rose-window {
