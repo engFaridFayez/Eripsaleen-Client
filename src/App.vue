@@ -1,12 +1,12 @@
 <template>
   <div class="app-root">
-    <NavBar v-if="!isAuthRoute" />
+    <NavBar v-if="!isAuthRoute && !isDashboard" />
     <router-view v-slot="{ Component }">
       <transition name="page" mode="out-in">
         <component :is="Component" />
       </transition>
     </router-view>
-    <FooterBar v-if="!isAuthRoute" />
+    <FooterBar v-if="!isAuthRoute && !isDashboard" />
   </div>
 </template>
 
@@ -18,6 +18,9 @@ import FooterBar from './components/FooterBar.vue'
 
 const route = useRoute()
 const isAuthRoute = computed(() => route.name === 'login')
+const isDashboard = computed(() =>
+  route.path.startsWith('/admin')
+)
 </script>
 
 <style>

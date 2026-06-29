@@ -5,6 +5,7 @@ import BookingPage from '@/views/BookingPage.vue'
 import LoginView from '@/views/LoginView.vue'
 import PaymentView from '@/views/PaymentView.vue'
 import ShowDetailsPage from '@/views/ShowDetailsPage.vue'
+import DashboardView from '@/views/admin/DashboardView.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -37,6 +38,11 @@ const routes: RouteRecordRaw[] = [
     name: "payment",
     component: PaymentView,
   },
+  {
+    path:"/admin",
+    name:"dashboard",
+    component:DashboardView
+  }
 ]
 
 const router = createRouter({
