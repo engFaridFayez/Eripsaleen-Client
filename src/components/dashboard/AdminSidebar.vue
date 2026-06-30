@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useRoute } from "vue-router"
+import { useRoute } from "vue-router";
 
 import {
   HomeIcon,
   BuildingOffice2Icon,
+  StarIcon,
   CalendarDaysIcon,
   Squares2X2Icon,
   RectangleStackIcon,
@@ -11,54 +12,63 @@ import {
   UsersIcon,
   Cog6ToothIcon,
   ChevronRightIcon,
-} from "@heroicons/vue/24/outline"
+} from "@heroicons/vue/24/outline";
 
-const route = useRoute()
+const route = useRoute();
 
 const menu = [
   {
     name: "Dashboard",
-    to: "/admin",
+    routeName: "dashboard",
+    to: { name: "dashboard" },
     icon: HomeIcon,
   },
   {
     name: "Theaters",
-    to: "/admin/theaters",
+    routeName: "theaters",
+    to: { name: "theaters" },
     icon: BuildingOffice2Icon,
   },
   {
+    name: "Shows",
+    routeName: "shows",
+    to: { name:"shows" },
+    icon: StarIcon
+  },
+  {
     name: "Events",
-    to: "/admin/events",
+    routeName: "events",
+    to: { name:"events" },
     icon: CalendarDaysIcon,
   },
-  {
-    name: "Sections",
-    to: "/admin/sections",
-    icon: Squares2X2Icon,
-  },
-  {
-    name: "Seats",
-    to: "/admin/seats",
-    icon: RectangleStackIcon,
-  },
-  {
-    name: "Bookings",
-    to: "/admin/bookings",
-    icon: TicketIcon,
-  },
-  {
-    name: "Users",
-    to: "/admin/users",
-    icon: UsersIcon,
-  },
-  {
-    name: "Settings",
-    to: "/admin/settings",
-    icon: Cog6ToothIcon,
-  },
-]
+  // {
+  //   name: "Sections",
+  //   to: "/admin/sections",
+  //   icon: Squares2X2Icon,
+  // },
+  // {
+  //   name: "Seats",
+  //   to: "/admin/seats",
+  //   icon: RectangleStackIcon,
+  // },
+  // {
+  //   name: "Bookings",
+  //   to: "/admin/bookings",
+  //   icon: TicketIcon,
+  // },
+  // {
+  //   name: "Users",
+  //   to: "/admin/users",
+  //   icon: UsersIcon,
+  // },
+  // {
+  //   name: "Settings",
+  //   to: "/admin/settings",
+  //   icon: Cog6ToothIcon,
+  // },
+];
 
-const isActive = (path: string) => route.path === path
+const isActive = (name: string) => route.name === name;
 </script>
 
 <template>
@@ -67,7 +77,6 @@ const isActive = (path: string) => route.path === path
   >
     <!-- Logo -->
     <div>
-
       <div
         class="h-20 flex items-center gap-4 px-6 border-b border-[#C9A84C]/20"
       >
@@ -78,27 +87,23 @@ const isActive = (path: string) => route.path === path
         </div>
 
         <div>
-          <h1 class="text-lg font-bold tracking-wide">
-            Theater Admin
-          </h1>
+          <h1 class="text-lg font-bold tracking-wide">Theater Admin</h1>
+          
 
-          <p class="text-xs text-gray-400">
-            Booking Dashboard
-          </p>
+          <p class="text-xs text-gray-400">Booking Dashboard</p>
         </div>
       </div>
 
       <!-- Menu -->
 
       <nav class="mt-6 px-4 space-y-2">
-
         <RouterLink
           v-for="item in menu"
           :key="item.name"
           :to="item.to"
           class="group flex items-center gap-4 rounded-2xl px-4 py-3 transition-all duration-300"
           :class="
-            isActive(item.to)
+            isActive(item.routeName)
               ? 'bg-[#5E3AA5] text-white shadow-lg shadow-purple-900/40'
               : 'hover:bg-[#1D1830]'
           "
@@ -107,6 +112,7 @@ const isActive = (path: string) => route.path === path
             :is="item.icon"
             class="w-6 h-6 transition group-hover:text-[#C9A84C]"
           />
+          
 
           <span class="font-medium tracking-wide">
             {{ item.name }}
@@ -116,37 +122,23 @@ const isActive = (path: string) => route.path === path
             class="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition"
           />
         </RouterLink>
-
       </nav>
     </div>
 
     <!-- Bottom -->
 
-    <div
-      class="p-5 border-t border-[#C9A84C]/20"
-    >
-      <div
-        class="rounded-2xl bg-[#1B1628] border border-[#C9A84C]/20 p-4"
-      >
-
+    <div class="p-5 border-t border-[#C9A84C]/20">
+      <div class="rounded-2xl bg-[#1B1628] border border-[#C9A84C]/20 p-4">
         <div class="flex items-center gap-3">
-
           <div
             class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-[#C9A84C]"
           ></div>
 
           <div class="flex-1">
+            <h3 class="font-semibold">Admin</h3>
 
-            <h3 class="font-semibold">
-              Admin
-            </h3>
-
-            <p class="text-sm text-gray-400">
-              System Administrator
-            </p>
-
+            <p class="text-sm text-gray-400">System Administrator</p>
           </div>
-
         </div>
 
         <button
@@ -154,29 +146,20 @@ const isActive = (path: string) => route.path === path
         >
           Logout
         </button>
-
       </div>
-
     </div>
-
   </aside>
 </template>
 
-
-
 <style scoped>
 
-.router-link-active {
-  background: #5E3AA5;
+
+::-webkit-scrollbar {
+  width: 6px;
 }
 
-::-webkit-scrollbar{
-    width:6px;
+::-webkit-scrollbar-thumb {
+  background: #c9a84c;
+  border-radius: 10px;
 }
-
-::-webkit-scrollbar-thumb{
-    background:#C9A84C;
-    border-radius:10px;
-}
-
 </style>

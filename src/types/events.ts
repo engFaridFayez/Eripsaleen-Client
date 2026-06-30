@@ -26,10 +26,24 @@ export interface Section {
 }
 
 export interface Event {
-  id: number
-  title: string
-  theater: string
-  event_date: string
+  id: number;
+  title: string;
+  show: number;
+  theater: number;
+  event_date: string;
+  sales_start?: string;
+  sales_end?: string;
+  theater_name:string;
+  show_name:string;
+}
+
+export interface CreateEvent {
+  title: string;
+  show: number;
+  theater: number;
+  event_date: string;
+  sales_start: string;
+  sales_end: string;
 }
 
 export interface SeatMapResponse {
@@ -37,4 +51,25 @@ export interface SeatMapResponse {
   event_title: string
   theater: string
   sections: Section[]
+}
+
+
+
+export interface AdminSection {
+    id: number
+    theater: number
+    name: string
+}
+
+export interface AdminRow {
+    id: number
+    section: number
+    row_number: number
+    seats_per_row: number
+}
+
+export interface AdminSeat {
+    id: number
+    row: number
+    seat_number: string
 }

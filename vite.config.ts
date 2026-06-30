@@ -11,6 +11,10 @@ export default defineConfig({
     vueDevTools(),
     tailwindcss(),
   ],
+  server:{
+    port:5000,
+    strictPort:true,
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
