@@ -1,13 +1,16 @@
 export interface Seat {
-  id: number
-  seat_number: string
-  is_booked: boolean
+  id: number;
+  seat_number: string;
+  is_booked: boolean;
 
-  category: string
-  color: string
-  price: number
+  price: number; // 👈 لو بتستخدم نفس الـ serializer
+
+  category?: {
+    id: number;
+    name: string;
+    color: string;
+  } | null;
 }
-
 export interface Row {
   id: number
   row_number: number
@@ -58,18 +61,32 @@ export interface SeatMapResponse {
 export interface AdminSection {
     id: number
     theater: number
+    theater_name:string;
     name: string
 }
 
 export interface AdminRow {
-    id: number
-    section: number
-    row_number: number
-    seats_per_row: number
+  id: number;
+  section: number;
+  theater_name: string;
+  section_name: string;
+  row_number: string;
+  seats_per_row: number;
 }
 
 export interface AdminSeat {
-    id: number
-    row: number
-    seat_number: string
+  id: number;
+  row: number;
+  row_name: string;
+  section_name: string;
+  seat_number: string;
+  theater_name: string;
+
+  price?: number; // 👈 لو بتستخدم نفس الـ serializer
+
+  category?: {
+    id: number;
+    name: string;
+    color: string;
+  } | null;
 }

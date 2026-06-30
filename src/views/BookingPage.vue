@@ -212,8 +212,8 @@ function confirmBooking() {
     </div>
 
     <!-- Stage + Seat Map -->
-    <div class="mx-auto w-full max-w-[1100px] px-4 pb-40 pt-12 sm:px-8">
-      <div class="mx-auto max-w-[1000px]">
+    <div class="mx-auto w-full max-w-[1600px] px-4 pb-40 pt-12 sm:px-8">
+      <div class="mx-auto max-w-[1500px]">
         <!-- Stage -->
         <div class="mb-8 text-center">
           <div
@@ -342,10 +342,16 @@ function confirmBooking() {
               <div class="text-[11px] text-[var(--stone)]">
                 {{ seat.category }}
               </div>
+              <div
+                class="font-[var(--ff-heading)] text-[12px] font-bold"
+                :style="{ color: seat.category?.color }"
+              >
+                {{ seat.section }}
+              </div>
 
               <div
                 class="mt-1 text-sm font-bold"
-                :style="{ color: seat.color }"
+                :style="{ color: seat.category?.color }"
               >
                 EGP {{ seat.price }}
               </div>

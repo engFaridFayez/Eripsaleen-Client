@@ -18,6 +18,16 @@ import EventListView from '@/views/admin/EventCRUD/EventListView.vue'
 import EventCreateView from '@/views/admin/EventCRUD/EventCreateView.vue'
 import EventEditView from '@/views/admin/EventCRUD/EventEditView.vue'
 import EventDetailsView from '@/views/admin/EventCRUD/EventDetailsView.vue'
+import SectionListView from '@/views/admin/SectionCRUD/SectionListView.vue'
+import SecionCreateView from '@/views/admin/SectionCRUD/SecionCreateView.vue'
+import SectionEditView from '@/views/admin/SectionCRUD/SectionEditView.vue'
+import SectionDetailsView from '@/views/admin/SectionCRUD/SectionDetailsView.vue'
+import RowListView from '@/views/admin/RowCRUD/RowListView.vue'
+import RowCreateView from '@/views/admin/RowCRUD/RowCreateView.vue'
+import RowEditView from '@/views/admin/RowCRUD/RowEditView.vue'
+import RowDetailsView from '@/views/admin/RowCRUD/RowDetailsView.vue'
+import SeatManagmentView from '@/views/admin/Seats/SeatManagmentView.vue'
+import SeatCategoryManagementView from '@/views/admin/Seats/SeatCategoryManagementView.vue'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -87,14 +97,14 @@ const routes: RouteRecordRaw[] = [
         component: ShowListView
       },
       {
-        path:"shows/create",
-        name:"show-create",
+        path: "shows/create",
+        name: "show-create",
         component: ShowCreateView
       },
       {
         path: "shows/:id/edit",
         name: "show-edit",
-        component:ShowEditView
+        component: ShowEditView
       },
       {
         path: "shows/:id",
@@ -102,24 +112,74 @@ const routes: RouteRecordRaw[] = [
         component: ShowDetailsPage
       },
       {
-        path:"events",
-        name:"events",
-        component:EventListView
+        path: "events",
+        name: "events",
+        component: EventListView
       },
       {
-        path:"events/create",
-        name:"event-create",
-        component:EventCreateView
+        path: "events/create",
+        name: "event-create",
+        component: EventCreateView
       },
       {
         path: "events/:id/edit",
         name: "event-edit",
-        component:EventEditView
+        component: EventEditView
       },
       {
         path: "events/:id",
         name: "event-details",
         component: EventDetailsView
+      },
+      {
+        path: "sections",
+        name: "sections",
+        component: SectionListView
+      },
+      {
+        path: "sections/create",
+        name: "section-create",
+        component: SecionCreateView
+      },
+      {
+        path: "sections/:id/edit",
+        name: "section-edit",
+        component: SectionEditView
+      },
+      {
+        path: "sections/:id",
+        name: "section-details",
+        component: SectionDetailsView
+      },
+      {
+        path: "rows",
+        name: "rows",
+        component: RowListView
+      },
+      {
+        path: "rows/create",
+        name: "row-create",
+        component: RowCreateView
+      },
+      {
+        path: "rows/:id/edit",
+        name: "row-edit",
+        component: RowEditView
+      },
+      {
+        path: "rows/:id",
+        name: "row-details",
+        component: RowDetailsView
+      },
+      {
+        path: "seats",
+        name: "seats",
+        component: SeatManagmentView
+      },
+      {
+        path: "/admin/theaters/:id/categories",
+        name: "seat-categories",
+        component: SeatCategoryManagementView
       }
     ]
   }

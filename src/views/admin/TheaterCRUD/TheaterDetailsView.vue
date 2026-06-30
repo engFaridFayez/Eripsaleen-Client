@@ -42,12 +42,24 @@ const goToEdit = () => {
           <p class="mt-2 text-gray-400">Theater Details</p>
         </div>
 
-        <button
-          @click="goToEdit"
-          class="rounded-xl bg-[#C9A84C] px-6 py-3 font-semibold text-black transition hover:scale-105"
-        >
-          Edit Theater
-        </button>
+        <div class="flex items-center gap-3">
+          <RouterLink
+            :to="{
+              name: 'seat-categories',
+              params: { id: theaterStore.theater.id },
+            }"
+            class="rounded-xl bg-indigo-600 px-5 py-3 font-semibold text-white transition hover:bg-indigo-500"
+          >
+            Categories
+          </RouterLink>
+
+          <button
+            @click="goToEdit"
+            class="rounded-xl bg-[#C9A84C] px-6 py-3 font-semibold text-black transition hover:scale-105"
+          >
+            Edit Theater
+          </button>
+        </div>
       </div>
 
       <div class="rounded-2xl border border-[#C9A84C]/20 bg-[#120E1D] p-8">

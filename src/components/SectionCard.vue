@@ -35,7 +35,7 @@ defineProps({
     <div
       v-for="row in section.rows"
       :key="row.id"
-      class="mb-2.5 flex justify-center gap-[5px]"
+      class="mb-2.5 flex min-w-max justify-center gap-[5px]"
     >
       <div
         class="flex h-8 w-8 shrink-0 items-center justify-center font-[var(--ff-heading)] text-[0.65rem] text-[var(--smoke)]"
@@ -50,33 +50,17 @@ defineProps({
         :style="
           !seat.is_booked && !isSelected(seat.id)
             ? {
-                backgroundColor: seat.color + '22',
-                borderColor: seat.color,
-              }
-            : {}
-        "
-        :class="[
-          seat.is_booked
-            ? 'taken cursor-not-allowed border-gray-700 bg-gray-900 opacity-60'
-            : '',
-
-          isSelected(seat.id)
-            ? 'selected border-[#f5d76e] bg-[linear-gradient(180deg,#d4af37,#b38b2d)]'
-            : '',
-        ]"
-        :disabled="seat.is_booked"
-        @click="toggleSeat(seat)"
-      >
-        <!-- Tooltip -->
+                backgroundColor: (seat.category?.color ?? '#c9a84c') + '22',
+                borderColor: seat.category?.color ?? '#c9a84c',
+              }: {}">
         <div
           v-if="!seat.is_booked"
           class="pointer-events-none absolute -top-16 left-1/2 z-50 hidden -translate-x-1/2 whitespace-nowrap rounded bg-black/95 px-3 py-2 text-center text-[11px] text-white shadow-xl group-hover:block"
         >
           <div class="font-bold">
-            {{ seat.category }}
+            {{ seat.category?.name }}
           </div>
-
-          <div class="text-yellow-400">{{ seat.price }} EGP</div>
+          <div class="text-yellow-400">{{ seat.price ?? 0 }} EGP</div>
         </div>
       </button>
     </div>

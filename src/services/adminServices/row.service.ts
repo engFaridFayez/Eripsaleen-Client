@@ -14,7 +14,7 @@ export default {
 
     create(data:{
         section:number;
-        row_number:number;
+        row_number:string;
         seats_per_row:number;
     }) {
         return api.post("/rows/", data);
@@ -22,7 +22,7 @@ export default {
 
     update(id:number,data:{
         section:number;
-        row_number:number;
+        row_number:string;
         seats_per_row:number;
     }) {
         return api.put(`/rows/${id}/`,data);

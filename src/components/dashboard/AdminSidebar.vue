@@ -41,16 +41,24 @@ const menu = [
     to: { name:"events" },
     icon: CalendarDaysIcon,
   },
-  // {
-  //   name: "Sections",
-  //   to: "/admin/sections",
-  //   icon: Squares2X2Icon,
-  // },
-  // {
-  //   name: "Seats",
-  //   to: "/admin/seats",
-  //   icon: RectangleStackIcon,
-  // },
+  {
+    name: "Sections",
+    routeName: "sections",
+    to: { name:"sections" },
+    icon: Squares2X2Icon,
+  },
+  {
+    name: "Rows",
+    routeName: "rows",
+    to: { name:"rows" },
+    icon: Squares2X2Icon,
+  },
+  {
+    name: "Seats",
+    routeName: "seats",
+    to: { name:"seats" },
+    icon: RectangleStackIcon,
+  },
   // {
   //   name: "Bookings",
   //   to: "/admin/bookings",
