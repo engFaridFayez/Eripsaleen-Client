@@ -156,6 +156,7 @@ onMounted(() => {
             <tr>
               <th class="p-4 text-left">Color</th>
               <th class="p-4 text-left">Name</th>
+              <th class="p-4 text-left">Price</th>
               <th class="p-4 text-center">Actions</th>
               
             </tr>
@@ -178,6 +179,9 @@ onMounted(() => {
 
               <td class="p-4 font-medium">
                 {{ category.name }}
+              </td>
+              <td class="p-4 font-medium">
+                {{ category.price }}
               </td>
 
               <td class="p-4">
