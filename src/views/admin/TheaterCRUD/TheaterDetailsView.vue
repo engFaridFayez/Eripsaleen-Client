@@ -33,22 +33,22 @@ const goToEdit = () => {
 
     <!-- Content -->
     <template v-else-if="theaterStore.theater">
-      <div class="flex items-center justify-between">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 class="text-3xl font-bold">
+          <h1 class="text-2xl font-bold sm:text-3xl">
             {{ theaterStore.theater.name }}
           </h1>
 
           <p class="mt-2 text-gray-400">Theater Details</p>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
           <RouterLink
             :to="{
               name: 'seat-categories',
               params: { id: theaterStore.theater.id },
             }"
-            class="rounded-xl bg-indigo-600 px-5 py-3 font-semibold text-white transition hover:bg-indigo-500"
+            class="rounded-xl bg-indigo-600 px-5 py-3 text-center font-semibold text-white transition hover:bg-indigo-500"
           >
             Categories
           </RouterLink>
@@ -62,8 +62,8 @@ const goToEdit = () => {
         </div>
       </div>
 
-      <div class="rounded-2xl border border-[#C9A84C]/20 bg-[#120E1D] p-8">
-        <div class="grid gap-8 md:grid-cols-2">
+      <div class="rounded-2xl border border-[#C9A84C]/20 bg-[#120E1D] p-5 sm:p-8">
+        <div class="grid gap-6 sm:gap-8 md:grid-cols-2">
           <div>
             <p class="mb-2 text-sm text-gray-400">ID</p>
 
@@ -90,10 +90,10 @@ const goToEdit = () => {
         </div>
       </div>
 
-      <div class="flex justify-end">
+      <div class="flex justify-center sm:justify-end">
         <RouterLink
           :to="{ name: 'theaters' }"
-          class="rounded-xl border border-[#C9A84C]/20 px-6 py-3 transition hover:bg-[#1B1628]"
+          class="w-full rounded-xl border border-[#C9A84C]/20 px-6 py-3 text-center transition hover:bg-[#1B1628] sm:w-auto"
         >
           Back to Theaters
         </RouterLink>

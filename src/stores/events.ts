@@ -48,7 +48,9 @@ export const useEventStore = defineStore("event", () => {
         try {
             events.value = [
                 await eventService.getEvent(eventId)
+                
             ]
+            
         }
 
         finally {

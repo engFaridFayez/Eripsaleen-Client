@@ -88,16 +88,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="max-w-7xl mx-auto p-8 text-white">
+  <div class="max-w-7xl mx-auto p-4 text-white sm:p-6 lg:p-8">
 
     <!-- Header -->
     <div class="flex justify-between items-center mb-8">
-      <h1 class="text-3xl font-bold text-[#C9A84C]">
+      <h1 class="text-2xl font-bold text-[#C9A84C] sm:text-3xl">
         Seat Categories
       </h1>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
 
       <!-- FORM -->
       <div class="bg-[#120E1D] border border-[#C9A84C]/20 rounded-2xl p-6">
@@ -148,67 +148,69 @@ onMounted(() => {
       </div>
 
       <!-- TABLE -->
-      <div class="lg:col-span-2 bg-[#120E1D] border border-[#C9A84C]/20 rounded-2xl p-6">
+      <div class="lg:col-span-2 bg-[#120E1D] border border-[#C9A84C]/20 rounded-2xl p-4 sm:p-6">
 
-        <table class="w-full text-white">
+        <div class="overflow-x-auto">
+          <table class="w-full min-w-[480px] text-white">
 
-          <thead class="text-[#C9A84C] border-b border-[#C9A84C]/20">
-            <tr>
-              <th class="p-4 text-left">Color</th>
-              <th class="p-4 text-left">Name</th>
-              <th class="p-4 text-left">Price</th>
-              <th class="p-4 text-center">Actions</th>
-              
-            </tr>
-          </thead>
+            <thead class="text-[#C9A84C] border-b border-[#C9A84C]/20">
+              <tr>
+                <th class="p-4 text-left whitespace-nowrap">Color</th>
+                <th class="p-4 text-left whitespace-nowrap">Name</th>
+                <th class="p-4 text-left whitespace-nowrap">Price</th>
+                <th class="p-4 text-center whitespace-nowrap">Actions</th>
 
-          <tbody>
+              </tr>
+            </thead>
 
-            <tr
-              v-for="category in store.seatCategories"
-              :key="category.id"
-              class="border-b border-[#C9A84C]/10 hover:bg-[#1B1628]"
-            >
+            <tbody>
 
-              <td class="p-4">
-                <div
-                  class="w-8 h-8 rounded-full border border-white/20"
-                  :style="{ backgroundColor: category.color }"
-                />
-              </td>
+              <tr
+                v-for="category in store.seatCategories"
+                :key="category.id"
+                class="border-b border-[#C9A84C]/10 hover:bg-[#1B1628]"
+              >
 
-              <td class="p-4 font-medium">
-                {{ category.name }}
-              </td>
-              <td class="p-4 font-medium">
-                {{ category.price }}
-              </td>
+                <td class="p-4">
+                  <div
+                    class="w-8 h-8 rounded-full border border-white/20"
+                    :style="{ backgroundColor: category.color }"
+                  />
+                </td>
 
-              <td class="p-4">
-                <div class="flex justify-center gap-3">
+                <td class="p-4 font-medium whitespace-nowrap">
+                  {{ category.name }}
+                </td>
+                <td class="p-4 font-medium whitespace-nowrap">
+                  {{ category.price }}
+                </td>
 
-                  <button
-                    @click="editCategory(category)"
-                    class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition"
-                  >
-                    Edit
-                  </button>
+                <td class="p-4">
+                  <div class="flex flex-wrap justify-center gap-2 sm:gap-3">
 
-                  <button
-                    @click="deleteCategory(category.id)"
-                    class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white transition"
-                  >
-                    Delete
-                  </button>
+                    <button
+                      @click="editCategory(category)"
+                      class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition whitespace-nowrap"
+                    >
+                      Edit
+                    </button>
 
-                </div>
-              </td>
+                    <button
+                      @click="deleteCategory(category.id)"
+                      class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white transition whitespace-nowrap"
+                    >
+                      Delete
+                    </button>
 
-            </tr>
+                  </div>
+                </td>
 
-          </tbody>
+              </tr>
 
-        </table>
+            </tbody>
+
+          </table>
+        </div>
 
       </div>
 

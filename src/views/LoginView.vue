@@ -78,8 +78,8 @@ const handleLogin = async () => {
           Eripsaleen Choir
         </h1>
 
-        <p class="text-[#7a8ba8] text-xs tracking-[0.18em] uppercase mt-1">
-          Member Portal
+        <p class="text-red-700 text-xs tracking-[0.18em] uppercase mt-1">
+          For staff only
         </p>
       </div>
 
@@ -194,11 +194,6 @@ const handleLogin = async () => {
           </span>
         </button>
       </form>
-
-      <!-- Footer -->
-      <p class="text-center text-[#2e3d5c] text-xs tracking-widest mt-8">
-        ✦ Eripsaleen Choir ✦
-      </p>
     </div>
   </div>
 </template>

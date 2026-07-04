@@ -13,7 +13,9 @@ const eventStore = useEventStore();
 const id = Number(route.params.id);
 
 onMounted(async () => {
+
   await eventStore.getEventById(id);
+
 
   if (!eventStore.event) {
     Swal.fire({

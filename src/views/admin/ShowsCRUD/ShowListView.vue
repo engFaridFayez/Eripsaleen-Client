@@ -52,16 +52,18 @@ const handleDelete = async (id: number) => {
 <template>
   <div class="space-y-8">
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div
+      class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+    >
       <div>
-        <h1 class="text-3xl font-bold">Shows</h1>
+        <h1 class="text-2xl font-bold sm:text-3xl">Shows</h1>
 
         <p class="mt-2 text-gray-400">Manage all theater shows.</p>
       </div>
 
       <RouterLink
         :to="{ name: 'show-create' }"
-        class="rounded-lg bg-[#C9A84C] px-5 py-3 font-semibold text-black transition hover:scale-105"
+        class="inline-block rounded-lg bg-[#C9A84C] px-5 py-3 text-center font-semibold text-black transition hover:scale-105"
       >
         + Add Show
       </RouterLink>
@@ -72,86 +74,99 @@ const handleDelete = async (id: number) => {
     <div
       class="overflow-hidden rounded-2xl border border-[#C9A84C]/20 bg-[#120E1D]"
     >
-      <table class="w-full">
-        <thead class="bg-[#1B1628]">
-          <tr>
-            <th class="px-6 py-4 text-left">Poster</th>
-            <th class="px-6 py-4 text-left">Title</th>
-            <th class="px-6 py-4 text-left">Description</th>
-            <th class="px-6 py-4 text-center">Actions</th>
-          </tr>
-        </thead>
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[720px]">
+          <thead class="bg-[#1B1628]">
+            <tr>
+              <th class="px-4 py-4 text-left whitespace-nowrap sm:px-6">
+                Poster
+              </th>
+              <th class="px-4 py-4 text-left whitespace-nowrap sm:px-6">
+                Title
+              </th>
+              <th class="px-4 py-4 text-left whitespace-nowrap sm:px-6">
+                Description
+              </th>
+              <th class="px-4 py-4 text-center whitespace-nowrap sm:px-6">
+                Actions
+              </th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr
-            v-for="show in showStore.shows"
-            :key="show.id"
-            class="border-t border-[#C9A84C]/10"
-          >
-            <!-- Poster -->
+          <tbody>
+            <tr
+              v-for="show in showStore.shows"
+              :key="show.id"
+              class="border-t border-[#C9A84C]/10"
+            >
+              <!-- Poster -->
 
-            <td class="px-6 py-4">
-              <img
-                v-if="show.cover"
-                :src="show.cover"
-                class="h-20 w-16 rounded-lg object-cover"
-              />
+              <td class="px-4 py-4 sm:px-6">
+                <img
+                  v-if="show.cover"
+                  :src="show.cover"
+                  class="h-20 w-16 rounded-lg object-cover"
+                />
 
-              <div
-                v-else
-                class="flex h-20 w-16 items-center justify-center rounded-lg bg-[#1B1628] text-xs text-gray-500"
-              >
-                No Image
-              </div>
-            </td>
-
-            <!-- Title -->
-
-            <td class="px-6 py-4 font-semibold">
-              {{ show.title }}
-            </td>
-
-            <!-- Description -->
-
-            <td class="px-6 py-4 text-gray-400">
-              {{ show.description || "-" }}
-            </td>
-
-            <!-- Actions -->
-
-            <td class="px-6 py-4">
-              <div class="flex justify-center gap-3">
-                <RouterLink
-                  :to="{ name: 'show-details', params: { id: show.id } }"
-                  class="rounded-lg bg-blue-600 px-4 py-2 text-sm"
+                <div
+                  v-else
+                  class="flex h-20 w-16 items-center justify-center rounded-lg bg-[#1B1628] text-xs text-gray-500"
                 >
-                  View
-                </RouterLink>
+                  No Image
+                </div>
+              </td>
 
-                <RouterLink
-                  :to="{ name: 'show-edit', params: { id: show.id } }"
-                  class="rounded-lg bg-yellow-500 px-4 py-2 text-sm text-black"
-                >
-                  Edit
-                </RouterLink>
+              <!-- Title -->
 
-                <button
-                  @click="handleDelete(show.id)"
-                  class="rounded-lg bg-red-600 px-4 py-2 text-sm"
-                >
-                  Delete
-                </button>
-              </div>
-            </td>
-          </tr>
+              <td class="px-4 py-4 font-semibold sm:px-6">
+                {{ show.title }}
+              </td>
 
-          <tr v-if="showStore.shows.length === 0">
-            <td colspan="4" class="py-10 text-center text-gray-500">
-              No shows found.
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <!-- Description -->
+
+              <td class="max-w-xs truncate px-4 py-4 text-gray-400 sm:px-6">
+                {{ show.description || "-" }}
+              </td>
+
+              <!-- Actions -->
+
+              <td class="px-4 py-4 sm:px-6">
+                <div class="flex flex-wrap justify-center gap-2 sm:gap-3">
+                  <RouterLink
+                    :to="{
+                      name: 'admin-show-details',
+                      params: { id: show.id },
+                    }"
+                    class="whitespace-nowrap rounded-lg bg-blue-600 px-4 py-2 text-sm"
+                  >
+                    View
+                  </RouterLink>
+
+                  <RouterLink
+                    :to="{ name: 'show-edit', params: { id: show.id } }"
+                    class="whitespace-nowrap rounded-lg bg-yellow-500 px-4 py-2 text-sm text-black"
+                  >
+                    Edit
+                  </RouterLink>
+
+                  <button
+                    @click="handleDelete(show.id)"
+                    class="whitespace-nowrap rounded-lg bg-red-600 px-4 py-2 text-sm"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr v-if="showStore.shows.length === 0">
+              <td colspan="4" class="py-10 text-center text-gray-500">
+                No shows found.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>

@@ -46,13 +46,35 @@ defineProps({
       <button
         v-for="seat in row.seats"
         :key="seat.id"
-        class="seat group relative flex h-8 w-[30px] shrink-0 cursor-pointer items-center justify-center overflow-visible rounded-[4px_4px_8px_8px] border text-[0.65rem] shadow-[0_2px_4px_rgba(0,0,0,0.4)] transition-all duration-200 hover:scale-110"
+        @click="
+          !seat.is_booked &&
+          toggleSeat({
+            ...seat,
+            section: section.name,
+            row: row.row_number,
+          })
+        "
+        :disabled="seat.is_booked"
+        class="seat group relative flex h-8 w-[30px] shrink-0 items-center justify-center overflow-visible rounded-[4px_4px_8px_8px] border text-[0.65rem] shadow-[0_2px_4px_rgba(0,0,0,0.4)] transition-all duration-200 hover:scale-110"
+        :class="{
+          selected: isSelected(seat.id),
+          taken: seat.is_booked,
+          'cursor-not-allowed opacity-50': seat.is_booked,
+        }"
         :style="
           !seat.is_booked && !isSelected(seat.id)
             ? {
                 backgroundColor: (seat.category?.color ?? '#c9a84c') + '22',
                 borderColor: seat.category?.color ?? '#c9a84c',
-              }: {}">
+              }
+            : isSelected(seat.id)
+              ? {
+                  backgroundColor: seat.category?.color ?? '#c9a84c',
+                  borderColor: seat.category?.color ?? '#c9a84c',
+                }
+              : {}
+        "
+      >
         <div
           v-if="!seat.is_booked"
           class="pointer-events-none absolute -top-16 left-1/2 z-50 hidden -translate-x-1/2 whitespace-nowrap rounded bg-black/95 px-3 py-2 text-center text-[11px] text-white shadow-xl group-hover:block"
@@ -60,6 +82,7 @@ defineProps({
           <div class="font-bold">
             {{ seat.category?.name }}
           </div>
+
           <div class="text-yellow-400">{{ seat.price ?? 0 }} EGP</div>
         </div>
       </button>

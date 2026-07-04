@@ -11,6 +11,12 @@ export const useEventStore = defineStore("event", {
     error: null as string | null,
   }),
 
+  getters: {
+    findEventById: (state) => (id: number) => {
+      return state.events.find((event) => event.id === id) || null;
+    },
+  },
+
   actions: {
     async getEvents() {
       this.loading = true;
@@ -29,14 +35,14 @@ export const useEventStore = defineStore("event", {
 
     async getEventById(id: number) {
       this.loading = true;
-      this.error = null;
 
       try {
         const res = await EventService.getById(id);
+
         this.event = res.data;
-      } catch (error) {
-        this.error = "Failed to fetch event.";
-        console.error(error);
+
+      } catch (e) {
+        console.error(e);
       } finally {
         this.loading = false;
       }

@@ -32,7 +32,7 @@ const handleDelete = async (id: number) => {
       timer: 1500,
       showConfirmButton: false,
     });
-    await theaterStore.getTheaters()
+    await theaterStore.getTheaters();
   } catch {
     Swal.fire({
       icon: "error",
@@ -46,15 +46,17 @@ const handleDelete = async (id: number) => {
 <template>
   <div class="space-y-6">
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div
+      class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+    >
       <div>
-        <h1 class="text-3xl font-bold">Theaters</h1>
+        <h1 class="text-2xl font-bold sm:text-3xl">Theaters</h1>
         <p class="text-gray-500 mt-1">Manage all theaters from here.</p>
       </div>
 
       <RouterLink
         :to="{ name: 'theater-create' }"
-        class="rounded-lg bg-yellow-500 px-5 py-2 font-semibold text-black hover:bg-yellow-400 transition"
+        class="inline-block rounded-lg bg-yellow-500 px-5 py-2 text-center font-semibold text-black hover:bg-yellow-400 transition"
       >
         + Add Theater
       </RouterLink>
@@ -85,90 +87,97 @@ const handleDelete = async (id: number) => {
       v-else
       class="overflow-hidden rounded-2xl border border-[#6F46C5] bg-[#5E3AA5] shadow-xl shadow-black/20"
     >
-      <table class="min-w-full">
-        <!-- Header -->
-        <thead class="bg-[#0D0A14]">
-          <tr class="border-b border-[#6F46C5]">
-            <th
-              class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-300"
-            >
-              ID
-            </th>
-
-            <th
-              class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-300"
-            >
-              Theater Name
-            </th>
-
-            <th
-              class="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-300"
-            >
-              Location
-            </th>
-
-            <th
-              class="px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-300"
-            >
-              Actions
-            </th>
-          </tr>
-        </thead>
-
-        <!-- Body -->
-        <tbody class="divide-y divide-[#6F46C5]">
-          <tr
-            v-for="theater in theaterStore.theaters"
-            :key="theater.id"
-            class="transition duration-300 hover:bg-[#4B2D87]"
-          >
-            <!-- ID -->
-            <td class="px-6 py-5">
-              <span
-                class="rounded-full bg-[#0D0A14] px-3 py-1 text-sm font-semibold text-white"
+      <div class="overflow-x-auto">
+        <table class="min-w-full">
+          <!-- Header -->
+          <thead class="bg-[#0D0A14]">
+            <tr class="border-b border-[#6F46C5]">
+              <th
+                class="whitespace-nowrap px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-300 sm:px-6"
               >
-                #{{ theater.id }}
-              </span>
-            </td>
+                ID
+              </th>
 
-            <!-- Name -->
-            <td class="px-6 py-5 font-semibold text-white">
-              {{ theater.name }}
-            </td>
+              <th
+                class="whitespace-nowrap px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-300 sm:px-6"
+              >
+                Theater Name
+              </th>
 
-            <!-- Location -->
-            <td class="px-6 py-5 text-purple-100">
-              {{ theater.location }}
-            </td>
+              <th
+                class="whitespace-nowrap px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider text-gray-300 sm:px-6"
+              >
+                Location
+              </th>
 
-            <!-- Actions -->
-            <td class="px-6 py-5">
-              <div class="flex justify-center gap-3">
-                <RouterLink
-                  :to="{ name: 'theater-details', params: { id: theater.id } }"
-                  class="rounded-lg bg-blue-500/20 px-4 py-2 text-sm font-medium text-blue-300 transition hover:bg-blue-500 hover:text-white"
+              <th
+                class="whitespace-nowrap px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider text-gray-300 sm:px-6"
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+
+          <!-- Body -->
+          <tbody class="divide-y divide-[#6F46C5]">
+            <tr
+              v-for="theater in theaterStore.theaters"
+              :key="theater.id"
+              class="transition duration-300 hover:bg-[#4B2D87]"
+            >
+              <!-- ID -->
+              <td class="whitespace-nowrap px-4 py-5 sm:px-6">
+                <span
+                  class="rounded-full bg-[#0D0A14] px-3 py-1 text-sm font-semibold text-white"
                 >
-                  View
-                </RouterLink>
+                  #{{ theater.id }}
+                </span>
+              </td>
 
-                <RouterLink
-                  :to="{ name: 'theater-edit', params: { id: theater.id } }"
-                  class="rounded-lg bg-emerald-500/20 px-4 py-2 text-sm font-medium text-emerald-300 transition hover:bg-emerald-500 hover:text-white"
-                >
-                  Edit
-                </RouterLink>
+              <!-- Name -->
+              <td
+                class="whitespace-nowrap px-4 py-5 font-semibold text-white sm:px-6"
+              >
+                {{ theater.name }}
+              </td>
 
-                <button
-                  @click="handleDelete(theater.id)"
-                  class="rounded-lg bg-red-500/20 px-4 py-2 text-sm font-medium text-red-300 transition hover:bg-red-500 hover:text-white"
-                >
-                  Delete
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <!-- Location -->
+              <td class="whitespace-nowrap px-4 py-5 text-purple-100 sm:px-6">
+                {{ theater.location }}
+              </td>
+
+              <!-- Actions -->
+              <td class="px-4 py-5 sm:px-6">
+                <div class="flex flex-wrap justify-center gap-2 sm:gap-3">
+                  <RouterLink
+                    :to="{
+                      name: 'theater-details',
+                      params: { id: theater.id },
+                    }"
+                    class="whitespace-nowrap rounded-lg bg-blue-500/20 px-4 py-2 text-sm font-medium text-blue-300 transition hover:bg-blue-500 hover:text-white"
+                  >
+                    View
+                  </RouterLink>
+
+                  <RouterLink
+                    :to="{ name: 'theater-edit', params: { id: theater.id } }"
+                    class="whitespace-nowrap rounded-lg bg-emerald-500/20 px-4 py-2 text-sm font-medium text-emerald-300 transition hover:bg-emerald-500 hover:text-white"
+                  >
+                    Edit
+                  </RouterLink>
+
+                  <button
+                    @click="handleDelete(theater.id)"
+                    class="whitespace-nowrap rounded-lg bg-red-500/20 px-4 py-2 text-sm font-medium text-red-300 transition hover:bg-red-500 hover:text-white"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>

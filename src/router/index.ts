@@ -28,6 +28,9 @@ import RowEditView from '@/views/admin/RowCRUD/RowEditView.vue'
 import RowDetailsView from '@/views/admin/RowCRUD/RowDetailsView.vue'
 import SeatManagmentView from '@/views/admin/Seats/SeatManagmentView.vue'
 import SeatCategoryManagementView from '@/views/admin/Seats/SeatCategoryManagementView.vue'
+import BookingView from '@/views/admin/BookingView/BookingView.vue'
+import ShowDetailsView from '@/views/admin/ShowsCRUD/ShowDetailsView.vue'
+import { useAuthStore } from '@/stores/auth'
 
 const routes: RouteRecordRaw[] = [
   {
@@ -42,8 +45,8 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "/shows/:id",
-    name: "show-details",
-    component: ShowDetailsPage
+    name: "show-details",   // keep the public-facing name simple
+    component: ShowDetailsPage   // or whatever your seat-booking/public page is
   },
   {
     path: '/booking/:eventId',
@@ -63,6 +66,9 @@ const routes: RouteRecordRaw[] = [
   {
     path: "/admin",
     component: DashboardView,
+    meta: {
+      requiresAuth: true,
+    },
     children: [
       {
         path: "",
@@ -91,6 +97,7 @@ const routes: RouteRecordRaw[] = [
         component: TheaterDetailsView,
         props: true,
       },
+      // Admin routes (likely already nested under /admin or similar)
       {
         path: "shows",
         name: "shows",
@@ -108,8 +115,8 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: "shows/:id",
-        name: "show-details",
-        component: ShowDetailsPage
+        name: "admin-show-details",   // renamed
+        component: ShowDetailsView
       },
       {
         path: "events",
@@ -180,6 +187,11 @@ const routes: RouteRecordRaw[] = [
         path: "/admin/theaters/:id/categories",
         name: "seat-categories",
         component: SeatCategoryManagementView
+      },
+      {
+        path: "bookings",
+        name: "bookings",
+        component: BookingView
       }
     ]
   }
@@ -190,4 +202,15 @@ const router = createRouter({
   routes,
 })
 
+router.beforeEach((to) => {
+  const authStore = useAuthStore()
+
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    return { name: "login" }
+  }
+
+  return true
+})
+
 export default router
+

@@ -25,25 +25,9 @@ onMounted(async () => {
 const currentEvent = computed(() =>
   events.value.find((e) => e.id === selectedEventId.value),
 );
-
 const totalPrice = computed(() => {
-  if (!seatMap.value) return 0;
-
-  let total = 0;
-
-  seatMap.value.sections.forEach((section) => {
-    section.rows.forEach((row) => {
-      row.seats.forEach((seat) => {
-        if (bookingStore.selectedSeats.includes(seat.id)) {
-          total += Number(seat.price);
-        }
-      });
-    });
-  });
-
-  return total;
+  return bookingStore.selectedSeats.reduce((sum, seat) => sum + seat.price, 0);
 });
-
 async function selectEvent(id) {
   bookingStore.reset();
 
@@ -53,33 +37,19 @@ async function selectEvent(id) {
 }
 
 function toggleSeat(seat) {
-  if (seat.is_booked) return;
-
-  bookingStore.toggleSeat(seat.id);
-}
-
-function isSelected(seatId) {
-  return bookingStore.selectedSeats.includes(seatId);
-}
-
-const selectedSeatNumbers = computed(() => {
-  if (!seatMap.value) return [];
-
-  const result = [];
-
-  seatMap.value.sections.forEach((section) => {
-    section.rows.forEach((row) => {
-      row.seats.forEach((seat) => {
-        if (bookingStore.selectedSeats.includes(seat.id)) {
-          result.push(seat.seat_number);
-        }
-      });
-    });
+  bookingStore.toggleSeat({
+    id: seat.id,
+    seat_number: seat.seat_number,
+    price: Number(seat.category?.price ?? seat.price),
   });
+}
+function isSelected(seatId) {
+  return bookingStore.selectedSeats.some((selected) => selected.id === seatId);
+}
 
-  return result;
-});
-
+const selectedSeatNumbers = computed(() =>
+  bookingStore.selectedSeats.map((seat) => seat.seat_number),
+);
 const selectedSeats = computed(() => {
   if (!seatMap.value) return [];
 
@@ -88,7 +58,9 @@ const selectedSeats = computed(() => {
   seatMap.value.sections.forEach((section) => {
     section.rows.forEach((row) => {
       row.seats.forEach((seat) => {
-        if (bookingStore.selectedSeats.includes(seat.id)) {
+        if (
+          bookingStore.selectedSeats.some((selected) => selected.id === seat.id)
+        ) {
           result.push({
             ...seat,
             row: row.row_number,
@@ -167,7 +139,7 @@ function confirmBooking() {
 <template>
   <main class="min-h-screen w-full pt-20">
     <!-- Header -->
-    <div class="relative overflow-hidden px-8 pb-12 pt-16 text-center">
+    <div class="relative overflow-hidden px-4 pb-12 pt-16 text-center sm:px-8">
       <div
         class="pointer-events-none absolute left-1/2 top-0 h-[300px] w-[600px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(46,31,94,0.6),transparent_70%)] blur-[40px]"
       ></div>
@@ -182,18 +154,18 @@ function confirmBooking() {
         available; dimmed seats are taken.
       </p>
       <div
-        class="mx-auto mb-10 max-w-5xl rounded-xl border border-[rgba(201,168,76,.25)] bg-[rgba(26,20,48,.55)] p-8 flex flex-col justify-center items-center"
+        class="mx-auto mb-10 flex max-w-5xl flex-col items-center justify-center rounded-xl border border-[rgba(201,168,76,.25)] bg-[rgba(26,20,48,.55)] p-4 sm:p-8"
         v-if="currentEvent"
       >
-        <h2 class="text-3xl font-bold text-[var(--gold)]">
+        <h2 class="text-2xl font-bold text-[var(--gold)] sm:text-3xl">
           {{ currentEvent.show }}
         </h2>
 
-        <p class="mt-2 text-xl text-[var(--ivory)]">
+        <p class="mt-2 text-lg text-[var(--ivory)] sm:text-xl">
           {{ currentEvent.title }}
         </p>
 
-        <div class="mt-6 flex flex-wrap gap-8">
+        <div class="mt-6 flex flex-wrap justify-center gap-4 sm:gap-8">
           <div>
             <div class="text-xs uppercase text-[var(--gold)]">Theater</div>
             <div>
@@ -217,7 +189,7 @@ function confirmBooking() {
         <!-- Stage -->
         <div class="mb-8 text-center">
           <div
-            class="stage relative inline-block min-w-[320px] rounded-t-[80px] border border-b-0 border-[rgba(201,168,76,0.4)] bg-[linear-gradient(180deg,rgba(46,31,94,0.9)_0%,rgba(122,28,46,0.4)_100%)] px-12 pb-6 pt-8"
+            class="stage relative inline-block min-w-[260px] rounded-t-[80px] border border-b-0 border-[rgba(201,168,76,0.4)] bg-[linear-gradient(180deg,rgba(46,31,94,0.9)_0%,rgba(122,28,46,0.4)_100%)] px-6 pb-6 pt-8 sm:min-w-[320px] sm:px-12"
           >
             <div class="text-center">
               <div
@@ -276,7 +248,7 @@ function confirmBooking() {
         </div>
 
         <!-- Legend -->
-        <div class="mt-10 flex justify-center gap-8">
+        <div class="mt-10 flex flex-wrap justify-center gap-4 sm:gap-8">
           <div
             class="flex items-center gap-2 font-[var(--ff-heading)] text-[0.7rem] uppercase tracking-[0.1em] text-[var(--stone)]"
           >
@@ -307,13 +279,13 @@ function confirmBooking() {
 
     <!-- Booking Summary -->
     <div
-      class="fixed inset-x-0 bottom-0 z-50 border-t border-[rgba(201,168,76,0.3)] bg-[rgba(13,10,20,0.97)] py-4 backdrop-blur-[20px] transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+      class="fixed inset-x-0 bottom-0 z-50 max-h-[75vh] overflow-y-auto border-t border-[rgba(201,168,76,0.3)] bg-[rgba(13,10,20,0.97)] py-3 backdrop-blur-[20px] transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] sm:max-h-none sm:py-4"
       :class="bookingStore.seatCount > 0 ? 'translate-y-0' : 'translate-y-full'"
     >
       <div
-        class="mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-6 px-8"
+        class="mx-auto flex max-w-[1200px] flex-col items-stretch justify-between gap-4 px-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-6 sm:px-8"
       >
-        <div class="flex-1">
+        <div class="min-w-0 flex-1">
           <div
             class="font-[var(--ff-heading)] text-base font-bold text-[var(--gold-lt)]"
           >
@@ -322,7 +294,9 @@ function confirmBooking() {
           </div>
 
           <!-- Selected Seats -->
-          <div class="mt-3 flex flex-wrap gap-2">
+          <div
+            class="mt-3 flex max-h-32 flex-wrap gap-2 overflow-y-auto pr-1 sm:max-h-40"
+          >
             <div
               v-for="seat in selectedSeats"
               :key="seat.id"
@@ -340,7 +314,7 @@ function confirmBooking() {
               </div>
 
               <div class="text-[11px] text-[var(--stone)]">
-                {{ seat.category }}
+                {{ seat.category?.name }}
               </div>
               <div
                 class="font-[var(--ff-heading)] text-[12px] font-bold"
@@ -353,7 +327,7 @@ function confirmBooking() {
                 class="mt-1 text-sm font-bold"
                 :style="{ color: seat.category?.color }"
               >
-                EGP {{ seat.price }}
+                EGP {{ seat.category?.price ?? seat.price }}
               </div>
             </div>
           </div>
@@ -368,7 +342,7 @@ function confirmBooking() {
         </div>
 
         <button
-          class="cursor-pointer whitespace-nowrap rounded-sm border-0 bg-[linear-gradient(135deg,var(--gold),var(--gold-lt))] px-9 py-3.5 font-[var(--ff-heading)] text-[0.8rem] font-bold uppercase tracking-[0.15em] text-[var(--ink)] transition-[box-shadow,transform] duration-200 hover:-translate-y-px hover:shadow-[0_0_25px_rgba(201,168,76,0.5)]"
+          class="w-full cursor-pointer whitespace-nowrap rounded-sm border-0 bg-[linear-gradient(135deg,var(--gold),var(--gold-lt))] px-9 py-3.5 font-[var(--ff-heading)] text-[0.8rem] font-bold uppercase tracking-[0.15em] text-[var(--ink)] transition-[box-shadow,transform] duration-200 hover:-translate-y-px hover:shadow-[0_0_25px_rgba(201,168,76,0.5)] sm:w-auto"
           @click="confirmBooking"
         >
           Confirm Booking

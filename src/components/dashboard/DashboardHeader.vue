@@ -1,5 +1,13 @@
 <script setup lang="ts">
 import { Bell, Search, Settings } from "lucide-vue-next";
+import { useAuthStore } from "@/stores/auth";
+import { onMounted } from "vue";
+
+const authStore = useAuthStore();
+
+onMounted(() => {
+  authStore.fetchUser();
+});
 </script>
 <template>
   <header
@@ -8,10 +16,10 @@ import { Bell, Search, Settings } from "lucide-vue-next";
     <div class="h-full flex items-center justify-between px-8">
       <!-- Left -->
       <div class="flex items-center gap-4">
-        <div>
+        <div v-if="authStore.access">
           <h1 class="text-2xl font-bold text-white">Dashboard</h1>
 
-          <p class="text-sm text-gray-400">Welcome back, Admin 👋</p>
+          <p class="text-sm text-gray-400">Welcome back, {{ authStore.user?.username }}</p>
         </div>
       </div>
 
@@ -59,8 +67,8 @@ import { Bell, Search, Settings } from "lucide-vue-next";
             class="h-12 w-12 rounded-full bg-gradient-to-br from-[#5E3AA5] to-[#C9A84C]"
           ></div>
 
-          <div class="hidden md:block">
-            <h3 class="font-semibold">Farid</h3>
+          <div class="hidden md:block" v-if="authStore.access">
+            <h3 class="font-semibold">{{ authStore.user?.username }}</h3>
 
             <p class="text-sm text-gray-400">Administrator</p>
           </div>

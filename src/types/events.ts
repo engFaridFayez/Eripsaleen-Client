@@ -82,11 +82,24 @@ export interface AdminSeat {
   seat_number: string;
   theater_name: string;
 
-  price?: number; // 👈 لو بتستخدم نفس الـ serializer
+  price?: number;
 
   category?: {
     id: number;
     name: string;
     color: string;
   } | null;
+}
+
+export interface BookingRequest {
+  event: number;
+  attendees: string[];
+  seats: number[];
+  email?: string;
+  phone_number?: string;
+  image?: File | null;
+}
+
+export interface BookingResponse {
+  message: string;
 }

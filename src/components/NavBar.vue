@@ -1,97 +1,163 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import logo from "@/assets/logo.png"
+import { ref, onMounted, onUnmounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import logo from "@/assets/logo.png";
+import { useAuthStore } from "@/stores/auth";
 
-const scrolled = ref(false)
-const menuOpen = ref(false)
+const authStore = useAuthStore();
+const router = useRouter();
+const route = useRoute();
+
+const scrolled = ref(false);
+const menuOpen = ref(false);
 
 const onScroll = () => {
-  scrolled.value = window.scrollY > 60
-}
+  scrolled.value = window.scrollY > 60;
+};
 
 const toggleMenu = () => {
-  menuOpen.value = !menuOpen.value
-}
+  menuOpen.value = !menuOpen.value;
+};
 
-onMounted(() => {
-  window.addEventListener('scroll', onScroll)
-})
+const handleLogout = () => {
+  authStore.logout();
+};
+
+const scrollToSection = async (id) => {
+  menuOpen.value = false;
+
+  if (route.path !== "/") {
+    await router.push("/");
+    // wait for the home page to render before scrolling
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+};
+
+onMounted(async () => {
+  if (authStore.access) {
+    await authStore.fetchUser();
+  }
+  window.addEventListener("scroll", onScroll);
+});
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', onScroll)
-})
+  window.removeEventListener("scroll", onScroll);
+});
 </script>
 
 <template>
   <nav class="navbar" :class="{ scrolled }">
     <div class="nav-inner">
-
       <!-- Logo -->
       <router-link to="/" class="nav-logo">
         <span class="cross">
-          <img class="logo-img" :src="logo" alt="">
+          <img class="logo-img" :src="logo" alt="" />
         </span>
       </router-link>
 
       <!-- Desktop Links -->
       <div class="nav-links">
-        <router-link to="/" class="nav-link">Home</router-link>
-        <router-link to="/#about" class="nav-link">About</router-link>
-        <router-link to="/#events" class="nav-link">Events</router-link>
-        <router-link to="/booking" class="nav-btn">
-          Book Tickets
-        </router-link>
+        <a
+          href="#hero"
+          class="nav-link"
+          @click.prevent="scrollToSection('hero')"
+          >Home</a
+        >
+        <a
+          href="#about"
+          class="nav-link"
+          @click.prevent="scrollToSection('about')"
+          >About</a
+        >
+        <a
+          href="#booking"
+          class="nav-link"
+          @click.prevent="scrollToSection('shows')"
+          >Booking</a
+        >
+        <a
+          href="#contact"
+          class="nav-link"
+          @click.prevent="scrollToSection('footer')"
+          >Contact</a
+        >
+
+        <div v-if="authStore.access && authStore.user" class="user-actions">
+          <span class="user-name">Hello, {{ authStore.user.username }}</span>
+          <button @click="handleLogout" class="nav-btn">Logout</button>
+        </div>
+        <div v-else>
+          <router-link :to="{ name: 'login' }" class="nav-link"
+            >Login</router-link
+          >
+        </div>
       </div>
 
       <!-- Mobile Hamburger -->
-      <button class="menu-btn" @click="toggleMenu">
-        ☰
-      </button>
+      <button class="menu-btn" @click="toggleMenu">☰</button>
     </div>
 
     <!-- Mobile Menu -->
     <div class="mobile-menu" :class="{ open: menuOpen }">
-      <router-link
-        to="/"
+      <a
+        href="#hero"
         class="mobile-link"
-        @click="menuOpen = false"
+        @click.prevent="scrollToSection('hero')"
+        >Home</a
       >
-        Home
-      </router-link>
-
-      <router-link
-        to="/#about"
+      <a
+        href="#about"
         class="mobile-link"
-        @click="menuOpen = false"
+        @click.prevent="scrollToSection('about')"
+        >About</a
       >
-        About
-      </router-link>
-
-      <router-link
-        to="/#events"
+      <a
+        href="#booking"
         class="mobile-link"
-        @click="menuOpen = false"
+        @click.prevent="scrollToSection('booking')"
+        >Booking</a
       >
-        Events
-      </router-link>
+      <a
+        href="#contact"
+        class="mobile-link"
+        @click.prevent="scrollToSection('contact')"
+        >Contact</a
+      >
 
-      <router-link
-        to="/booking"
-        class="mobile-btn"
-        @click="menuOpen = false"
-      >
-        Book Tickets
-      </router-link>
+      <div v-if="authStore.access && authStore.user">
+        <div>Hello, {{ authStore.user.username }}</div>
+        <button @click="handleLogout" class="mobile-btn flex justify-center">
+          Logout
+        </button>
+      </div>
+      <div v-else>
+        <router-link
+          :to="{ name: 'login' }"
+          class="mobile-link flex justify-center"
+          >Login</router-link
+        >
+      </div>
     </div>
   </nav>
 </template>
 
-
 <style scoped>
 .navbar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
   padding: 1.2rem 2.5rem;
-  transition: background 0.4s ease, backdrop-filter 0.4s ease, padding 0.3s ease;
+  transition:
+    background 0.4s ease,
+    backdrop-filter 0.4s ease,
+    padding 0.3s ease;
 }
 .navbar.scrolled {
   background: rgba(13, 10, 20, 0.92);
@@ -100,50 +166,85 @@ onUnmounted(() => {
   border-bottom: 1px solid rgba(201, 168, 76, 0.2);
 }
 .nav-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; align-items: center; justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .nav-logo {
-  display: flex; align-items: center; gap: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   font-family: var(--ff-heading);
 }
 .cross {
-  font-size: 1.4rem; color: var(--gold);
+  font-size: 1.4rem;
+  color: var(--gold);
   animation: glow-pulse 3s ease-in-out infinite;
 }
 @keyframes glow-pulse {
-  0%, 100% { text-shadow: 0 0 8px var(--gold); }
-  50% { text-shadow: 0 0 20px var(--gold-glow), 0 0 40px var(--gold); }
+  0%,
+  100% {
+    text-shadow: 0 0 8px var(--gold);
+  }
+  50% {
+    text-shadow:
+      0 0 20px var(--gold-glow),
+      0 0 40px var(--gold);
+  }
 }
 .logo-text {
-  font-family: 'CSAvva', serif;
-  font-size: 1.25rem; font-weight: 700; color: var(--gold-lt);
+  font-family: "CSAvva", serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--gold-lt);
   letter-spacing: 0.1em;
 }
 .logo-text2 {
   font-family: var(--ff-arabic);
-  font-size: 1.25rem; font-weight: 700; color: var(--gold-lt);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--gold-lt);
   letter-spacing: 0.1em;
 }
 .logo-arabic {
   font-family: var(--ff-arabic);
-  font-size: 0.85rem; color: var(--stone);
+  font-size: 0.85rem;
+  color: var(--stone);
   letter-spacing: 0.05em;
 }
-.nav-links { display: flex; align-items: center; gap: 2rem; }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
 .nav-link {
-  font-family: var(--ff-heading); font-size: 0.8rem; font-weight: 600;
-  letter-spacing: 0.15em; text-transform: uppercase; color: var(--stone);
+  font-family: var(--ff-heading);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--stone);
   transition: color 0.2s;
 }
-.nav-link:hover, .nav-link.router-link-active { color: var(--gold-lt); }
+.nav-link:hover,
+.nav-link.router-link-active {
+  color: var(--gold-lt);
+}
 .nav-btn {
-  font-family: var(--ff-heading); font-size: 0.75rem; font-weight: 700;
-  letter-spacing: 0.15em; text-transform: uppercase;
-  padding: 0.6rem 1.5rem; color: var(--ink);
+  font-family: var(--ff-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.5rem;
+  color: var(--ink);
   background: linear-gradient(135deg, var(--gold), var(--gold-lt));
   border-radius: 2px;
-  transition: opacity 0.2s, box-shadow 0.2s;
+  transition:
+    opacity 0.2s,
+    box-shadow 0.2s;
 }
 .nav-btn:hover {
   opacity: 0.9;
@@ -158,6 +259,19 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 2rem;
+}
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-name {
+  color: var(--gold-lt);
+  font-family: var(--ff-heading);
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .menu-btn {
@@ -235,11 +349,13 @@ onUnmounted(() => {
   }
 
   .mobile-btn {
-    background: linear-gradient(
-      135deg,
-      var(--gold),
-      var(--gold-lt)
-    );
+    background: linear-gradient(135deg, var(--gold), var(--gold-lt));
+    color: var(--ink);
+    padding: 0.8rem;
+    border-radius: 4px;
+  }
+  .mobile-btn-dashboard {
+    background: linear-gradient(135deg, var(--gold), var(--gold-lt));
     color: var(--ink);
     padding: 0.8rem;
     border-radius: 4px;

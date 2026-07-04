@@ -205,12 +205,12 @@ async function refreshSeats() {
   <div class="space-y-8 text-white">
     <!-- Header -->
     <div>
-      <h1 class="text-3xl font-bold text-[#C9A84C]">Seat Management</h1>
+      <h1 class="text-2xl font-bold text-[#C9A84C] sm:text-3xl">Seat Management</h1>
       <p class="mt-2 text-gray-400">Manage theater seats with categories.</p>
     </div>
 
     <!-- Filters -->
-    <div class="grid gap-6 md:grid-cols-4">
+    <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
       <!-- Theater -->
       <div>
         <label class="mb-2 block text-sm text-gray-300">Theater</label>
@@ -294,11 +294,11 @@ async function refreshSeats() {
     <!-- Generate Seats -->
     <div
       v-if="seatStore.selectedRow"
-      class="rounded-2xl bg-[#161122] p-6 border border-[#C9A84C]/20"
+      class="rounded-2xl bg-[#161122] p-4 border border-[#C9A84C]/20 sm:p-6"
     >
       <h2 class="mb-6 text-xl font-bold text-[#C9A84C]">Generate Seats</h2>
 
-      <div class="grid gap-4 md:grid-cols-4">
+      <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
         <input
           v-model="generateForm.prefix"
           placeholder="Prefix"
@@ -329,11 +329,11 @@ async function refreshSeats() {
     <!-- Add Seat -->
     <div
       v-if="seatStore.selectedRow"
-      class="rounded-2xl bg-[#161122] p-6 border border-[#C9A84C]/20"
+      class="rounded-2xl bg-[#161122] p-4 border border-[#C9A84C]/20 sm:p-6"
     >
       <h2 class="mb-6 text-xl font-bold text-[#C9A84C]">Add Seat</h2>
 
-      <div class="flex gap-4">
+      <div class="flex flex-col gap-4 sm:flex-row">
         <input
           v-model="seatForm.seat_number"
           placeholder="Seat Number"
@@ -342,7 +342,7 @@ async function refreshSeats() {
 
         <button
           @click="addSeat"
-          class="rounded-xl bg-green-600 px-6 py-3 font-semibold hover:bg-green-700"
+          class="rounded-xl bg-green-600 px-6 py-3 font-semibold hover:bg-green-700 sm:w-auto"
         >
           Add
         </button>
@@ -354,56 +354,58 @@ async function refreshSeats() {
       v-if="seatStore.selectedRow"
       class="rounded-2xl overflow-hidden border border-[#2A1F45] bg-[#161122]"
     >
-      <table class="w-full">
-        <thead class="bg-[#0D0A14] text-gray-300">
-          <tr>
-            <th class="p-4 text-left">ID</th>
-            <th class="p-4 text-left">Seat</th>
-            <th class="p-4 text-left">Category</th>
-            <th class="p-4 text-center">Actions</th>
-          </tr>
-        </thead>
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[560px]">
+          <thead class="bg-[#0D0A14] text-gray-300">
+            <tr>
+              <th class="p-4 text-left whitespace-nowrap">ID</th>
+              <th class="p-4 text-left whitespace-nowrap">Seat</th>
+              <th class="p-4 text-left whitespace-nowrap">Category</th>
+              <th class="p-4 text-center whitespace-nowrap">Actions</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr
-            v-for="seat in seatStore.seats"
-            :key="seat.id"
-            class="border-t border-[#2A1F45] hover:bg-[#211836]"
-          >
-            <td class="p-4">{{ seat.id }}</td>
+          <tbody>
+            <tr
+              v-for="seat in seatStore.seats"
+              :key="seat.id"
+              class="border-t border-[#2A1F45] hover:bg-[#211836]"
+            >
+              <td class="p-4 whitespace-nowrap">{{ seat.id }}</td>
 
-            <td class="p-4 font-semibold">
-              {{ seat.seat_number }}
-            </td>
+              <td class="p-4 font-semibold whitespace-nowrap">
+                {{ seat.seat_number }}
+              </td>
 
-            <td class="p-4">
-              <span
-                class="px-3 py-1 rounded-full text-xs font-bold"
-                :style="{ backgroundColor: seat.category?.color || '#444' }"
-              >
-                {{ seat.category?.name || "No Category" }}
-              </span>
-            </td>
-
-            <td class="p-4">
-              <div class="flex justify-center">
-                <button
-                  @click="deleteSeat(seat.id)"
-                  class="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700"
+              <td class="p-4 whitespace-nowrap">
+                <span
+                  class="px-3 py-1 rounded-full text-xs font-bold"
+                  :style="{ backgroundColor: seat.category?.color || '#444' }"
                 >
-                  Delete
-                </button>
-              </div>
-            </td>
-          </tr>
+                  {{ seat.category?.name || "No Category" }}
+                </span>
+              </td>
 
-          <tr v-if="!seatStore.seats.length">
-            <td colspan="4" class="text-center py-10 text-gray-400">
-              No seats found
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <td class="p-4">
+                <div class="flex justify-center">
+                  <button
+                    @click="deleteSeat(seat.id)"
+                    class="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 whitespace-nowrap"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr v-if="!seatStore.seats.length">
+              <td colspan="4" class="text-center py-10 text-gray-400">
+                No seats found
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>

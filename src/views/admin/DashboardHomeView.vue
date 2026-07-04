@@ -12,7 +12,7 @@ import QuickActions from "@/components/dashboard/QuickActions.vue";
 <template>
   <StatsGrid />
 
-  <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+  <!-- <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
     <div class="xl:col-span-2">
       <BookingChart />
     </div>
@@ -28,5 +28,5 @@ import QuickActions from "@/components/dashboard/QuickActions.vue";
       <UpcomingEvents />
       <QuickActions />
     </div>
-  </div>
+  </div>  -->
 </template>

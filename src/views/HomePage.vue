@@ -223,45 +223,79 @@ onMounted(() => {
     </div>
 
     <!-- ABOUT -->
-    <section
-      class="about-section relative overflow-hidden bg-[url('/src/assets/images/about-section.jpg')] bg-cover bg-center py-24"
-      id="about"
-    >
-      <div class="relative z-10 mx-auto max-w-[1100px] px-8">
-        <div class="grid grid-cols-1 items-center gap-20">
-          <div>
-            <p
-              class="mb-3 font-[var(--ff-heading)] text-[clamp(1.35rem,4vw,2rem)] font-semibold uppercase text-[var(--gold)]"
-            >
-              نُرنم لنُعلن مجد الله
-            </p>
-            <h2
-              class="mb-6 font-[var(--ff-heading)] text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold leading-tight text-[var(--ivory)]"
-              dir="rtl"
-            >
-              احنا كورال اريبصالين
-            </h2>
-            <p
-              class="text-[clamp(1.15rem,3vw,2rem)] text-[var(--stone)]"
-              dir="rtl"
-            >
-              كورال أريبصالين هو خدمة كنسية تهدف إلى تسبيح وتمجيد اسم الله من
-              خلال الترنيم الروحي الهادف. نحن نؤمن أن الصوت المرفوع في العبادة
-              هو وسيلة قوية للتعبير عن المحبة والإيمان، ونعتبر أن كل ترنيمة هي
-              صلاة حية تصل إلى السماء.
-            </p>
-            <p
-              class="mt-4 text-[clamp(1.15rem,3vw,2rem)] text-[var(--stone)]"
-              dir="rtl"
-            >
-              يضم الكورال مجموعة من الأصوات المختلفة التي تتحد معًا في انسجام
-              واحد، لتقديم ترانيم قبطية وروحية تعكس عمق الإيمان وفرح الخدمة داخل
-              الكنيسة.
-            </p>
+    <section class="relative overflow-hidden py-24" id="about">
+      <div class="relative z-10 mx-auto max-w-[1100px] px-8 lg:max-w-[92%] xl:max-w-[95%]">
+        <div
+          class="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16"
+        >
+          <!-- IMAGE (left) -->
+          <div class="order-1">
             <div
-              class="mt-10 flex flex-wrap justify-center gap-10 text-center"
-              dir="rtl"
+              class="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-[rgba(201,168,76,0.2)] shadow-[0_8px_40px_rgba(0,0,0,0.4)]"
             >
+              <img
+                src="/src/assets/images/about2.jpeg"
+                alt="Ari'alin Choir"
+                class="h-full w-full object-cover"
+              />
+              <div
+                class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.5)_100%)]"
+              ></div>
+            </div>
+          </div>
+
+          <!-- TEXT (right) -->
+          <div class="order-2">
+
+            <div class="space-y-4" dir="rtl">
+              <p
+                class="text-[clamp(1.05rem,2.2vw,1.35rem)] leading-relaxed text-[var(--stone)]"
+              >
+                تأسس كورال أريبصالين عام 2020، وهو فريق خدمي يهدف إلى تمجيد الله
+                من خلال التسبيح والترانيم، وتقديم رسالة روحية تلامس القلوب وتنشر
+                الرجاء والمحبة والسلام.
+              </p>
+              <p
+                class="text-[clamp(1.05rem,2.2vw,1.35rem)] leading-relaxed text-[var(--stone)]"
+              >
+                منذ انطلاقته، حرص الكورال على تقديم خدمة متميزة تجمع بين الجودة
+                الفنية والرسالة الروحية، وشارك في العديد من الحفلات والاحتفالات
+                الكنسية، والمؤتمرات واللقاءات الروحية، إلى جانب مشاركاته في عدد
+                من المناسبات الوطنية والفعاليات الهادفة، إيمانًا بدور الفن
+                الراقي في خدمة المجتمع وترسيخ قيم المحبة والانتماء.
+              </p>
+              <p
+                class="text-[clamp(1.05rem,2.2vw,1.35rem)] leading-relaxed text-[var(--stone)]"
+              >
+                ولا تقتصر رسالة الكورال على الحفلات فقط، بل تمتد إلى إنتاج
+                وتسجيل الترانيم، وتقديم التأملات والبودكاست والمحتوى الروحي عبر
+                المنصات الرقمية، بهدف الوصول إلى أكبر عدد ممكن من الناس وإيصال
+                رسالة المسيح بصورة معاصرة ومؤثرة.
+              </p>
+              <p
+                class="text-[clamp(1.05rem,2.2vw,1.35rem)] leading-relaxed text-[var(--stone)]"
+              >
+                ويؤمن كورال أريبصالين بأن الخدمة تبدأ من القلب، لذلك يهتم ببناء
+                الحياة الروحية لأعضائه، إلى جانب التطوير المستمر في الأداء
+                الموسيقي والتسبيحي، ليظل كل عمل يقدمه سببًا للبركة والتشجيع لكل
+                من يستمع إليه.
+              </p>
+              <p
+                class="text-[clamp(1.05rem,2.2vw,1.35rem)] leading-relaxed text-[var(--stone)]"
+              >
+                وخلال سنوات الخدمة، استطاع الكورال أن يكوّن حضورًا مميزًا من
+                خلال مشاركاته المتنوعة وأعماله الروحية، وما زال يواصل رحلته بنفس
+                الشغف والرؤية، ساعيًا إلى أن يكون صوتًا يحمل رسالة المسيح، ويصل
+                بالتسبيح إلى كل بيت وكل قلب.
+              </p>
+              <p
+                class="mt-2 font-[var(--ff-heading)] text-[clamp(1.1rem,2.5vw,1.5rem)] font-semibold text-[var(--gold-lt)]"
+              >
+                كورال أريبصالين... صوت واحد، وقلب واحد، لتُمجيد اسم الله.
+              </p>
+            </div>
+
+            <div class="mt-10 flex flex-wrap gap-10 text-center" dir="rtl">
               <div class="flex flex-col">
                 <span
                   class="font-[var(--ff-display)] text-[2.2rem] leading-none text-[var(--gold-lt)]"
@@ -323,7 +357,7 @@ onMounted(() => {
           Featured Shows
         </h2>
 
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-8">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(min(320px,100%),1fr))] gap-8">
           <div
             v-for="show in shows"
             :key="show.id"
@@ -379,53 +413,7 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- QUOTE BANNER -->
-    <section class="relative overflow-hidden px-8 py-24 text-center">
-      <div
-        class="quote-bg absolute inset-0 bg-[linear-gradient(135deg,var(--crimson)_0%,var(--purple)_50%,var(--vault)_100%)] opacity-60"
-      ></div>
-      <div class="relative z-10 mx-auto max-w-[700px]">
-        <div
-          class="mb-6 font-[var(--ff-display)] text-8xl leading-[0.5] text-[var(--gold)] opacity-50"
-        >
-          "
-        </div>
-        <blockquote
-          class="mb-4 font-[var(--ff-body)] text-[clamp(1.4rem,3vw,2rem)] italic leading-normal text-[var(--ivory)]"
-        >
-          Let everything that has breath praise the Lord.
-        </blockquote>
-        <cite
-          class="font-[var(--ff-heading)] text-[0.85rem] tracking-[0.15em] text-[var(--gold-lt)]"
-        >
-          — Psalm 150:6
-        </cite>
-        <div class="mt-6 font-[var(--ff-arabic)] text-3xl text-white/20">
-          سَبِّحُوا الرَّبَّ
-        </div>
-      </div>
-    </section>
 
-    <!-- CTA -->
-    <section class="px-8 py-24 text-center">
-      <div class="mx-auto flex max-w-[1100px] flex-col items-center gap-5">
-        <h2
-          class="font-[var(--ff-heading)] text-[clamp(2rem,4vw,3rem)] font-bold text-[var(--ivory)]"
-        >
-          Be Part of the Praise
-        </h2>
-        <p class="max-w-[480px] text-lg italic text-[var(--stone)]">
-          Reserve your place for an unforgettable evening of sacred choral
-          music. Limited seats available.
-        </p>
-        <router-link
-          to="/booking"
-          class="inline-block rounded-sm bg-[linear-gradient(135deg,var(--gold),var(--gold-lt))] px-12 py-5 font-[var(--ff-heading)] text-[0.9rem] font-bold uppercase tracking-[0.2em] text-[var(--ink)] transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_30px_rgba(201,168,76,0.5),0_4px_16px_rgba(0,0,0,0.4)]"
-        >
-          Reserve Your Seat Now
-        </router-link>
-      </div>
-    </section>
   </main>
 </template>
 
