@@ -1,5 +1,8 @@
 <template>
   <div class="app-root">
+    <audio ref="audioRef" hidden loop>
+      <source :src="adra" type="audio/mpeg" />
+    </audio>
     <NavBar v-if="!isAuthRoute && !isDashboard" />
     <router-view v-slot="{ Component }">
       <transition name="page" mode="out-in">
@@ -11,16 +14,43 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-import NavBar from './components/NavBar.vue'
-import FooterBar from './components/FooterBar.vue'
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import NavBar from "./components/NavBar.vue";
+import FooterBar from "./components/FooterBar.vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
+import adra from "@/assets/audio/Adra.mp3";
 
-const route = useRoute()
-const isAuthRoute = computed(() => route.name === 'login')
-const isDashboard = computed(() =>
-  route.path.startsWith('/admin')
-)
+const audioRef = ref(null);
+
+const playAudio = async () => {
+  const audio = audioRef.value;
+
+  if (!audio) return;
+
+  audio.muted = false;
+  audio.volume = 1;
+
+  try {
+    await audio.play();
+  } catch {
+    window.addEventListener("click", playAudio, { once: true });
+    window.addEventListener("keydown", playAudio, { once: true });
+  }
+};
+
+onMounted(() => {
+  playAudio();
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("click", playAudio);
+  window.removeEventListener("keydown", playAudio);
+});
+
+const route = useRoute();
+const isAuthRoute = computed(() => route.name === "login");
+const isDashboard = computed(() => route.path.startsWith("/admin"));
 </script>
 
 <style>
@@ -33,22 +63,22 @@ const isDashboard = computed(() =>
   }
 
   :root {
-    --ink:       #0d0a14;
-    --deep:      #110d1e;
-    --vault:     #1a1430;
-    --purple:    #2e1f5e;
-    --gold:      #c9a84c;
-    --gold-lt:   #e8c96a;
+    --ink: #0d0a14;
+    --deep: #110d1e;
+    --vault: #1a1430;
+    --purple: #2e1f5e;
+    --gold: #c9a84c;
+    --gold-lt: #e8c96a;
     --gold-glow: #f0d878;
-    --ivory:     #f5f0e8;
-    --stone:     #c8bfa8;
-    --smoke:     #8a7f9a;
-    --crimson:   #7a1c2e;
+    --ivory: #f5f0e8;
+    --stone: #c8bfa8;
+    --smoke: #8a7f9a;
+    --crimson: #7a1c2e;
 
-    --ff-display: 'Cinzel Decorative', serif;
-    --ff-heading: 'Cinzel', serif;
-    --ff-body:    'EB Garamond', serif;
-    --ff-arabic:  'Noto Sans Arabic', sans-serif;
+    --ff-display: "Cinzel Decorative", serif;
+    --ff-heading: "Cinzel", serif;
+    --ff-body: "EB Garamond", serif;
+    --ff-arabic: "Noto Sans Arabic", sans-serif;
   }
 
   html {
@@ -82,7 +112,18 @@ const isDashboard = computed(() =>
 }
 
 /* Page transitions */
-.page-enter-active, .page-leave-active { transition: opacity 0.4s ease, transform 0.4s ease; }
-.page-enter-from { opacity: 0; transform: translateY(12px); }
-.page-leave-to   { opacity: 0; transform: translateY(-8px); }
+.page-enter-active,
+.page-leave-active {
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
 </style>
