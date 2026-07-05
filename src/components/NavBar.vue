@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted,nextTick  } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import logo from "@/assets/logo.png";
 import { useAuthStore } from "@/stores/auth";
