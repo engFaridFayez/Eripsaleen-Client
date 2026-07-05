@@ -19,7 +19,7 @@ import { useRoute } from "vue-router";
 import NavBar from "./components/NavBar.vue";
 import FooterBar from "./components/FooterBar.vue";
 import { onBeforeUnmount, onMounted, ref } from "vue";
-import adra from "@/assets/audio/Adra.mp3";
+import adra from "@/assets/audio/adra.mp3";
 
 const audioRef = ref(null);
 
