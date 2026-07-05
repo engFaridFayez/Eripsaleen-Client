@@ -65,6 +65,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: "/admin",
+    name: "admin",
     component: DashboardView,
     meta: {
       requiresAuth: true,
