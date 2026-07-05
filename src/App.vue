@@ -21,7 +21,7 @@ import FooterBar from "./components/FooterBar.vue";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import adra from "@/assets/audio/adra.mp3";
 
-// const audioRef = ref(null);
+const audioRef = ref(null);
 
 const playAudio = async () => {
   const audio = audioRef.value;
