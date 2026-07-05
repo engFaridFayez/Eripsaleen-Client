@@ -9,3 +9,8 @@
   font-family: 'Athanasius';
   src: url('/fonts/ATHANAS0.ttf') format('truetype');
 }
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
