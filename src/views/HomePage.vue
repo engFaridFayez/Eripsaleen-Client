@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import aboutImage from "@/assets/images/about2.webp";
 import { storeToRefs } from "pinia";
 
 import { useShowStore } from "@/stores/show";
 
 const showStore = useShowStore();
-
+const loading = ref(true);
 const { shows } = storeToRefs(showStore);
 
-onMounted(() => {
-  showStore.fetchShows();
+onMounted(async () => {
+  await showStore.fetchShows();
+  loading.value = false;
 });
 
 // function formatMonth(date: string) {
@@ -354,7 +355,7 @@ onMounted(() => {
     </div>
 
     <!-- SHOWS -->
-    <section class="py-20" id="shows">
+    <section id="shows" class="py-20">
       <div class="mx-auto max-w-[1200px] px-8">
         <h2
           class="mb-12 text-center font-[var(--ff-heading)] text-[clamp(1.8rem,3.5vw,2.6rem)] font-bold leading-tight text-[var(--ivory)]"
@@ -362,7 +363,35 @@ onMounted(() => {
           Featured Shows
         </h2>
 
+        <!-- Skeleton -->
         <div
+          v-if="loading"
+          class="grid grid-cols-[repeat(auto-fill,minmax(min(320px,100%),1fr))] gap-8"
+        >
+          <div
+            v-for="i in 6"
+            :key="i"
+            class="overflow-hidden rounded-xl border border-[rgba(201,168,76,0.2)] bg-[rgba(255,255,255,0.03)] animate-pulse"
+          >
+            <div class="h-56 bg-[rgba(255,255,255,0.08)]"></div>
+
+            <div class="space-y-4 p-6">
+              <div class="h-7 w-3/4 rounded bg-[rgba(255,255,255,0.08)]"></div>
+
+              <div class="h-4 w-full rounded bg-[rgba(255,255,255,0.08)]"></div>
+              <div class="h-4 w-5/6 rounded bg-[rgba(255,255,255,0.08)]"></div>
+              <div class="h-4 w-2/3 rounded bg-[rgba(255,255,255,0.08)]"></div>
+
+              <div
+                class="mt-6 h-10 w-32 rounded bg-[rgba(201,168,76,0.25)]"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real Cards -->
+        <div
+          v-else
           class="grid grid-cols-[repeat(auto-fill,minmax(min(320px,100%),1fr))] gap-8"
         >
           <div
@@ -370,7 +399,6 @@ onMounted(() => {
             :key="show.id"
             class="overflow-hidden rounded-xl border border-[rgba(201,168,76,0.2)] bg-[linear-gradient(160deg,rgba(46,31,94,0.4)_0%,rgba(17,13,30,0.8)_100%)] transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(201,168,76,0.5)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.4),0_0_20px_rgba(201,168,76,0.08)]"
           >
-            <!-- Cover -->
             <div
               class="flex h-56 items-center justify-center bg-[rgba(255,255,255,0.04)]"
             >
@@ -378,20 +406,21 @@ onMounted(() => {
                 v-if="show.cover"
                 :src="show.cover"
                 :alt="show.title"
+                class="h-full w-full object-cover"
                 loading="lazy"
                 decoding="async"
-                class="h-full w-full object-cover"
+                width="600"
+                height="400"
               />
 
               <div
                 v-else
-                class="flex h-full w-full items-center justify-center text-[var(--gold)] text-lg font-semibold"
+                class="flex h-full w-full items-center justify-center text-lg font-semibold text-[var(--gold)]"
               >
                 No Cover
               </div>
             </div>
 
-            <!-- Content -->
             <div class="p-6">
               <h3
                 class="mb-3 font-[var(--ff-heading)] text-2xl font-bold text-[var(--ivory)]"
@@ -408,9 +437,7 @@ onMounted(() => {
               <router-link
                 :to="{
                   name: 'show-details',
-                  params: {
-                    id: show.id,
-                  },
+                  params: { id: show.id },
                 }"
                 class="inline-flex rounded-sm bg-[linear-gradient(135deg,var(--gold),var(--gold-lt))] px-5 py-2 font-[var(--ff-heading)] text-[0.75rem] font-bold uppercase tracking-[0.12em] text-[var(--ink)] transition-opacity duration-200 hover:opacity-85"
               >
@@ -443,29 +470,11 @@ onMounted(() => {
   letter-spacing: 0.05em;
   line-height: 1;
 
-  /* اختار الألوان هنا */
-  --c1: #000000;
-  --c2: #921fe4;
-  --c3: #f7df26;
-  --c4: #4d96ff;
-
-  background: linear-gradient(
-    270deg,
-    var(--c1),
-    var(--c2),
-    var(--c3),
-    var(--c4),
-    var(--c1)
-  );
-
-  background-size: 800% 800%;
-  animation: gradientMove 10s ease-in-out infinite;
-
+  background: linear-gradient(135deg, #d4af37, #f7df26);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  /* optional glow */
-  text-shadow: 0 0 40px rgba(201, 168, 76, 0.15);
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
 }
 
 @keyframes gradientMove {
