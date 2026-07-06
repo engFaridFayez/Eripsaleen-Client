@@ -234,7 +234,7 @@ onMounted(() => {
               class="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-[rgba(201,168,76,0.2)] shadow-[0_8px_40px_rgba(0,0,0,0.4)]"
             >
               <img
-                src="/src/assets/images/about2.jpeg"
+                src="/src/assets/images/about2.webp"
                 alt="Ari'alin Choir"
                 class="h-full w-full object-cover"
               />

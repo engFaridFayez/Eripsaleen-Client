@@ -1,7 +1,7 @@
 <template>
   <div class="app-root">
     <audio ref="audioRef" hidden loop>
-      <source :src="adra" type="audio/mpeg" />
+      <source :src="adra1" type="audio/mpeg" />
     </audio>
     <NavBar v-if="!isAuthRoute && !isDashboard" />
     <router-view v-slot="{ Component }">
@@ -19,7 +19,7 @@ import { useRoute } from "vue-router";
 import NavBar from "./components/NavBar.vue";
 import FooterBar from "./components/FooterBar.vue";
 import { onBeforeUnmount, onMounted, ref } from "vue";
-import adra from "@/assets/audio/adra.mp3";
+import adra1 from "@/assets/audio/adra1.mp3";
 
 const audioRef = ref(null);
 

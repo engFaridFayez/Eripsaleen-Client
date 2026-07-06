@@ -1,15 +1,6 @@
 <script setup lang="ts">
 import AdminSidebar from "@/components/dashboard/AdminSidebar.vue";
 import DashboardHeader from "@/components/dashboard/DashboardHeader.vue";
-import StatsGrid from "@/components/dashboard/StatsGrid.vue";
-
-import BookingChart from "@/components/dashboard/BookingChart.vue";
-import RevenueChart from "@/components/dashboard/RevenueChart.vue";
-
-import RecentBookings from "@/components/dashboard/RecentBookings.vue";
-import UpcomingEvents from "@/components/dashboard/UpcomingEvents.vue";
-import QuickActions from "@/components/dashboard/QuickActions.vue";
-
 import { RouterView } from "vue-router";
 </script>
 

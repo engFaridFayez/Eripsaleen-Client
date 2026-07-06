@@ -1,35 +1,45 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
-import HomePage from '@/views/HomePage.vue'
-import BookingPage from '@/views/BookingPage.vue'
-import LoginView from '@/views/LoginView.vue'
-import PaymentView from '@/views/PaymentView.vue'
-import ShowDetailsPage from '@/views/ShowDetailsPage.vue'
-import DashboardView from '@/views/admin/DashboardView.vue'
-import TheaterListView from '@/views/admin/TheaterCRUD/TheaterListView.vue'
-import DashboardHomeView from '@/views/admin/DashboardHomeView.vue'
-import TheaterCreateView from '@/views/admin/TheaterCRUD/TheaterCreateView.vue'
-import TheaterEditView from '@/views/admin/TheaterCRUD/TheaterEditView.vue'
-import TheaterDetailsView from '@/views/admin/TheaterCRUD/TheaterDetailsView.vue'
-import ShowListView from '@/views/admin/ShowsCRUD/ShowListView.vue'
-import ShowCreateView from '@/views/admin/ShowsCRUD/ShowCreateView.vue'
-import ShowEditView from '@/views/admin/ShowsCRUD/ShowEditView.vue'
-import EventListView from '@/views/admin/EventCRUD/EventListView.vue'
-import EventCreateView from '@/views/admin/EventCRUD/EventCreateView.vue'
-import EventEditView from '@/views/admin/EventCRUD/EventEditView.vue'
-import EventDetailsView from '@/views/admin/EventCRUD/EventDetailsView.vue'
-import SectionListView from '@/views/admin/SectionCRUD/SectionListView.vue'
-import SecionCreateView from '@/views/admin/SectionCRUD/SecionCreateView.vue'
-import SectionEditView from '@/views/admin/SectionCRUD/SectionEditView.vue'
-import SectionDetailsView from '@/views/admin/SectionCRUD/SectionDetailsView.vue'
-import RowListView from '@/views/admin/RowCRUD/RowListView.vue'
-import RowCreateView from '@/views/admin/RowCRUD/RowCreateView.vue'
-import RowEditView from '@/views/admin/RowCRUD/RowEditView.vue'
-import RowDetailsView from '@/views/admin/RowCRUD/RowDetailsView.vue'
-import SeatManagmentView from '@/views/admin/Seats/SeatManagmentView.vue'
-import SeatCategoryManagementView from '@/views/admin/Seats/SeatCategoryManagementView.vue'
-import BookingView from '@/views/admin/BookingView/BookingView.vue'
-import ShowDetailsView from '@/views/admin/ShowsCRUD/ShowDetailsView.vue'
+// Public
+const HomePage = () => import("@/views/HomePage.vue");
+const BookingPage = () => import("@/views/BookingPage.vue");
+const LoginView = () => import("@/views/LoginView.vue");
+const PaymentView = () => import("@/views/PaymentView.vue");
+const ShowDetailsPage = () => import("@/views/ShowDetailsPage.vue");
+
+// Admin
+const DashboardView = () => import("@/views/admin/DashboardView.vue");
+const DashboardHomeView = () => import("@/views/admin/DashboardHomeView.vue");
+
+const TheaterListView = () => import("@/views/admin/TheaterCRUD/TheaterListView.vue");
+const TheaterCreateView = () => import("@/views/admin/TheaterCRUD/TheaterCreateView.vue");
+const TheaterEditView = () => import("@/views/admin/TheaterCRUD/TheaterEditView.vue");
+const TheaterDetailsView = () => import("@/views/admin/TheaterCRUD/TheaterDetailsView.vue");
+
+const ShowListView = () => import("@/views/admin/ShowsCRUD/ShowListView.vue");
+const ShowCreateView = () => import("@/views/admin/ShowsCRUD/ShowCreateView.vue");
+const ShowEditView = () => import("@/views/admin/ShowsCRUD/ShowEditView.vue");
+const ShowDetailsView = () => import("@/views/admin/ShowsCRUD/ShowDetailsView.vue");
+
+const EventListView = () => import("@/views/admin/EventCRUD/EventListView.vue");
+const EventCreateView = () => import("@/views/admin/EventCRUD/EventCreateView.vue");
+const EventEditView = () => import("@/views/admin/EventCRUD/EventEditView.vue");
+const EventDetailsView = () => import("@/views/admin/EventCRUD/EventDetailsView.vue");
+
+const SectionListView = () => import("@/views/admin/SectionCRUD/SectionListView.vue");
+const SecionCreateView = () => import("@/views/admin/SectionCRUD/SecionCreateView.vue");
+const SectionEditView = () => import("@/views/admin/SectionCRUD/SectionEditView.vue");
+const SectionDetailsView = () => import("@/views/admin/SectionCRUD/SectionDetailsView.vue");
+
+const RowListView = () => import("@/views/admin/RowCRUD/RowListView.vue");
+const RowCreateView = () => import("@/views/admin/RowCRUD/RowCreateView.vue");
+const RowEditView = () => import("@/views/admin/RowCRUD/RowEditView.vue");
+const RowDetailsView = () => import("@/views/admin/RowCRUD/RowDetailsView.vue");
+
+const SeatManagmentView = () => import("@/views/admin/Seats/SeatManagmentView.vue");
+const SeatCategoryManagementView = () => import("@/views/admin/Seats/SeatCategoryManagementView.vue");
+
+const BookingView = () => import("@/views/admin/BookingView/BookingView.vue");
 import { useAuthStore } from '@/stores/auth'
 
 const routes: RouteRecordRaw[] = [
@@ -37,21 +47,33 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'home',
     component: HomePage,
+    meta: {
+      title: "كورال اريبصالين | Eripsaleen Choir",
+    }
   },
   {
     path: '/booking',
     name: 'booking',
     component: BookingPage,
+    meta: {
+      title: 'حجز المقاعد | Eripsaleen Choir'
+    }
   },
   {
     path: "/shows/:id",
     name: "show-details",   // keep the public-facing name simple
-    component: ShowDetailsPage   // or whatever your seat-booking/public page is
+    component: ShowDetailsPage,   // or whatever your seat-booking/public page is
+    meta: {
+      title: 'تفاصيل الحفل | Eripsaleen Choir'
+    }
   },
   {
     path: '/booking/:eventId',
     name: 'booking-event',
     component: BookingPage,
+    meta: {
+      title: 'حجز المقاعد | Eripsaleen Choir'
+    }
   },
   {
     path: '/login',
@@ -212,6 +234,10 @@ router.beforeEach((to) => {
 
   return true
 })
+
+router.afterEach((to) => {
+  document.title = (to.meta.title as string) || "Eripsaleen Choir";
+});
 
 export default router
 
