@@ -82,12 +82,12 @@ onUnmounted(() => {
           @click.prevent="scrollToSection('shows')"
           >Booking</a
         >
-        <a
+        <!-- <a
           href="#contact"
           class="nav-link"
           @click.prevent="scrollToSection('footer')"
           >Contact</a
-        >
+        > -->
 
         <div v-if="authStore.access && authStore.user" class="user-actions">
           <span class="user-name">Hello, {{ authStore.user.username }}</span>
@@ -130,12 +130,12 @@ onUnmounted(() => {
         @click.prevent="scrollToSection('booking')"
         >Booking</a
       >
-      <a
+      <!-- <a
         href="#contact"
         class="mobile-link"
         @click.prevent="scrollToSection('contact')"
         >Contact</a
-      >
+      > -->
 
       <div v-if="authStore.access && authStore.user" class="user-actions">
         <span class="user-name">Hello, {{ authStore.user.username }}</span>

@@ -183,17 +183,18 @@ onMounted(async () => {
           لتقديم ترانيم قبطية وروحية تعكس عمق الإيمان وفرح الخدمة داخل الكنيسة.
         </p>
         <div class="flex flex-wrap justify-center gap-4">
-          <router-link
-            to="/booking"
-            class="inline-block rounded-sm bg-[linear-gradient(135deg,var(--gold),var(--gold-lt))] px-9 py-4 font-[var(--ff-heading)] text-[0.8rem] font-bold uppercase tracking-[0.2em] text-[var(--ink)] transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_30px_rgba(201,168,76,0.5),0_4px_16px_rgba(0,0,0,0.4)]"
-          >
-            Reserve Your Seat
-          </router-link>
           <a
-            href="#events"
-            class="inline-block rounded-sm border border-[rgba(201,168,76,0.4)] px-9 py-4 font-[var(--ff-heading)] text-[0.8rem] font-semibold uppercase tracking-[0.2em] text-[var(--stone)] transition-colors duration-200 hover:border-[var(--gold-lt)] hover:text-[var(--gold-lt)]"
+            href="#about"
+            class="inline-block rounded-sm bg-[linear-gradient(135deg,var(--gold),var(--gold-lt))] px-9 py-4 font-[var(--ff-heading)] text-[1rem] font-bold uppercase tracking-[0.2em] text-[var(--ink)] transition-[box-shadow,transform] duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_30px_rgba(201,168,76,0.5),0_4px_16px_rgba(0,0,0,0.4)]"
           >
-            Upcoming Events
+            عن الكورال
+          </a>
+
+          <a
+            href="#shows"
+            class="inline-block rounded-sm border border-[rgba(201,168,76,0.4)] px-9 py-4 font-[var(--ff-heading)] text-[1rem] font-semibold uppercase tracking-[0.2em] text-[var(--stone)] transition-colors duration-200 hover:border-[var(--gold-lt)] hover:text-[var(--gold-lt)]"
+          >
+              الحفلات القادمة
           </a>
         </div>
       </div>
