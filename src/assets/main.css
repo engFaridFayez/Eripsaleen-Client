@@ -3,11 +3,17 @@
 @font-face {
   font-family: 'CSAvva';
   src: url('/fonts/CSAVVAS0.ttf') format('truetype');
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
 }
 
 @font-face {
   font-family: 'Athanasius';
   src: url('/fonts/ATHANAS0.ttf') format('truetype');
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal;
 }
 
 html, body {

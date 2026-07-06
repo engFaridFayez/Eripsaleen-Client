@@ -1,6 +1,6 @@
 <template>
   <div class="app-root">
-    <audio ref="audioRef" hidden loop>
+    <audio ref="audioRef" hidden loop preload="none">
       <source :src="adra1" type="audio/mpeg" />
     </audio>
     <NavBar v-if="!isAuthRoute && !isDashboard" />
@@ -19,7 +19,7 @@ import { useRoute } from "vue-router";
 import NavBar from "./components/NavBar.vue";
 import FooterBar from "./components/FooterBar.vue";
 import { onBeforeUnmount, onMounted, ref } from "vue";
-import adra1 from "@/assets/audio/adra1.mp3";
+const adra1 = new URL("@/assets/audio/adra1.mp3", import.meta.url).href;
 
 const audioRef = ref(null);
 
