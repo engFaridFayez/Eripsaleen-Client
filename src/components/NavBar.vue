@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted,nextTick  } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import logo from "@/assets/logo.png";
 import { useAuthStore } from "@/stores/auth";
@@ -42,6 +42,8 @@ onMounted(async () => {
   if (authStore.access) {
     await authStore.fetchUser();
   }
+  await nextTick();
+  window.dispatchEvent(new Event("resize"));
   window.addEventListener("scroll", onScroll);
 });
 
@@ -89,6 +91,12 @@ onUnmounted(() => {
 
         <div v-if="authStore.access && authStore.user" class="user-actions">
           <span class="user-name">Hello, {{ authStore.user.username }}</span>
+          <a href="/admin"
+            v-if="authStore.user.is_staff"
+            class="nav-link"
+          >
+            Admin Dashboard
+          </a>
           <button @click="handleLogout" class="nav-btn">Logout</button>
         </div>
         <div v-else>
@@ -129,12 +137,17 @@ onUnmounted(() => {
         >Contact</a
       >
 
-      <div v-if="authStore.access && authStore.user">
-        <div>Hello, {{ authStore.user.username }}</div>
-        <button @click="handleLogout" class="mobile-btn flex justify-center">
-          Logout
-        </button>
+      <div v-if="authStore.access && authStore.user" class="user-actions">
+        <span class="user-name">Hello, {{ authStore.user.username }}</span>
+        <a href="/admin"
+          v-if="authStore.user.is_staff"
+          class="nav-link"
+        >
+          Admin Dashboard
+        </a>
+        <button @click="handleLogout" class="nav-btn">Logout</button>
       </div>
+
       <div v-else>
         <router-link
           :to="{ name: 'login' }"
