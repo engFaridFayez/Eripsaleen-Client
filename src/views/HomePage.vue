@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
-
+import aboutImage from "@/assets/images/about2.webp";
 import { storeToRefs } from "pinia";
 
 import { useShowStore } from "@/stores/show";
@@ -224,7 +224,9 @@ onMounted(() => {
 
     <!-- ABOUT -->
     <section class="relative overflow-hidden py-24" id="about">
-      <div class="relative z-10 mx-auto max-w-[1100px] px-8 lg:max-w-[92%] xl:max-w-[95%]">
+      <div
+        class="relative z-10 mx-auto max-w-[1100px] px-8 lg:max-w-[92%] xl:max-w-[95%]"
+      >
         <div
           class="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16"
         >
@@ -234,9 +236,13 @@ onMounted(() => {
               class="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-[rgba(201,168,76,0.2)] shadow-[0_8px_40px_rgba(0,0,0,0.4)]"
             >
               <img
-                src="/src/assets/images/about2.webp"
+                :src="aboutImage"
                 alt="Ari'alin Choir"
                 class="h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
+                width="1200"
+                height="900"
               />
               <div
                 class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.5)_100%)]"
@@ -246,7 +252,6 @@ onMounted(() => {
 
           <!-- TEXT (right) -->
           <div class="order-2">
-
             <div class="space-y-4" dir="rtl">
               <p
                 class="text-[clamp(1.05rem,2.2vw,1.35rem)] leading-relaxed text-[var(--stone)]"
@@ -357,7 +362,9 @@ onMounted(() => {
           Featured Shows
         </h2>
 
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(min(320px,100%),1fr))] gap-8">
+        <div
+          class="grid grid-cols-[repeat(auto-fill,minmax(min(320px,100%),1fr))] gap-8"
+        >
           <div
             v-for="show in shows"
             :key="show.id"
@@ -371,6 +378,8 @@ onMounted(() => {
                 v-if="show.cover"
                 :src="show.cover"
                 :alt="show.title"
+                loading="lazy"
+                decoding="async"
                 class="h-full w-full object-cover"
               />
 
@@ -412,8 +421,6 @@ onMounted(() => {
         </div>
       </div>
     </section>
-
-
   </main>
 </template>
 
