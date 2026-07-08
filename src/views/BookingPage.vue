@@ -169,7 +169,7 @@ function confirmBooking() {
           <div>
             <div class="text-xs uppercase text-[var(--gold)]">Theater</div>
             <div>
-              {{ currentEvent.theater }}
+              {{ currentEvent.theater_name }}
             </div>
           </div>
           <div>

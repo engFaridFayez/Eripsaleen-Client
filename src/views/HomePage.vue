@@ -4,7 +4,9 @@ import aboutImage from "@/assets/images/about2.webp";
 import { storeToRefs } from "pinia";
 
 import { useShowStore } from "@/stores/show";
+import { useAudioStore } from "@/stores/audio";
 
+const audio = useAudioStore();
 const showStore = useShowStore();
 const loading = ref(true);
 const { shows } = storeToRefs(showStore);
@@ -194,8 +196,9 @@ onMounted(async () => {
             href="#shows"
             class="inline-block rounded-sm border border-[rgba(201,168,76,0.4)] px-9 py-4 font-[var(--ff-heading)] text-[1rem] font-semibold uppercase tracking-[0.2em] text-[var(--stone)] transition-colors duration-200 hover:border-[var(--gold-lt)] hover:text-[var(--gold-lt)]"
           >
-              الحفلات القادمة
+            الحفلات القادمة
           </a>
+          <button @click="audio.play" class="inline-block rounded-sm bg-[linear-gradient(135deg,#4c2b8f,#7a4bd9)] px-9 py-4 font-[var(--ff-heading)] text-[1rem] font-bold tracking-[0.15em] text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_25px_rgba(122,75,217,.45)] cursor-pointer">🎵 اسمع ترنيمة من ترانيمنا</button>
         </div>
       </div>
 

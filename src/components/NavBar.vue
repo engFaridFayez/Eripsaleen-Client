@@ -1,9 +1,11 @@
 <script setup>
-import { ref, onMounted, onUnmounted,nextTick  } from "vue";
+import { ref, onMounted, onUnmounted, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import logo from "@/assets/logo.webp";
 import { useAuthStore } from "@/stores/auth";
+import { useAudioStore } from "@/stores/audio";
 
+const audio = useAudioStore();
 const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
@@ -91,23 +93,115 @@ onUnmounted(() => {
 
         <div v-if="authStore.access && authStore.user" class="user-actions">
           <span class="user-name">Hello, {{ authStore.user.username }}</span>
-          <a href="/admin"
-            v-if="authStore.user.is_staff"
-            class="nav-link"
-          >
+          <a href="/admin" v-if="authStore.user.is_staff" class="nav-link">
             Admin Dashboard
           </a>
           <button @click="handleLogout" class="nav-btn">Logout</button>
         </div>
         <div v-else>
-          <router-link :to="{ name: 'login' }" class="nav-link"
+          <router-link :to="{ name: 'login' }" class="nav-link mb-2"
             >Login</router-link
           >
         </div>
+        <button v-if="audio.isPlaying" @click="audio.toggle">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="1.5em"
+            height="1.5em"
+            viewBox="0 0 24 24"
+          >
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path fill="currentColor" d="M6 18V6h12v12z" />
+          </svg>
+        </button>
+
+        <button v-else @click="audio.toggle">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="1.5em"
+            height="1.5em"
+            viewBox="0 0 24 24"
+          >
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path
+              fill="currentColor"
+              fill-opacity="0"
+              stroke="currentColor"
+              stroke-dasharray="38"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 6l10 6l-10 6Z"
+            >
+              <animate
+                fill="freeze"
+                attributeName="stroke-dashoffset"
+                dur="0.5s"
+                values="38;0"
+              />
+              <animate
+                fill="freeze"
+                attributeName="fill-opacity"
+                begin="0.5s"
+                dur="0.4s"
+                to="1"
+              />
+            </path>
+          </svg>
+        </button>
       </div>
 
       <!-- Mobile Hamburger -->
-      <button class="menu-btn" @click="toggleMenu">☰</button>
+      <div class="mobile-actions">
+        <button class="audio-btn" @click="audio.toggle">
+          <svg
+            v-if="audio.isPlaying"
+            xmlns="http://www.w3.org/2000/svg"
+            width="1.5em"
+            height="1.5em"
+            viewBox="0 0 24 24"
+          >
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path fill="currentColor" d="M6 18V6h12v12z" />
+          </svg>
+
+          <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            width="1.5em"
+            height="1.5em"
+            viewBox="0 0 24 24"
+          >
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path
+              fill="currentColor"
+              fill-opacity="0"
+              stroke="currentColor"
+              stroke-dasharray="38"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 6l10 6l-10 6Z"
+            >
+              <animate
+                fill="freeze"
+                attributeName="stroke-dashoffset"
+                dur="0.5s"
+                values="38;0"
+              />
+              <animate
+                fill="freeze"
+                attributeName="fill-opacity"
+                begin="0.5s"
+                dur="0.4s"
+                to="1"
+              />
+            </path>
+          </svg>
+        </button>
+
+        <button class="menu-btn" @click="toggleMenu">☰</button>
+      </div>
     </div>
 
     <!-- Mobile Menu -->
@@ -139,10 +233,7 @@ onUnmounted(() => {
 
       <div v-if="authStore.access && authStore.user" class="user-actions">
         <span class="user-name">Hello, {{ authStore.user.username }}</span>
-        <a href="/admin"
-          v-if="authStore.user.is_staff"
-          class="nav-link"
-        >
+        <a href="/admin" v-if="authStore.user.is_staff" class="nav-link">
           Admin Dashboard
         </a>
         <button @click="handleLogout" class="nav-btn">Logout</button>
@@ -160,6 +251,28 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.mobile-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.audio-btn {
+  display: none; /* hidden on desktop */
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-lt);
+  background: transparent;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  width: 42px;
+  height: 42px;
+  transition: all 0.25s ease;
+}
+
+.audio-btn:hover {
+  background: rgba(201, 168, 76, 0.15);
+  transform: scale(1.05);
+}
 .navbar {
   position: fixed;
   top: 0;
@@ -319,6 +432,9 @@ onUnmounted(() => {
   /* اظهار الأيقونة */
   .menu-btn {
     display: block;
+  }
+  .audio-btn {
+    display: flex; /* shown on mobile, next to hamburger */
   }
 
   /* القائمة المنسدلة */

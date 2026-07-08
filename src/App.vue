@@ -1,6 +1,6 @@
 <template>
   <div class="app-root">
-    <audio ref="audioRef" hidden loop preload="none">
+    <audio ref="audioRef" loop preload="none">
       <source :src="adra1" type="audio/mpeg" />
     </audio>
     <NavBar v-if="!isAuthRoute && !isDashboard" />
@@ -19,33 +19,15 @@ import { useRoute } from "vue-router";
 import NavBar from "./components/NavBar.vue";
 import FooterBar from "./components/FooterBar.vue";
 import { onBeforeUnmount, onMounted, ref } from "vue";
+import { useAudioStore } from "@/stores/audio";
 const adra1 = new URL("@/assets/audio/adra1.mp3", import.meta.url).href;
-
+const audioStore = useAudioStore();
 const audioRef = ref(null);
 
-const playAudio = async () => {
-  const audio = audioRef.value;
 
-  if (!audio) return;
-
-  audio.muted = false;
-  audio.volume = 1;
-
-  try {
-    await audio.play();
-  } catch {
-    window.addEventListener("click", playAudio, { once: true });
-    window.addEventListener("keydown", playAudio, { once: true });
-  }
-};
 
 onMounted(() => {
-  playAudio();
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("click", playAudio);
-  window.removeEventListener("keydown", playAudio);
+  audioStore.setAudio(audioRef.value);
 });
 
 const route = useRoute();
