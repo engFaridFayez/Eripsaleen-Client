@@ -38,6 +38,7 @@ export default {
   create(data: {
     row: number;
     seat_number: string;
+    category: number;
   }) {
     return api.post("/seats/", data);
   },
