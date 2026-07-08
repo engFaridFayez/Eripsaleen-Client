@@ -9,7 +9,7 @@ export interface SeatCategory {
 export interface CreateSeatPayload {
   row: number;
   seat_number: string;
-  category?: number | null;
+  category: number;
 }
 
 export interface GenerateSeatsPayload {
