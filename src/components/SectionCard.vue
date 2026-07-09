@@ -75,6 +75,13 @@ defineProps({
               : {}
         "
       >
+        <span
+          class="relative z-[3] font-[var(--ff-heading)] text-[0.8rem] font-semibold leading-none"
+          :class="isSelected(seat.id) ? 'text-black' : 'text-white'"
+        >
+          {{ seat.seat_number }}
+        </span>
+
         <div
           v-if="!seat.is_booked"
           class="pointer-events-none absolute -top-16 left-1/2 z-50 hidden -translate-x-1/2 whitespace-nowrap rounded bg-black/95 px-3 py-2 text-center text-[11px] text-white shadow-xl group-hover:block"
