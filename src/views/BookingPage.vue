@@ -221,13 +221,16 @@ function confirmBooking() {
             ></div>
           </div>
         </div>
-
-        <div class="w-full overflow-x-auto pb-3" v-if="seatMap">
-          <div class="flex flex-col gap-8">
+        <div
+          class="w-full overflow-auto pb-3"
+          v-if="seatMap"
+          style="touch-action: pan-x pan-y pinch-zoom"
+        >
+          <div class="flex flex-col gap-8 min-w-[900px]">
             <div
               v-for="(row, rowIndex) in layout"
               :key="rowIndex"
-              class="grid grid-cols-1 gap-6 md:grid-cols-3"
+              class="grid grid-cols-3 gap-6"
             >
               <div
                 v-for="column in row"
