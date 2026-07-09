@@ -43,9 +43,11 @@ function toggleSeat(seat) {
     price: Number(seat.category?.price ?? seat.price),
   });
 }
-function isSelected(seatId) {
-  return bookingStore.selectedSeats.some((selected) => selected.id === seatId);
-}
+const selectedSeatIds = computed(() => {
+  return new Set(
+    bookingStore.selectedSeats.map((seat) => seat.id),
+  );
+});
 
 const selectedSeatNumbers = computed(() =>
   bookingStore.selectedSeats.map((seat) => seat.seat_number),
@@ -58,9 +60,7 @@ const selectedSeats = computed(() => {
   seatMap.value.sections.forEach((section) => {
     section.rows.forEach((row) => {
       row.seats.forEach((seat) => {
-        if (
-          bookingStore.selectedSeats.some((selected) => selected.id === seat.id)
-        ) {
+        if (selectedSeatIds.value.has(seat.id)) {
           result.push({
             ...seat,
             row: row.row_number,
@@ -241,8 +241,8 @@ function confirmBooking() {
                   v-for="section in sectionColumns[column]"
                   :key="section.id"
                   :section="section"
-                  :isSelected="isSelected"
-                  :toggleSeat="toggleSeat"
+                  :selected-seat-ids="selectedSeatIds"
+                  :toggle-seat="toggleSeat"
                   :highlight="column.includes('middle')"
                 />
               </div>

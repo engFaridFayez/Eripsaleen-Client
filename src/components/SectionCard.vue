@@ -4,8 +4,8 @@ defineProps({
     type: Object,
     required: true,
   },
-  isSelected: {
-    type: Function,
+  selectedSeatIds: {
+    type: Object,
     required: true,
   },
   toggleSeat: {
@@ -46,6 +46,7 @@ defineProps({
       <button
         v-for="seat in row.seats"
         :key="seat.id"
+        v-memo="[seat.is_booked, selectedSeatIds.has(seat.id)]"
         @click="
           !seat.is_booked &&
           toggleSeat({
@@ -57,17 +58,17 @@ defineProps({
         :disabled="seat.is_booked"
         class="seat group relative flex h-8 w-[30px] shrink-0 items-center justify-center overflow-visible rounded-[4px_4px_8px_8px] border text-[0.65rem] shadow-[0_2px_4px_rgba(0,0,0,0.4)] transition-all duration-200 hover:scale-110"
         :class="{
-          selected: isSelected(seat.id),
+          selected: selectedSeatIds.has(seat.id),
           taken: seat.is_booked,
           'cursor-not-allowed opacity-50': seat.is_booked,
         }"
         :style="
-          !seat.is_booked && !isSelected(seat.id)
+          !seat.is_booked && !selectedSeatIds.has(seat.id)
             ? {
                 backgroundColor: (seat.category?.color ?? '#c9a84c') + '22',
                 borderColor: seat.category?.color ?? '#c9a84c',
               }
-            : isSelected(seat.id)
+            : selectedSeatIds.has(seat.id)
               ? {
                   backgroundColor: seat.category?.color ?? '#c9a84c',
                   borderColor: seat.category?.color ?? '#c9a84c',
@@ -76,12 +77,11 @@ defineProps({
         "
       >
         <span
-          class="relative z-[3] font-[var(--ff-heading)] text-[0.8rem] font-semibold leading-none"
-          :class="isSelected(seat.id) ? 'text-black' : 'text-white'"
+          class="relative z-[3] font-[var(--ff-heading)] text-xs font-extrabold leading-none"
+          :class="selectedSeatIds.has(seat.id) ? 'text-black' : 'text-gray-300'"
         >
           {{ seat.seat_number }}
         </span>
-
         <div
           v-if="!seat.is_booked"
           class="pointer-events-none absolute -top-16 left-1/2 z-50 hidden -translate-x-1/2 whitespace-nowrap rounded bg-black/95 px-3 py-2 text-center text-[11px] text-white shadow-xl group-hover:block"
