@@ -69,12 +69,8 @@ async function submitBooking() {
     router.push("/");
   } catch (err) {
     await errorPopup("خطأ", "حدث خطأ أثناء إرسال الطلب.");
-    console.log(err.response?.data);
-    console.log(err.response?.status);
-    console.log(err);
     console.error(err);
-    console.log("STATUS:", error.response?.status);
-    console.log("DATA:", error.response?.data);
+
   }
 }
 

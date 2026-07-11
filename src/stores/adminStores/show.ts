@@ -3,7 +3,7 @@ import type { Show, ShowDetail } from "@/types/show";
 
 import { AdminShowService } from "@/services/adminServices/show.service";
 
-export const useShowStore = defineStore("show", {
+export const useShowStore = defineStore("admin-show", {
   state: () => ({
     shows: [] as Show[],
     show: null as ShowDetail | null,
@@ -71,7 +71,6 @@ export const useShowStore = defineStore("show", {
 
         this.show = res.data;
       } catch (error: any) {
-        console.log(error.response?.data);
         console.error(error);
 
         this.error = "Error updating show";

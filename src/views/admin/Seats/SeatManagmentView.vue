@@ -71,10 +71,6 @@ async function generateSeats() {
   }
 
   try {
-    console.log({
-      ...generateForm,
-      category: categoryStore.selectedCategory,
-    });
     const res = await seatStore.generateSeats(seatStore.selectedRow, {
       ...generateForm,
       category: categoryStore.selectedCategory,

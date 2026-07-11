@@ -14,6 +14,12 @@ const confirmBooking = async (id: number) => {
   await bookingStore.updateBookingStatus(id, "confirmed");
 };
 
+const handleDeleteBooking = async (id: number) => {
+  if (!confirm("هل تريد حذف هذا الحجز؟")) return;
+
+  await bookingStore.deleteBooking(id);
+};
+
 const cancelBooking = async (id: number) => {
   if (!confirm("هل تريد إلغاء هذا الحجز؟")) return;
 
@@ -373,6 +379,13 @@ function formatDate(date: string) {
                     class="whitespace-nowrap rounded-lg bg-yellow-500 px-4 py-2 text-sm font-semibold text-black transition hover:bg-yellow-400"
                   >
                     Details
+                  </button>
+                  <button
+                    v-if="booking.status === 'cancelled'"
+                    @click="handleDeleteBooking(booking.id)"
+                    class="whitespace-nowrap rounded-lg bg-red-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+                  >
+                    Delete
                   </button>
                   <button
                     v-if="booking.status === 'pending'"

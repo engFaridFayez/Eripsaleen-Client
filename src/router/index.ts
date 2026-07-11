@@ -6,6 +6,7 @@ const BookingPage = () => import("@/views/BookingPage.vue");
 const LoginView = () => import("@/views/LoginView.vue");
 const PaymentView = () => import("@/views/PaymentView.vue");
 const ShowDetailsPage = () => import("@/views/ShowDetailsPage.vue");
+const NotFoundPage = () => import("@/views/NotFound.vue");
 
 // Admin
 const DashboardView = () => import("@/views/admin/DashboardView.vue");
@@ -217,6 +218,15 @@ const routes: RouteRecordRaw[] = [
         component: BookingView
       }
     ]
+  },
+  {
+    // catch-all — must stay LAST in the array
+    path: "/:pathMatch(.*)*",
+    name: "not-found",
+    component: NotFoundPage,
+    meta: {
+      title: "الصفحة غير موجودة | Eripsaleen Choir"
+    }
   }
 ]
 
@@ -229,7 +239,9 @@ router.beforeEach((to) => {
   const authStore = useAuthStore()
 
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    return { name: "login" }
+    // Dead-end at 404 instead of redirecting to /login,
+    // so unauthenticated visitors can't tell /admin exists.
+    return { name: "not-found" }
   }
 
   return true
@@ -240,4 +252,3 @@ router.afterEach((to) => {
 });
 
 export default router
-

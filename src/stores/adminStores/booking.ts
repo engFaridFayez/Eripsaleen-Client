@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getBookings, changeBookingStatus } from "@/services/adminServices/booking.service";
+import { getBookings, changeBookingStatus, deleteBooking } from "@/services/adminServices/booking.service";
 import type { Booking } from "@/types/booking";
 
 
@@ -36,5 +36,15 @@ export const useAdminBookingStore = defineStore("admin-bookings", {
             // إعادة تحميل البيانات بعد التعديل
             await this.fetchBookings();
         },
+        async deleteBooking(id: number) {
+
+            try {
+                await deleteBooking(id);
+                // إعادة تحميل البيانات بعد الحذف
+                await this.fetchBookings();
+            } catch (error) {
+                console.error("Error deleting booking:", error);
+            }
+        }
     },
 });

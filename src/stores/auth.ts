@@ -36,7 +36,6 @@ export const useAuthStore = defineStore("auth", {
             try {
                 const response = await AuthService.me();
                 this.user = response.data;
-                console.log(response.data);
             } catch (error: any) {
                 console.error("Fetch user failed", error)
 

@@ -20,7 +20,6 @@ const form = reactive({
 onMounted(async () => {
   await theaterStore.getTheaters();
   await sectionStore.getSection(Number(route.params.id));
-  console.log("Section:", sectionStore.section);
 
   if (sectionStore.section) {
     form.theater = sectionStore.section.theater;

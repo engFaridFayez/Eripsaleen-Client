@@ -8,7 +8,7 @@ import type {
 
 import { eventService } from "@/services/event.service"
 
-export const useEventStore = defineStore("event", () => {
+export const useEventStore = defineStore("events", () => {
 
     const events = ref<Event[]>([])
 

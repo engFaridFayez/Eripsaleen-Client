@@ -44,9 +44,7 @@ function toggleSeat(seat) {
   });
 }
 const selectedSeatIds = computed(() => {
-  return new Set(
-    bookingStore.selectedSeats.map((seat) => seat.id),
-  );
+  return new Set(bookingStore.selectedSeats.map((seat) => seat.id));
 });
 
 const selectedSeatNumbers = computed(() =>

@@ -19,7 +19,6 @@ export const useTheaterStore = defineStore("theater", {
             try {
                 const res = await AdminTheaterService.getAll();
                 this.theaters = res.data;
-                console.log(res.data);
             } catch (error) {
                 this.error = "Error fetching theaters";
                 console.error(error);
@@ -34,7 +33,6 @@ export const useTheaterStore = defineStore("theater", {
             try {
                 const res = await AdminTheaterService.getById(id);
                 this.theater = res.data;
-                console.log(res.data);
             } catch (error) {
                 this.error = "Error fetching theater";
                 console.error(error);

@@ -11,3 +11,6 @@ export const changeBookingStatus = (
 ) => {
   return api.patch(`/bookings/${id}/change_status/`, data);
 };
+export const deleteBooking = (id: number) => {
+  return api.delete(`/bookings/${id}/`);
+}
