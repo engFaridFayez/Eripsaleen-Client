@@ -21,7 +21,7 @@ defineProps({
 
 <template>
   <div
-    class="w-full overflow-x-auto rounded border border-[rgba(201,168,76,0.12)] bg-[rgba(17,13,30,0.6)] px-4 py-5"
+    class="section-card w-full overflow-x-auto rounded border border-[rgba(201,168,76,0.12)] bg-[rgba(17,13,30,0.6)] px-4 py-5"
     :class="
       highlight ? 'border-[rgba(201,168,76,0.25)] bg-[rgba(26,20,48,0.7)]' : ''
     "
@@ -56,7 +56,7 @@ defineProps({
           })
         "
         :disabled="seat.is_booked"
-        class="seat group relative flex h-8 w-[30px] shrink-0 items-center justify-center overflow-visible rounded-[4px_4px_8px_8px] border text-[0.65rem] shadow-[0_2px_4px_rgba(0,0,0,0.4)] transition-all duration-200 hover:scale-110"
+        class="seat group relative flex h-8 w-[30px] shrink-0 items-center justify-center overflow-visible rounded-[4px_4px_8px_8px] border text-[0.65rem] shadow-[0_2px_4px_rgba(0,0,0,0.4)]"
         :class="{
           selected: selectedSeatIds.has(seat.id),
           taken: seat.is_booked,
@@ -98,9 +98,25 @@ defineProps({
 </template>
 
 <style scoped>
-/* ============================= */
+/* ============================================================
+   Perf: this is the single biggest win for the "chairs render
+   late" and "scroll is janky" symptoms. There are usually many
+   SectionCards rendered at once in the horizontal grid layout.
+   content-visibility tells the browser to skip layout/paint for
+   any card that's off-screen (e.g. sections scrolled out of
+   view), instead of doing that work for all of them up front.
+   contain-intrinsic-size gives it a placeholder size so scrollbar
+   geometry doesn't jump once the real content is measured.
+   ============================================================ */
+.section-card {
+  content-visibility: auto;
+  contain-intrinsic-size: 280px 400px;
+  contain: layout style paint;
+}
+
+/* ============================================================ */
 /* Stage */
-/* ============================= */
+/* ============================================================ */
 
 .stage::before {
   content: "";
@@ -120,9 +136,27 @@ defineProps({
   border-left: none;
 }
 
-/* ============================= */
+/* ============================================================ */
 /* Seat */
-/* ============================= */
+/* ============================================================ */
+
+.seat {
+  /* Was transition-all — animating box-shadow/background/border
+     on every one of potentially hundreds of seats is expensive.
+     Scope it to transform only, and only where it's actually used
+     (desktop hover, see below). */
+  transition: transform 0.15s ease;
+}
+
+/* Only apply the hover scale on devices that actually have hover
+   (mouse/trackpad). On touch devices this rule doesn't fire, which
+   removes a source of "sticky hover" repaint after tapping a seat
+   on mobile. */
+@media (hover: hover) and (pointer: fine) {
+  .seat:hover {
+    transform: scale(1.1);
+  }
+}
 
 .seat::before {
   content: "";
@@ -165,9 +199,9 @@ defineProps({
   z-index: 1;
 }
 
-/* ============================= */
+/* ============================================================ */
 /* Selected */
-/* ============================= */
+/* ============================================================ */
 
 .selected::before,
 .selected::after {
@@ -175,9 +209,9 @@ defineProps({
   border-color: #ffe89c;
 }
 
-/* ============================= */
+/* ============================================================ */
 /* Taken */
-/* ============================= */
+/* ============================================================ */
 
 .taken::before,
 .taken::after {

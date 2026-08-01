@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted } from "vue";
+import { computed, onMounted, onBeforeUnmount, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import SectionCard from "@/components/SectionCard.vue";
@@ -17,10 +17,15 @@ const bookingStore = useBookingStore();
 
 const { events, seatMap, selectedEventId } = storeToRefs(eventStore);
 
+// --- Perf fix: fetch in parallel instead of sequentially awaiting each one ---
 onMounted(async () => {
-  await eventStore.fetchSeatMap(eventId);
-  await eventStore.fetchEvent(eventId);
+  await Promise.all([
+    eventStore.fetchSeatMap(eventId),
+    eventStore.fetchEvent(eventId),
+  ]);
 });
+// (a second onMounted for the pinch listeners is registered further down —
+// Vue allows multiple onMounted calls in the same component, they all run)
 
 const currentEvent = computed(() =>
   events.value.find((e) => e.id === selectedEventId.value),
@@ -28,13 +33,6 @@ const currentEvent = computed(() =>
 const totalPrice = computed(() => {
   return bookingStore.selectedSeats.reduce((sum, seat) => sum + seat.price, 0);
 });
-async function selectEvent(id) {
-  bookingStore.reset();
-
-  eventStore.selectedEventId = id;
-
-  await eventStore.fetchSeatMap(id);
-}
 
 function toggleSeat(seat) {
   bookingStore.toggleSeat({
@@ -132,6 +130,134 @@ function confirmBooking() {
     },
   });
 }
+
+// ============================================================
+// Pinch-to-zoom (mobile) — custom, since native pinch zoom
+// conflicts with the fixed booking summary bar and can't be
+// clamped/controlled the way "zoom out to see whole stage" needs.
+// ============================================================
+
+const MIN_ZOOM = 0.4; // fully zoomed out — whole stage visible
+const MAX_ZOOM = 1; // default/native size
+const zoomScale = ref(1);
+
+const scrollContainerRef = ref(null);
+
+let pinchActive = false;
+let pinchStartDistance = 0;
+let pinchStartScale = 1;
+
+function getTouchDistance(touches) {
+  const [a, b] = touches;
+  const dx = a.clientX - b.clientX;
+  const dy = a.clientY - b.clientY;
+  return Math.hypot(dx, dy);
+}
+
+function onTouchStart(e) {
+  if (e.touches.length === 2) {
+    pinchActive = true;
+    pinchStartDistance = getTouchDistance(e.touches);
+    pinchStartScale = zoomScale.value;
+  }
+}
+
+function onTouchMove(e) {
+  if (!pinchActive || e.touches.length !== 2) return;
+
+  // Prevent the browser's native page-zoom from fighting with ours.
+  // This only works because the listener below is registered with
+  // { passive: false } — a passive listener can't call preventDefault.
+  e.preventDefault();
+
+  const currentDistance = getTouchDistance(e.touches);
+  const ratio = currentDistance / pinchStartDistance;
+  const nextScale = pinchStartScale * ratio;
+
+  zoomScale.value = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, nextScale));
+}
+
+function onTouchEnd(e) {
+  if (e.touches.length < 2) {
+    pinchActive = false;
+  }
+}
+
+// Safari fires its own non-standard gesture events for pinches
+// (gesturestart/gesturechange/gestureend), separate from touch
+// events, and uses them to zoom the whole page. If these aren't
+// blocked, Safari will zoom the page instead of running our
+// touchmove handler above — this is the #1 reason "nothing
+// happens" on iPhone specifically.
+let gestureStartScale = 1;
+
+function onGestureStart(e) {
+  e.preventDefault();
+  gestureStartScale = zoomScale.value;
+}
+
+function onGestureChange(e) {
+  e.preventDefault();
+  zoomScale.value = Math.min(
+    MAX_ZOOM,
+    Math.max(MIN_ZOOM, gestureStartScale * e.scale),
+  );
+}
+
+function onGestureEnd(e) {
+  e.preventDefault();
+}
+
+function resetZoom() {
+  zoomScale.value = 1;
+}
+
+const ZOOM_STEP = 0.15;
+
+function zoomOut() {
+  zoomScale.value = Math.max(
+    MIN_ZOOM,
+    +(zoomScale.value - ZOOM_STEP).toFixed(2),
+  );
+}
+
+function zoomIn() {
+  zoomScale.value = Math.min(
+    MAX_ZOOM,
+    +(zoomScale.value + ZOOM_STEP).toFixed(2),
+  );
+}
+
+onMounted(() => {
+  const el = scrollContainerRef.value;
+  if (!el) return;
+
+  // Registered manually (not via Vue's @touchstart in the template)
+  // and explicitly non-passive, so preventDefault is guaranteed to
+  // actually take effect on every browser.
+  el.addEventListener("touchstart", onTouchStart, { passive: true });
+  el.addEventListener("touchmove", onTouchMove, { passive: false });
+  el.addEventListener("touchend", onTouchEnd, { passive: true });
+  el.addEventListener("touchcancel", onTouchEnd, { passive: true });
+
+  // Safari-only, no-op elsewhere.
+  el.addEventListener("gesturestart", onGestureStart, { passive: false });
+  el.addEventListener("gesturechange", onGestureChange, { passive: false });
+  el.addEventListener("gestureend", onGestureEnd, { passive: false });
+});
+
+onBeforeUnmount(() => {
+  const el = scrollContainerRef.value;
+  if (!el) return;
+
+  el.removeEventListener("touchstart", onTouchStart);
+  el.removeEventListener("touchmove", onTouchMove);
+  el.removeEventListener("touchend", onTouchEnd);
+  el.removeEventListener("touchcancel", onTouchEnd);
+  el.removeEventListener("gesturestart", onGestureStart);
+  el.removeEventListener("gesturechange", onGestureChange);
+  el.removeEventListener("gestureend", onGestureEnd);
+});
 </script>
 
 <template>
@@ -149,7 +275,8 @@ function confirmBooking() {
       </h1>
       <p class="mx-auto max-w-[540px] italic text-[var(--stone)]">
         Select your preferred seats from the hall map below. Gold seats are
-        available; dimmed seats are taken.
+        available; dimmed seats are taken. On mobile, pinch with two fingers to
+        zoom out and see the whole stage.
       </p>
       <div
         class="mx-auto mb-10 flex max-w-5xl flex-col items-center justify-center rounded-xl border border-[rgba(201,168,76,.25)] bg-[rgba(26,20,48,.55)] p-4 sm:p-8"
@@ -219,12 +346,42 @@ function confirmBooking() {
             ></div>
           </div>
         </div>
+
+        <!-- Zoom controls — buttons work everywhere regardless of whether
+             pinch-gesture detection behaves on a given browser/device. -->
+        <div class="mb-3 flex items-center justify-center gap-3">
+          <button
+            @click="zoomOut"
+            :disabled="zoomScale <= MIN_ZOOM"
+            class="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(201,168,76,.4)] bg-[rgba(26,20,48,.7)] text-lg text-[var(--gold-lt)] disabled:opacity-30"
+          >
+            −
+          </button>
+          <button
+            v-if="zoomScale !== 1"
+            @click="resetZoom"
+            class="rounded border border-[rgba(201,168,76,.4)] bg-[rgba(26,20,48,.7)] px-4 py-1.5 text-[0.7rem] uppercase tracking-wide text-[var(--gold-lt)]"
+          >
+            Reset zoom
+          </button>
+          <button
+            @click="zoomIn"
+            :disabled="zoomScale >= MAX_ZOOM"
+            class="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(201,168,76,.4)] bg-[rgba(26,20,48,.7)] text-lg text-[var(--gold-lt)] disabled:opacity-30"
+          >
+            +
+          </button>
+        </div>
+
         <div
-          class="w-full overflow-auto pb-3"
+          ref="scrollContainerRef"
+          class="seatmap-scroll w-full overflow-auto pb-3"
           v-if="seatMap"
-          style="touch-action: pan-x pan-y pinch-zoom"
         >
-          <div class="flex flex-col gap-8 min-w-[900px]">
+          <div
+            class="seatmap-zoom-wrapper flex flex-col gap-8 min-w-[900px]"
+            :style="{ zoom: zoomScale }"
+          >
             <div
               v-for="(row, rowIndex) in layout"
               :key="rowIndex"
@@ -280,7 +437,7 @@ function confirmBooking() {
 
     <!-- Booking Summary -->
     <div
-      class="fixed inset-x-0 bottom-0 z-50 max-h-[75vh] overflow-y-auto border-t border-[rgba(201,168,76,0.3)] bg-[rgba(13,10,20,0.97)] py-3 backdrop-blur-[20px] transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] sm:max-h-none sm:py-4"
+      class="fixed inset-x-0 bottom-0 z-50 max-h-[75vh] overflow-y-auto border-t border-[rgba(201,168,76,0.3)] bg-[rgba(13,10,20,0.97)] py-3 backdrop-blur-[20px] transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] sm:py-4 sm:max-h-none summary-bar"
       :class="bookingStore.seatCount > 0 ? 'translate-y-0' : 'translate-y-full'"
     >
       <div
@@ -377,6 +534,36 @@ function confirmBooking() {
   to {
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+/* ============================================================
+   Perf: let the browser skip layout/paint work for the scroll
+   container's contents until they're actually needed, and hint
+   the compositor about what will animate.
+   ============================================================ */
+.seatmap-scroll {
+  -webkit-overflow-scrolling: touch;
+  /* We handle pinch ourselves; still allow one-finger pan scrolling. */
+  touch-action: pan-x pan-y;
+  contain: layout paint;
+}
+
+.seatmap-zoom-wrapper {
+  /* `zoom` (not transform:scale) so the shrink actually reduces the
+     element's contribution to the scroll container's layout size —
+     that's what lets the whole stage fit on screen at low zoom
+     instead of just rendering smaller inside an unchanged 900px box. */
+}
+
+/* Backdrop-blur is one of the most expensive operations on mobile
+   GPUs and this bar is repainted on every scroll frame since it's
+   fixed. Drop the blur on small screens, keep it on larger ones. */
+@media (max-width: 640px) {
+  .summary-bar {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(13, 10, 20, 0.99);
   }
 }
 </style>
