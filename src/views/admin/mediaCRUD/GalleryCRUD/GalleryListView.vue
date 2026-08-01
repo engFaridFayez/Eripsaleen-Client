@@ -65,17 +65,19 @@ const handleDelete = async (id: number) => {
 </script>
 
 <template>
-  <div class="p-6">
-    <div class="flex items-center justify-between mb-6">
+  <div class="p-4 sm:p-6">
+    <div
+      class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+    >
       <div>
-        <h1 class="text-2xl font-bold text-white">Gallery</h1>
+        <h1 class="text-xl font-bold text-white sm:text-2xl">Gallery</h1>
 
-        <p class="text-gray-400">Manage gallery images</p>
+        <p class="text-sm text-gray-400 sm:text-base">Manage gallery images</p>
       </div>
 
       <button
         @click="goCreate"
-        class="px-4 py-2 rounded-lg bg-[#6F46C5] text-white transition hover:bg-[#4B2D87]"
+        class="w-full rounded-lg bg-[#6F46C5] px-4 py-2 text-white transition hover:bg-[#4B2D87] sm:w-auto"
       >
         Add Images
       </button>
@@ -87,82 +89,148 @@ const handleDelete = async (id: number) => {
       {{ error }}
     </div>
 
-    <div
-      v-else
-      class="overflow-hidden rounded-2xl border border-[#6F46C5] bg-[#5E3AA5] shadow-xl shadow-black/20"
-    >
-      <table class="min-w-full">
-        <thead class="bg-[#0D0A14]">
-          <tr class="border-b border-[#6F46C5]">
-            <th class="p-4 text-left text-white">Image</th>
-            <th class="p-4 text-left text-white">Title</th>
-            <th class="p-4 text-left text-white">Sub Category</th>
-            <th class="p-4 text-left text-white">Order</th>
-            <th class="p-4 text-left text-white">Status</th>
-            <th class="p-4 text-left text-white">Actions</th>
-          </tr>
-        </thead>
+    <template v-else>
+      <!-- Mobile card list -->
+      <div class="space-y-4 md:hidden">
+        <div
+          v-for="item in galleryImages"
+          :key="item.id"
+          class="rounded-2xl border border-[#6F46C5] bg-[#5E3AA5] p-4 shadow-xl shadow-black/20"
+        >
+          <div class="flex gap-3">
+            <img
+              :src="item.image"
+              :alt="item.title"
+              class="h-16 w-16 shrink-0 rounded-lg object-cover"
+            />
 
-        <tbody>
-          <tr
-            v-for="item in galleryImages"
-            :key="item.id"
-            class="transition hover:bg-[#4B2D87]"
-          >
-            <td class="p-4">
-              <img
-                :src="item.image"
-                :alt="item.title"
-                class="h-16 w-16 rounded-lg object-cover"
-              />
-            </td>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-start justify-between gap-2">
+                <p class="truncate font-medium text-white">
+                  {{ item.title || "-" }}
+                </p>
 
-            <td class="p-4 text-white">
-              {{ item.title || "-" }}
-            </td>
+                <span
+                  :class="item.is_active ? 'bg-green-600' : 'bg-red-600'"
+                  class="shrink-0 rounded-full px-2 py-0.5 text-xs text-white"
+                >
+                  {{ item.is_active ? "Active" : "Inactive" }}
+                </span>
+              </div>
 
-            <td class="p-4 text-white">
-              {{ item.sub_category_name }}
-            </td>
+              <p class="truncate text-sm text-purple-200">
+                {{ item.sub_category_name }}
+              </p>
 
-            <td class="p-4 text-white">
-              {{ item.order }}
-            </td>
+              <p class="text-sm text-white/70">Order: {{ item.order }}</p>
+            </div>
+          </div>
 
-            <td class="p-4">
-              <span
-                :class="item.is_active ? 'bg-green-600' : 'bg-red-600'"
-                class="rounded-full px-3 py-1 text-xs text-white"
+          <div class="mt-4 flex gap-2">
+            <button
+              @click="goEdit(item.id)"
+              class="flex-1 rounded bg-green-600 px-3 py-2 text-sm text-white"
+            >
+              Edit
+            </button>
+
+            <button
+              @click="handleDelete(item.id)"
+              class="flex-1 rounded bg-red-600 px-3 py-2 text-sm text-white"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+
+        <div
+          v-if="!galleryImages.length"
+          class="rounded-2xl border border-[#6F46C5] bg-[#5E3AA5] p-6 text-center text-white"
+        >
+          No gallery images found
+        </div>
+      </div>
+
+      <!-- Desktop table -->
+      <div
+        class="hidden overflow-hidden rounded-2xl border border-[#6F46C5] bg-[#5E3AA5] shadow-xl shadow-black/20 md:block"
+      >
+        <div class="overflow-x-auto">
+          <table class="min-w-full">
+            <thead class="bg-[#0D0A14]">
+              <tr class="border-b border-[#6F46C5]">
+                <th class="p-4 text-left text-white">Image</th>
+                <th class="p-4 text-left text-white">Title</th>
+                <th class="p-4 text-left text-white">Sub Category</th>
+                <th class="p-4 text-left text-white">Order</th>
+                <th class="p-4 text-left text-white">Status</th>
+                <th class="p-4 text-left text-white">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr
+                v-for="item in galleryImages"
+                :key="item.id"
+                class="transition hover:bg-[#4B2D87]"
               >
-                {{ item.is_active ? "Active" : "Inactive" }}
-              </span>
-            </td>
+                <td class="p-4">
+                  <img
+                    :src="item.image"
+                    :alt="item.title"
+                    class="h-16 w-16 rounded-lg object-cover"
+                  />
+                </td>
 
-            <td class="flex gap-2 p-4">
+                <td class="p-4 text-white">
+                  {{ item.title || "-" }}
+                </td>
 
-              <button
-                @click="goEdit(item.id)"
-                class="rounded bg-green-600 px-3 py-1 text-white"
-              >
-                Edit
-              </button>
+                <td class="p-4 text-white">
+                  {{ item.sub_category_name }}
+                </td>
 
-              <button
-                @click="handleDelete(item.id)"
-                class="rounded bg-red-600 px-3 py-1 text-white"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
+                <td class="p-4 text-white">
+                  {{ item.order }}
+                </td>
 
-          <tr v-if="!galleryImages.length">
-            <td colspan="6" class="p-6 text-center text-white">
-              No gallery images found
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+                <td class="p-4">
+                  <span
+                    :class="item.is_active ? 'bg-green-600' : 'bg-red-600'"
+                    class="rounded-full px-3 py-1 text-xs text-white"
+                  >
+                    {{ item.is_active ? "Active" : "Inactive" }}
+                  </span>
+                </td>
+
+                <td class="p-4">
+                  <div class="flex flex-wrap gap-2">
+                    <button
+                      @click="goEdit(item.id)"
+                      class="rounded bg-green-600 px-3 py-1 text-white"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      @click="handleDelete(item.id)"
+                      class="rounded bg-red-600 px-3 py-1 text-white"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr v-if="!galleryImages.length">
+                <td colspan="6" class="p-6 text-center text-white">
+                  No gallery images found
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </template>
   </div>
 </template>

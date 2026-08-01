@@ -341,7 +341,21 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-})
+  scrollBehavior(to, from, savedPosition) {
+    // Browser back/forward: restore where the user was
+    if (savedPosition) {
+      return savedPosition;
+    }
+
+    // Anchor links / in-page section links (e.g. homepage scrollToSection targets)
+    if (to.hash) {
+      return { el: to.hash, behavior: "smooth" };
+    }
+
+    // Every other navigation: jump to top instantly
+    return { top: 0, behavior: "auto" };
+  },
+});
 
 router.beforeEach((to) => {
   const authStore = useAuthStore()

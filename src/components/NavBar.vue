@@ -227,6 +227,9 @@ onUnmounted(() => {
         @click.prevent="scrollToSection('booking')"
         >Booking</a
       >
+      <router-link :to="{name : 'studio'}" class="mobile-link">
+        Studio
+      </router-link>
       <!-- <a
         href="#contact"
         class="mobile-link"

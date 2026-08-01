@@ -79,15 +79,21 @@ const submit = async () => {
 </script>
 
 <template>
-  <div class="mx-auto max-w-3xl">
-    <div class="rounded-2xl border border-[#6F46C5] bg-[#5E3AA5] p-8 shadow-xl">
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-white">Edit Sub Category</h1>
+  <div class="mx-auto w-full max-w-3xl px-4 sm:px-6">
+    <div
+      class="rounded-2xl border border-[#6F46C5] bg-[#5E3AA5] p-5 shadow-xl sm:p-8"
+    >
+      <div class="mb-6 sm:mb-8">
+        <h1 class="text-2xl font-bold text-white sm:text-3xl">
+          Edit Sub Category
+        </h1>
 
-        <p class="mt-2 text-purple-200">Update sub-category information.</p>
+        <p class="mt-2 text-sm text-purple-200 sm:text-base">
+          Update sub-category information.
+        </p>
       </div>
 
-      <form @submit.prevent="submit" class="space-y-6">
+      <form @submit.prevent="submit" class="space-y-5 sm:space-y-6">
         <!-- Name -->
         <div>
           <label class="mb-2 block text-sm font-medium text-white">
@@ -146,7 +152,7 @@ const submit = async () => {
 
           <img
             :src="preview"
-            class="h-32 w-32 rounded-lg border border-[#6F46C5] object-cover"
+            class="h-24 w-24 rounded-lg border border-[#6F46C5] object-cover sm:h-32 sm:w-32"
           />
         </div>
 
@@ -165,10 +171,12 @@ const submit = async () => {
         </div>
 
         <!-- Buttons -->
-        <div class="flex justify-end gap-3 pt-4">
+        <div
+          class="flex flex-col-reverse gap-3 pt-4 sm:flex-row sm:justify-end"
+        >
           <RouterLink
-            to="/admin/media/sub-categories"
-            class="rounded-lg border border-gray-500 px-5 py-2 text-white transition hover:bg-gray-700"
+            to="/admin/subcategories"
+            class="rounded-lg border border-gray-500 px-5 py-2 text-center text-white transition hover:bg-gray-700"
           >
             Cancel
           </RouterLink>
