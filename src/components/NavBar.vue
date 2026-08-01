@@ -78,6 +78,9 @@ onUnmounted(() => {
           @click.prevent="scrollToSection('about')"
           >About</a
         >
+        <router-link :to="{ name: 'studio' }" class="nav-link">
+          Studio
+        </router-link>
         <a
           href="#booking"
           class="nav-link"

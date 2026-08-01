@@ -10,8 +10,6 @@ import {
   Squares2X2Icon,
   RectangleStackIcon,
   TicketIcon,
-  UsersIcon,
-  Cog6ToothIcon,
   ChevronRightIcon,
   Bars3Icon,
   XMarkIcon,
@@ -73,16 +71,31 @@ const menu = [
     to: { name: "bookings" },
     icon: TicketIcon,
   },
-  // {
-  //   name: "Users",
-  //   to: "/admin/users",
-  //   icon: UsersIcon,
-  // },
-  // {
-  //   name: "Settings",
-  //   to: "/admin/settings",
-  //   icon: Cog6ToothIcon,
-  // },
+  {
+    name: "Categories",
+    routeName: "category-list",
+    to: { name: "category-list" },
+    icon: RectangleStackIcon,
+  },
+  {
+    name: "Sub Categories",
+    routeName: "subcategory-list",
+    to: { name: "subcategory-list" },
+    icon: RectangleStackIcon,
+  },
+  {
+    name: "Gallery",
+    routeName: "gallery-list",
+    to: { name: "gallery-list" },
+    icon: RectangleStackIcon,
+  },
+  {
+    name: "Videos",
+    routeName: "video-list",
+    to: { name: "video-list" },
+    icon: RectangleStackIcon,
+  },
+
 ];
 
 const isActive = (name: string) => route.name === name;

@@ -41,6 +41,28 @@ const SeatManagmentView = () => import("@/views/admin/Seats/SeatManagmentView.vu
 const SeatCategoryManagementView = () => import("@/views/admin/Seats/SeatCategoryManagementView.vue");
 
 const BookingView = () => import("@/views/admin/BookingView/BookingView.vue");
+
+const CategoryListView = () => import("@/views/admin/mediaCRUD/CategoryCRUD/CategoryListView.vue");
+const CategoryCreateView = () => import("@/views/admin/mediaCRUD/CategoryCRUD/CategoryCreateView.vue");
+const CategoryEditView = () => import("@/views/admin/mediaCRUD/CategoryCRUD/CategoryEditView.vue");
+const CategoryDetailsView = () => import("@/views/admin/mediaCRUD/CategoryCRUD/CategoryDetailsView.vue");
+
+
+const SubCategoryListView = () => import("@/views/admin/mediaCRUD/SubCategoryCRUD/SubCategoryListView.vue");
+const SubCategoryCreateView = () => import("@/views/admin/mediaCRUD/SubCategoryCRUD/SubCategoryCreateView.vue");
+const SubCategoryEditView = () => import("@/views/admin/mediaCRUD/SubCategoryCRUD/SubCategoryEditView.vue");
+const SubCategoryDetailsView = () => import("@/views/admin/mediaCRUD/SubCategoryCRUD/SubCategoryDetailsView.vue");
+
+const GalleryListView = () => import("@/views/admin/mediaCRUD/GalleryCRUD/GalleryListView.vue");
+const GalleryCreateView = () => import("@/views/admin/mediaCRUD/GalleryCRUD/GalleryCreateView.vue");
+const GalleryEditView = () => import("@/views/admin/mediaCRUD/GalleryCRUD/GalleryEditView.vue");
+
+const VideoListView = () => import("@/views/admin/mediaCRUD/VideoCRUD/VideoListView.vue");
+const VideoCreateView = () => import("@/views/admin/mediaCRUD/VideoCRUD/VideoCreateView.vue");
+const VideoEditView = () => import("@/views/admin/mediaCRUD/VideoCRUD/VideoEditView.vue");
+
+const StudioView = () => import("@/views/Studio.vue");
+const StudioDetailsView = () => import("@/views/StudioDetailsView.vue");
 import { useAuthStore } from '@/stores/auth'
 
 const routes: RouteRecordRaw[] = [
@@ -50,6 +72,22 @@ const routes: RouteRecordRaw[] = [
     component: HomePage,
     meta: {
       title: "كورال اريبصالين | Eripsaleen Choir",
+    }
+  },
+  {
+    path: '/studio',
+    name: 'studio',
+    component: StudioView,
+    meta: {
+      title: 'الاستوديو | Eripsaleen Choir'
+    }
+  },
+  {
+    path: '/studio/:id',
+    name: 'studio-details',
+    component: StudioDetailsView,
+    meta: {
+      title: 'تفاصيل الاستوديو | Eripsaleen Choir'
     }
   },
   {
@@ -216,6 +254,76 @@ const routes: RouteRecordRaw[] = [
         path: "bookings",
         name: "bookings",
         component: BookingView
+      },
+      {
+        path: "categories",
+        name: "category-list",
+        component: CategoryListView
+      },
+      {
+        path: "categories/create",
+        name: "category-create",
+        component: CategoryCreateView
+      },
+      {
+        path: "categories/:id/edit",
+        name: "category-edit",
+        component: CategoryEditView
+      },
+      {
+        path: "categories/:id",
+        name: "category-details",
+        component: CategoryDetailsView
+      },
+      {
+        path: "subcategories",
+        name: "subcategory-list",
+        component: SubCategoryListView
+      },
+      {
+        path: "subcategories/create",
+        name: "subcategory-create",
+        component: SubCategoryCreateView
+      },
+      {
+        path: "subcategories/:id/edit",
+        name: "subcategory-edit",
+        component: SubCategoryEditView
+      },
+      {
+        path: "subcategories/:id",
+        name: "subcategory-details",
+        component: SubCategoryDetailsView
+      },
+      {
+        path: "gallery",
+        name: "gallery-list",
+        component: GalleryListView
+      },
+      {
+        path: "gallery/create",
+        name: "gallery-create",
+        component: GalleryCreateView
+      },
+      {
+        path: "gallery/:id/edit",
+        name: "gallery-edit",
+        component: GalleryEditView
+      },
+      {
+        path: "videos",
+        name: "video-list",
+        component: VideoListView
+      },
+      {
+        path: "videos/create",
+        name: "video-create",
+        component: VideoCreateView
+      },
+      {
+        path: "videos/:id/edit",
+        name: "video-edit",
+        component: VideoEditView
       }
     ]
   },
