@@ -61,7 +61,7 @@ onMounted(async () => {
         <!-- Image -->
         <div>
           <img
-            :src="categoryStore.currentCategory.image"
+            :src="categoryStore.currentCategory.image || undefined"
             :alt="categoryStore.currentCategory.name"
             class="h-full min-h-75 w-full rounded-xl object-cover"
           />

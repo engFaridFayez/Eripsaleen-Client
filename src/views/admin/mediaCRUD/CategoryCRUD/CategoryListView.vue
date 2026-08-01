@@ -149,7 +149,7 @@ const handleDelete = async (id: number) => {
               <!-- Image -->
               <td class="px-4 py-5 sm:px-6">
                 <img
-                  :src="category.image"
+                  :src="category.image || undefined"
                   :alt="category.name"
                   class="h-16 w-16 rounded-lg border border-[#6F46C5] object-cover"
                 />
