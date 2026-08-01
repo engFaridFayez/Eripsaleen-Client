@@ -216,7 +216,7 @@ onMounted(loadData);
                   @click="play(`video-${video.id}`)"
                 >
                   <img
-                    :src="video.thumbnail"
+                    :src="video.thumbnail || undefined"
                     :alt="video.title"
                     class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   />
@@ -298,7 +298,7 @@ onMounted(loadData);
                     @click="play(`podcast-${podcast.id}`)"
                   >
                     <img
-                      :src="podcast.thumbnail"
+                      :src="podcast.thumbnail || undefined"
                       :alt="podcast.title"
                       class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                     />
@@ -386,7 +386,7 @@ onMounted(loadData);
                   @click="play(`reel-${reel.id}`)"
                 >
                   <img
-                    :src="reel.thumbnail"
+                    :src="reel.thumbnail || undefined"
                     :alt="reel.title"
                     class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                   />
