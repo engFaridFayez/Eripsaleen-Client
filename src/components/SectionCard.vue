@@ -83,14 +83,17 @@ defineProps({
           {{ seat.seat_number }}
         </span>
         <div
-          v-if="!seat.is_booked"
-          class="pointer-events-none absolute -top-16 left-1/2 z-50 hidden -translate-x-1/2 whitespace-nowrap rounded bg-black/95 px-3 py-2 text-center text-[11px] text-white shadow-xl group-hover:block"
+          class="pointer-events-none absolute bottom-full mb-1 left-1/2 z-50 hidden -translate-x-1/2 whitespace-nowrap rounded bg-black/95 px-3 py-2 text-center text-[11px] text-white shadow-xl group-hover:block"
         >
-          <div class="font-bold">
-            {{ seat.category?.name }}
-          </div>
+          <div v-if="seat.is_booked" class="font-bold top-5 text-white">محجوز</div>
 
-          <div class="text-yellow-400">{{ seat.price ?? 0 }} EGP</div>
+          <template v-else>
+            <div class="font-bold">
+              {{ seat.category?.name }}
+            </div>
+
+            <div class="text-yellow-400">{{ seat.price ?? 0 }} EGP</div>
+          </template>
         </div>
       </button>
     </div>
