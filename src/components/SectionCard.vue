@@ -213,9 +213,14 @@ defineProps({
 /* Taken */
 /* ============================================================ */
 
+.seat.taken {
+  background-color: #6a0000;
+  border-color: #000000;
+}
+
 .taken::before,
 .taken::after {
-  background: rgba(60, 60, 60, 0.8);
-  border-color: rgba(120, 120, 120, 0.4);
+  background: #000000;
+  border-color: #eb0000;
 }
 </style>
