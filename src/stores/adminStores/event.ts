@@ -53,7 +53,7 @@ export const useEventStore = defineStore("event", {
 
         const index = this.events.findIndex((event) => event.id === id);
 
-        if (index !== -1) {
+        if (index !== -1 && this.events[index]) {
           this.events[index].booking_closed = res.data.booking_closed;
         }
 
