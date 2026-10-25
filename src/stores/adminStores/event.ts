@@ -47,6 +47,26 @@ export const useEventStore = defineStore("event", {
         this.loading = false;
       }
     },
+    async toggleBooking(id: number, bookingClosed: boolean) {
+      try {
+        const res = await EventService.toggleBooking(id, bookingClosed);
+
+        const index = this.events.findIndex((event) => event.id === id);
+
+        if (index !== -1) {
+          this.events[index].booking_closed = res.data.booking_closed;
+        }
+
+        if (this.event?.id === id) {
+          this.event.booking_closed = res.data.booking_closed;
+        }
+
+        return res.data;
+      } catch (error) {
+        console.error("Failed to update booking status:", error);
+        throw error;
+      }
+    },
 
     async createEvent(data: CreateEvent) {
       this.loading = true;

@@ -26,4 +26,10 @@ export default {
   delete(id: number) {
     return api.delete(`/events/${id}/`);
   },
+  toggleBooking(id: number, bookingClosed: boolean) {
+  return api.patch(
+    `/events/${id}/toggle-booking/`,
+    { booking_closed: bookingClosed }
+  );
+}
 };

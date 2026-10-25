@@ -21,6 +21,7 @@ export const useEventStore = defineStore("events", () => {
     const selectedEventId = ref<number | null>(
         null
     )
+    
 
     async function fetchEvents() {
 
@@ -81,6 +82,8 @@ export const useEventStore = defineStore("events", () => {
 
         }
     }
+
+    
 
     return {
         events,

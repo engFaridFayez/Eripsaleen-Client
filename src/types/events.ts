@@ -38,6 +38,7 @@ export interface Event {
   sales_end?: string;
   theater_name:string;
   show_name:string;
+  booking_closed: boolean;
 }
 
 export interface CreateEvent {
@@ -50,10 +51,11 @@ export interface CreateEvent {
 }
 
 export interface SeatMapResponse {
-  event_id: number
-  event_title: string
-  theater: string
-  sections: Section[]
+  event_id: number;
+  event_title: string;
+  theater: string;
+  booking_closed: boolean;
+  sections: Section[];
 }
 
 

@@ -19,10 +19,12 @@ const { events, seatMap, selectedEventId } = storeToRefs(eventStore);
 
 // --- Perf fix: fetch in parallel instead of sequentially awaiting each one ---
 onMounted(async () => {
-  await Promise.all([
-    eventStore.fetchSeatMap(eventId),
-    eventStore.fetchEvent(eventId),
-  ]);
+  await eventStore.fetchSeatMap(eventId);
+  await eventStore.fetchEvent(eventId);
+
+  if (seatMap.value?.booking_closed) {
+    bookingStore.reset();
+  }
 });
 // (a second onMounted for the pinch listeners is registered further down —
 // Vue allows multiple onMounted calls in the same component, they all run)
@@ -273,14 +275,16 @@ onBeforeUnmount(() => {
       >
         Choose Your Seat
       </h1>
+
       <p class="mx-auto max-w-[540px] italic text-[var(--stone)]">
         Select your preferred seats from the hall map below. Gold seats are
         available; dimmed seats are taken. On mobile, pinch with two fingers to
         zoom out and see the whole stage.
       </p>
+
       <div
-        class="mx-auto mb-10 flex max-w-5xl flex-col items-center justify-center rounded-xl border border-[rgba(201,168,76,.25)] bg-[rgba(26,20,48,.55)] p-4 sm:p-8"
         v-if="currentEvent"
+        class="mx-auto mb-10 flex max-w-5xl flex-col items-center justify-center rounded-xl border border-[rgba(201,168,76,.25)] bg-[rgba(26,20,48,.55)] p-4 sm:p-8"
       >
         <h2 class="text-2xl font-bold text-[var(--gold)] sm:text-3xl">
           {{ currentEvent.show }}
@@ -292,13 +296,18 @@ onBeforeUnmount(() => {
 
         <div class="mt-6 flex flex-wrap justify-center gap-4 sm:gap-8">
           <div>
-            <div class="text-xs uppercase text-[var(--gold)]">Theater</div>
+            <div class="text-xs uppercase text-[var(--gold)]">
+              Theater
+            </div>
             <div>
               {{ currentEvent.theater_name }}
             </div>
           </div>
+
           <div>
-            <div class="text-xs uppercase text-[var(--gold)]">Date</div>
+            <div class="text-xs uppercase text-[var(--gold)]">
+              Date
+            </div>
 
             <div>
               {{ new Date(currentEvent.event_date).toLocaleString() }}
@@ -311,133 +320,179 @@ onBeforeUnmount(() => {
     <!-- Stage + Seat Map -->
     <div class="mx-auto w-full max-w-[1600px] px-4 pb-40 pt-12 sm:px-8">
       <div class="mx-auto max-w-[1500px]">
-        <!-- Stage -->
-        <div class="mb-8 text-center">
-          <div
-            class="stage relative inline-block min-w-[260px] rounded-t-[80px] border border-b-0 border-[rgba(201,168,76,0.4)] bg-[linear-gradient(180deg,rgba(46,31,94,0.9)_0%,rgba(122,28,46,0.4)_100%)] px-6 pb-6 pt-8 sm:min-w-[320px] sm:px-12"
+
+        <!-- Booking Closed Message -->
+        <div
+          v-if="seatMap?.booking_closed"
+          dir="rtl"
+          class="mx-auto max-w-2xl rounded-2xl border border-red-500/30 bg-[rgba(26,20,48,.8)] px-6 py-14 text-center"
+        >
+          <div class="mb-5 text-5xl">
+            🔒
+          </div>
+
+          <h2
+            class="mb-4 text-2xl font-bold text-[var(--gold)] sm:text-3xl"
           >
-            <div class="text-center">
-              <div
-                class="mb-1 text-2xl text-[var(--gold)] [text-shadow:0_0_12px_var(--gold)]"
-              >
-                ✛
-              </div>
-              <div
-                class="font-[var(--ff-heading)] text-[0.8rem] font-bold uppercase tracking-[0.4em] text-[var(--gold-lt)]"
-              >
-                STAGE
-              </div>
-              <div
-                class="mt-1 font-[var(--ff-arabic)] text-[0.8rem] text-[var(--smoke)]"
-              >
-                المسرح
+            تم غلق الحجز لهذا العرض
+          </h2>
+
+          <p
+            class="mx-auto max-w-lg leading-8 text-[var(--stone)]"
+          >
+            تم غلق الحجز لهذا العرض . ان كانت هناك تذاكر متاحه ستكون متاحه علي باب المسرح . 
+            شكراً لإهتمامكم.
+
+            <br>
+            كورال اريبصالين💖
+          </p>
+        </div>
+
+        <!-- Show Seat Map Only When Booking Is Open -->
+        <template v-else>
+
+          <!-- Stage -->
+          <div class="mb-8 text-center">
+            <div
+              class="stage relative inline-block min-w-[260px] rounded-t-[80px] border border-b-0 border-[rgba(201,168,76,0.4)] bg-[linear-gradient(180deg,rgba(46,31,94,0.9)_0%,rgba(122,28,46,0.4)_100%)] px-6 pb-6 pt-8 sm:min-w-[320px] sm:px-12"
+            >
+              <div class="text-center">
+                <div
+                  class="mb-1 text-2xl text-[var(--gold)] [text-shadow:0_0_12px_var(--gold)]"
+                >
+                  ✛
+                </div>
+
+                <div
+                  class="font-[var(--ff-heading)] text-[0.8rem] font-bold uppercase tracking-[0.4em] text-[var(--gold-lt)]"
+                >
+                  STAGE
+                </div>
+
+                <div
+                  class="mt-1 font-[var(--ff-arabic)] text-[0.8rem] text-[var(--smoke)]"
+                >
+                  المسرح
+                </div>
               </div>
             </div>
-          </div>
-          <div class="flex justify-center gap-0">
-            <div
-              class="step h-1.5 max-w-[340px] flex-1 border border-t-0 border-[rgba(201,168,76,0.2)]"
-            ></div>
-            <div
-              class="step h-1.5 max-w-[340px] flex-1 border border-t-0 border-[rgba(201,168,76,0.2)]"
-            ></div>
-            <div
-              class="step h-1.5 max-w-[340px] flex-1 border border-t-0 border-[rgba(201,168,76,0.2)]"
-            ></div>
-          </div>
-        </div>
 
-        <!-- Zoom controls — buttons work everywhere regardless of whether
-             pinch-gesture detection behaves on a given browser/device. -->
-        <div class="mb-3 flex items-center justify-center gap-3">
-          <button
-            @click="zoomOut"
-            :disabled="zoomScale <= MIN_ZOOM"
-            class="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(201,168,76,.4)] bg-[rgba(26,20,48,.7)] text-lg text-[var(--gold-lt)] disabled:opacity-30"
-          >
-            −
-          </button>
-          <button
-            v-if="zoomScale !== 1"
-            @click="resetZoom"
-            class="rounded border border-[rgba(201,168,76,.4)] bg-[rgba(26,20,48,.7)] px-4 py-1.5 text-[0.7rem] uppercase tracking-wide text-[var(--gold-lt)]"
-          >
-            Reset zoom
-          </button>
-          <button
-            @click="zoomIn"
-            :disabled="zoomScale >= MAX_ZOOM"
-            class="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(201,168,76,.4)] bg-[rgba(26,20,48,.7)] text-lg text-[var(--gold-lt)] disabled:opacity-30"
-          >
-            +
-          </button>
-        </div>
+            <div class="flex justify-center gap-0">
+              <div
+                class="step h-1.5 max-w-[340px] flex-1 border border-t-0 border-[rgba(201,168,76,0.2)]"
+              ></div>
 
-        <div
-          ref="scrollContainerRef"
-          class="seatmap-scroll w-full overflow-auto pb-3"
-          v-if="seatMap"
-        >
+              <div
+                class="step h-1.5 max-w-[340px] flex-1 border border-t-0 border-[rgba(201,168,76,0.2)]"
+              ></div>
+
+              <div
+                class="step h-1.5 max-w-[340px] flex-1 border border-t-0 border-[rgba(201,168,76,0.2)]"
+              ></div>
+            </div>
+          </div>
+
+          <!-- Zoom Controls -->
+          <div class="mb-3 flex items-center justify-center gap-3">
+            <button
+              @click="zoomOut"
+              :disabled="zoomScale <= MIN_ZOOM"
+              class="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(201,168,76,.4)] bg-[rgba(26,20,48,.7)] text-lg text-[var(--gold-lt)] disabled:opacity-30"
+            >
+              −
+            </button>
+
+            <button
+              v-if="zoomScale !== 1"
+              @click="resetZoom"
+              class="rounded border border-[rgba(201,168,76,.4)] bg-[rgba(26,20,48,.7)] px-4 py-1.5 text-[0.7rem] uppercase tracking-wide text-[var(--gold-lt)]"
+            >
+              Reset zoom
+            </button>
+
+            <button
+              @click="zoomIn"
+              :disabled="zoomScale >= MAX_ZOOM"
+              class="flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(201,168,76,.4)] bg-[rgba(26,20,48,.7)] text-lg text-[var(--gold-lt)] disabled:opacity-30"
+            >
+              +
+            </button>
+          </div>
+
+          <!-- Seat Map -->
           <div
-            class="seatmap-zoom-wrapper flex flex-col gap-8 min-w-[900px]"
-            :style="{ zoom: zoomScale }"
+            ref="scrollContainerRef"
+            v-if="seatMap"
+            class="seatmap-scroll w-full overflow-auto pb-3"
           >
             <div
-              v-for="(row, rowIndex) in layout"
-              :key="rowIndex"
-              class="grid grid-cols-3 gap-6"
+              class="seatmap-zoom-wrapper flex min-w-[900px] flex-col gap-8"
+              :style="{ zoom: zoomScale }"
             >
               <div
-                v-for="column in row"
-                :key="column"
-                class="flex flex-col gap-6"
+                v-for="(row, rowIndex) in layout"
+                :key="rowIndex"
+                class="grid grid-cols-3 gap-6"
               >
-                <SectionCard
-                  v-for="section in sectionColumns[column]"
-                  :key="section.id"
-                  :section="section"
-                  :selected-seat-ids="selectedSeatIds"
-                  :toggle-seat="toggleSeat"
-                  :highlight="column.includes('middle')"
-                />
+                <div
+                  v-for="column in row"
+                  :key="column"
+                  class="flex flex-col gap-6"
+                >
+                  <SectionCard
+                    v-for="section in sectionColumns[column]"
+                    :key="section.id"
+                    :section="section"
+                    :selected-seat-ids="selectedSeatIds"
+                    :toggle-seat="toggleSeat"
+                    :highlight="column.includes('middle')"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Legend -->
-        <div class="mt-10 flex flex-wrap justify-center gap-4 sm:gap-8">
-          <div
-            class="flex items-center gap-2 font-[var(--ff-heading)] text-[0.7rem] uppercase tracking-[0.1em] text-[var(--stone)]"
-          >
+          <!-- Legend -->
+          <div class="mt-10 flex flex-wrap justify-center gap-4 sm:gap-8">
             <div
-              class="h-5 w-5 rounded-[3px_3px_2px_2px] border border-[rgba(201,168,76,0.4)] bg-[rgba(26,20,48,0.8)]"
-            ></div>
-            <span>Available</span>
-          </div>
-          <div
-            class="flex items-center gap-2 font-[var(--ff-heading)] text-[0.7rem] uppercase tracking-[0.1em] text-[var(--stone)]"
-          >
+              class="flex items-center gap-2 font-[var(--ff-heading)] text-[0.7rem] uppercase tracking-[0.1em] text-[var(--stone)]"
+            >
+              <div
+                class="h-5 w-5 rounded-[3px_3px_2px_2px] border border-[rgba(201,168,76,0.4)] bg-[rgba(26,20,48,0.8)]"
+              ></div>
+
+              <span>Available</span>
+            </div>
+
             <div
-              class="h-5 w-5 rounded-[3px_3px_2px_2px] border border-[var(--gold-glow)] bg-[var(--gold)]"
-            ></div>
-            <span>Selected</span>
-          </div>
-          <div
-            class="flex items-center gap-2 font-[var(--ff-heading)] text-[0.7rem] uppercase tracking-[0.1em] text-[var(--stone)]"
-          >
+              class="flex items-center gap-2 font-[var(--ff-heading)] text-[0.7rem] uppercase tracking-[0.1em] text-[var(--stone)]"
+            >
+              <div
+                class="h-5 w-5 rounded-[3px_3px_2px_2px] border border-[var(--gold-glow)] bg-[var(--gold)]"
+              ></div>
+
+              <span>Selected</span>
+            </div>
+
             <div
-              class="h-5 w-5 rounded-[3px_3px_2px_2px] border border-[rgba(100,80,120,0.25)] bg-[rgba(20,15,35,0.7)]"
-            ></div>
-            <span>Reserved</span>
+              class="flex items-center gap-2 font-[var(--ff-heading)] text-[0.7rem] uppercase tracking-[0.1em] text-[var(--stone)]"
+            >
+              <div
+                class="h-5 w-5 rounded-[3px_3px_2px_2px] border border-[rgba(100,80,120,0.25)] bg-[rgba(20,15,35,0.7)]"
+              ></div>
+
+              <span>Reserved</span>
+            </div>
           </div>
-        </div>
+
+        </template>
       </div>
     </div>
 
-    <!-- Booking Summary -->
+    <!-- Booking Summary: Hidden When Booking Is Closed -->
     <div
-      class="fixed inset-x-0 bottom-0 z-50 max-h-[75vh] overflow-y-auto border-t border-[rgba(201,168,76,0.3)] bg-[rgba(13,10,20,0.97)] py-3 backdrop-blur-[20px] transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] sm:py-4 sm:max-h-none summary-bar"
+      v-if="!seatMap?.booking_closed"
+      class="summary-bar fixed inset-x-0 bottom-0 z-50 max-h-[75vh] overflow-y-auto border-t border-[rgba(201,168,76,0.3)] bg-[rgba(13,10,20,0.97)] py-3 backdrop-blur-[20px] transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] sm:max-h-none sm:py-4"
       :class="bookingStore.seatCount > 0 ? 'translate-y-0' : 'translate-y-full'"
     >
       <div
@@ -474,6 +529,7 @@ onBeforeUnmount(() => {
               <div class="text-[11px] text-[var(--stone)]">
                 {{ seat.category?.name }}
               </div>
+
               <div
                 class="font-[var(--ff-heading)] text-[12px] font-bold"
                 :style="{ color: seat.category?.color }"
@@ -495,10 +551,13 @@ onBeforeUnmount(() => {
             class="mt-4 font-[var(--ff-heading)] text-lg font-bold text-[var(--ivory)]"
           >
             Total :
-            <span class="text-[var(--gold)]"> EGP {{ totalPrice }} </span>
+            <span class="text-[var(--gold)]">
+              EGP {{ totalPrice }}
+            </span>
           </div>
         </div>
 
+        <!-- Confirm Booking -->
         <button
           class="w-full cursor-pointer whitespace-nowrap rounded-sm border-0 bg-[linear-gradient(135deg,var(--gold),var(--gold-lt))] px-9 py-3.5 font-[var(--ff-heading)] text-[0.8rem] font-bold uppercase tracking-[0.15em] text-[var(--ink)] transition-[box-shadow,transform] duration-200 hover:-translate-y-px hover:shadow-[0_0_25px_rgba(201,168,76,0.5)] sm:w-auto"
           @click="confirmBooking"
@@ -509,7 +568,6 @@ onBeforeUnmount(() => {
     </div>
   </main>
 </template>
-
 <style scoped>
 .stage::before {
   content: "";

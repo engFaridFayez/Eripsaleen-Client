@@ -45,6 +45,50 @@ const handleDelete = async (id: number) => {
     });
   }
 };
+
+const handleToggleBooking = async (id: number, currentlyClosed: boolean) => {
+  const nextClosed = !currentlyClosed;
+
+  const result = await Swal.fire({
+    title: nextClosed ? "Close Booking?" : "Open Booking?",
+    text: nextClosed
+      ? "Visitors will no longer be able to book seats for this event."
+      : "Visitors will be able to book seats for this event again.",
+    icon: "warning",
+    background: "#120E1D",
+    color: "#fff",
+    showCancelButton: true,
+    confirmButtonText: nextClosed ? "Close Booking" : "Open Booking",
+    cancelButtonText: "Cancel",
+    confirmButtonColor: nextClosed ? "#dc2626" : "#16a34a",
+    cancelButtonColor: "#3B324F",
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    await eventStore.toggleBooking(id, nextClosed);
+
+    await Swal.fire({
+      icon: "success",
+      title: nextClosed
+        ? "Booking closed successfully"
+        : "Booking opened successfully",
+      background: "#120E1D",
+      color: "#fff",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  } catch {
+    await Swal.fire({
+      icon: "error",
+      title: "Failed to update booking status",
+      text: "Please try again.",
+      background: "#120E1D",
+      color: "#fff",
+    });
+  }
+};
 </script>
 
 <template>
@@ -150,6 +194,19 @@ const handleDelete = async (id: number) => {
                     class="whitespace-nowrap rounded-lg border border-red-500 px-3 py-2 text-sm text-red-400 hover:bg-red-500 hover:text-white"
                   >
                     Delete
+                  </button>
+                  <button
+                    @click="handleToggleBooking(event.id, event.booking_closed)"
+                    :class="
+                      event.booking_closed
+                        ? 'border-emerald-500 text-emerald-400 hover:bg-emerald-500'
+                        : 'border-amber-500 text-amber-400 hover:bg-amber-500'
+                    "
+                    class="whitespace-nowrap rounded-lg border px-3 py-2 text-sm hover:text-white"
+                  >
+                    {{
+                      event.booking_closed ? "Open Booking" : "Close Booking"
+                    }}
                   </button>
                 </div>
               </td>
