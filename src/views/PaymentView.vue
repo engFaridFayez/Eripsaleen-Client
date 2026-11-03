@@ -41,12 +41,12 @@ async function submitBooking() {
 
   if (
     bookingStore.attendees.some(
-      (a) => !a.person_name.trim() || !a.national_id.trim(),
+      (a) => !a.person_name.trim()
     )
   ) {
     await warningPopup(
       "بيانات ناقصة",
-      "من فضلك أدخل الاسم والرقم القومي لكل شخص.",
+      "من فضلك أدخل الاسم لكل شخص.",
     );
     return;
   }
@@ -188,7 +188,7 @@ function onFileChange(e) {
             </span>
           </div>
 
-          <div class="grid gap-4 md:grid-cols-2">
+          <div class="grid gap-4 md:grid-cols-1">
             <div>
               <label class="mb-2 block"> الاسم </label>
 
@@ -198,7 +198,7 @@ function onFileChange(e) {
               />
             </div>
 
-            <div>
+            <!-- <div>
               <label class="mb-2 block"> الرقم القومي </label>
 
               <input
@@ -206,7 +206,7 @@ function onFileChange(e) {
                 maxlength="14"
                 class="w-full rounded border p-3"
               />
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
